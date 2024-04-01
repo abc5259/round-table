@@ -10,7 +10,7 @@ type HomeScreenProps = {
 
 const Home = ({ navigation }: HomeScreenProps) => {
   const onPressJointButton = () => {
-    navigation.navigate("EmailCheck", { email: "" });
+    navigation.navigate("EmailInput");
   };
   return (
     <Styled.Wrapper>

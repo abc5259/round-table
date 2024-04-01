@@ -3,7 +3,7 @@ import { WithLocalSvg } from "react-native-svg";
 import CancelIcon from "../../assets/vectors/cancel.svg";
 
 export type InputProps = {
-  placeholder: string;
+  placeholder?: string;
   defaultValue?: string;
   value: string;
   onChange: () => void;

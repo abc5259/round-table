@@ -46,7 +46,6 @@ const EmailCheckScreen = ({ navigation, route }: EmailCheckScreenProps) => {
             <LabelInput
               labelProps={{ text: "인증코드" }}
               inputProps={{
-                placeholder: "example@domin.com",
                 onChange,
                 value,
                 onPressCancel: () => setValue("email", ""),
