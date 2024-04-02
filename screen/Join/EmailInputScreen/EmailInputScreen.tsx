@@ -4,6 +4,7 @@ import LabelInput from "../../../components/LabelInput/LabelInput";
 import Button from "../../../components/Button/Button";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "../../../App";
+import { sendEmail } from "../../../api/authApi";
 
 type FormValue = { email: string };
 
@@ -19,7 +20,8 @@ const EmailInputScreen = () => {
       email: "",
     },
   });
-  const onSubmit = ({ email }: FormValue) => {
+  const onSubmit = async ({ email }: FormValue) => {
+    await sendEmail(email);
     navigation.navigate("EmailCheck", { email });
   };
 

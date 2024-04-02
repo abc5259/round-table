@@ -4,6 +4,7 @@ import LabelInput from "../../../components/LabelInput/LabelInput";
 import Button from "../../../components/Button/Button";
 import { NavigationProp, RouteProp } from "@react-navigation/native";
 import { RootStackParamList } from "../../../App";
+import { checkEmailAuthCode } from "../../../api/authApi";
 
 type EmailCheckScreenRouteProp = RouteProp<RootStackParamList, "EmailCheck">;
 
@@ -13,7 +14,7 @@ type EmailCheckScreenProps = {
 };
 
 type FormValue = {
-  email: string;
+  code: string;
 };
 
 const EmailCheckScreen = ({ navigation, route }: EmailCheckScreenProps) => {
@@ -22,13 +23,21 @@ const EmailCheckScreen = ({ navigation, route }: EmailCheckScreenProps) => {
     control,
     handleSubmit,
     setValue,
+    setError,
     formState: { errors },
   } = useForm<FormValue>({
     defaultValues: {
-      email: "",
+      code: "",
     },
   });
-  const onSubmit = (data: FormValue) => {
+  const onSubmit = async ({ code }: FormValue) => {
+    const data = await checkEmailAuthCode(code);
+    if (!data.success) {
+      setError("code", {
+        type: "incorrectCode",
+        message: "올바르지 않은 인증코드입니다.",
+      });
+    }
     console.log(data);
   };
 
@@ -48,12 +57,12 @@ const EmailCheckScreen = ({ navigation, route }: EmailCheckScreenProps) => {
               inputProps={{
                 onChange,
                 value,
-                onPressCancel: () => setValue("email", ""),
+                onPressCancel: () => setValue("code", ""),
               }}
-              errorMessage={errors.email?.message}
+              errorMessage={errors.code?.message}
             />
           )}
-          name="email"
+          name="code"
         />
       }
       button={<Button onPress={handleSubmit(onSubmit)}>다음</Button>}
