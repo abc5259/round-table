@@ -31,14 +31,15 @@ const EmailCheckScreen = ({ navigation, route }: EmailCheckScreenProps) => {
     },
   });
   const onSubmit = async ({ code }: FormValue) => {
-    const data = await checkEmailAuthCode(code);
+    const data = await checkEmailAuthCode(email, code);
     if (!data.success) {
       setError("code", {
         type: "incorrectCode",
         message: "올바르지 않은 인증코드입니다.",
       });
+      return;
     }
-    console.log(data);
+    navigation.navigate("PasswordInput", { email });
   };
 
   return (

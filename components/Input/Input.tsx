@@ -8,6 +8,7 @@ export type InputProps = {
   value: string;
   onChange: () => void;
   onPressCancel: () => void;
+  secureTextEntry?: boolean;
 };
 
 const Input = ({
@@ -16,6 +17,7 @@ const Input = ({
   value,
   onChange,
   onPressCancel,
+  secureTextEntry = false,
 }: InputProps) => {
   return (
     <Styled.Wrapper>
@@ -25,6 +27,7 @@ const Input = ({
         defaultValue={defaultValue}
         value={value}
         onChangeText={onChange}
+        secureTextEntry={secureTextEntry}
       />
       <Styled.SvgWrapper onPress={onPressCancel}>
         <WithLocalSvg asset={CancelIcon} />

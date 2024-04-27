@@ -24,4 +24,5 @@ export const H1 = styled.Text<{ isBottom?: boolean }>`
 
 export const InputContainer = styled.View`
   flex: 1;
+  gap: 30px;
 `;
