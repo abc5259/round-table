@@ -3,6 +3,7 @@ import LoginLayout from "../../../layouts/LoginLayout/LoginLayout";
 import Button from "../../../components/Button/Button";
 import LabelInput from "../../../components/LabelInput/LabelInput";
 import { login } from "../../../api/authApi";
+import * as SecureStore from "expo-secure-store";
 
 type FormValue = {
   email: string;
@@ -24,8 +25,18 @@ const LoginScreen = () => {
   });
 
   const onSubmit = async ({ email, password }: FormValue) => {
-    const data = await login(email, password);
-    console.log(data);
+    const { success, data, message } = await login(email, password);
+
+    if (!success && message) {
+      alert(message);
+      return;
+    }
+
+    await Promise.all([
+      SecureStore.setItemAsync("accessToken", data.accessToken),
+      SecureStore.setItemAsync("refreshToken", data.refreshToken),
+    ]);
+    return;
   };
 
   return (

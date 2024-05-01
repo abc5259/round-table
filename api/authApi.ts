@@ -62,15 +62,21 @@ export const registerMember = async (email: string, password: string) => {
   }
 };
 
+type LoginResponseType = ApiResponseType<{
+  accessToken: string;
+  refreshToken: string;
+}>;
+
 export const login = async (email: string, password: string) => {
   try {
-    const res = await axios.post<DefaultApiResponseType>(
+    const res = await axios.post<LoginResponseType>(
       `http://localhost:8080/auth/login`,
       {
         email,
         password,
       }
     );
+
     return res.data;
   } catch (error) {
     console.error(error);
