@@ -8,12 +8,14 @@ import EmailCheckScreen from "./screen/Join/EmailCheckScreen/EmailCheckScreen";
 import Header from "./components/Header/Header";
 import EmailInputScreen from "./screen/Join/EmailInputScreen/EmailInputScreen";
 import PasswordInputScreen from "./screen/Join/PasswordInputScreen/PasswordInputScreen";
+import LoginScreen from "./screen/Login/LoginScreen/LoginScreen";
 
 export type RootStackParamList = {
   Home: undefined;
   EmailInput: undefined;
   EmailCheck: { email: string };
   PasswordInput: { email: string };
+  Login: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -48,6 +50,13 @@ export default function App() {
           component={PasswordInputScreen}
           options={{
             header: () => <Header title="회원가입" />,
+          }}
+        />
+        <Stack.Screen
+          name="Login"
+          component={LoginScreen}
+          options={{
+            header: () => <Header title="시작하기" />,
           }}
         />
       </Stack.Navigator>

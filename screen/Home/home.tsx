@@ -9,8 +9,12 @@ type HomeScreenProps = {
 };
 
 const Home = ({ navigation }: HomeScreenProps) => {
-  const onPressJointButton = () => {
+  const onPressJoinButton = () => {
     navigation.navigate("EmailInput");
+  };
+
+  const onPressLoginButton = () => {
+    navigation.navigate("Login");
   };
   return (
     <Styled.Wrapper>
@@ -19,8 +23,8 @@ const Home = ({ navigation }: HomeScreenProps) => {
         resizeMode="cover"
       >
         <View style={{ gap: 10 }}>
-          <Button>이메일로 시작하기</Button>
-          <Button isBg={false} onPress={onPressJointButton}>
+          <Button onPress={onPressLoginButton}>이메일로 시작하기</Button>
+          <Button isBg={false} onPress={onPressJoinButton}>
             회원가입
           </Button>
         </View>
