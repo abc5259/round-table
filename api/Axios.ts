@@ -4,7 +4,9 @@ import { ApiError } from "./ApiError";
 
 const resolveHttpStatus = [400, 404];
 
-const customAxios = axios.create();
+const customAxios = axios.create({
+  baseURL: "http://localhost:8080",
+});
 
 customAxios.interceptors.request.use(
   async config => {
@@ -64,12 +66,9 @@ type RefreshResponseType = ApiResponseType<{
 
 const refresh = async (refreshToken: String) => {
   try {
-    const res = await customAxios.post<RefreshResponseType>(
-      `http://localhost:8080/token/refresh`,
-      {
-        refreshToken,
-      }
-    );
+    const res = await customAxios.post<RefreshResponseType>(`/token/refresh`, {
+      refreshToken,
+    });
 
     return res.data;
   } catch (error) {

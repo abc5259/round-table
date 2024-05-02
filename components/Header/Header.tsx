@@ -1,4 +1,4 @@
-import { WithLocalSvg } from "react-native-svg";
+import { WithLocalSvg } from "react-native-svg/css";
 import { useNavigation } from "@react-navigation/native";
 import ArrowLeft from "../../assets/vectors/arrow-left.svg";
 import * as Styled from "./Styled";

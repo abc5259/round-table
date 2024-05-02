@@ -7,6 +7,8 @@ import EmailInputScreen from "./screen/Join/EmailInputScreen/EmailInputScreen";
 import PasswordInputScreen from "./screen/Join/PasswordInputScreen/PasswordInputScreen";
 import LoginScreen from "./screen/Login/LoginScreen/LoginScreen";
 import ProfileSettingScreen from "./screen/Login/ProfileSettingScreen/ProfileSettingScreen";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { DevToolsBubble } from "react-native-react-query-devtools";
 
 export type RootStackParamList = {
   Home: undefined;
@@ -20,52 +22,57 @@ export type RootStackParamList = {
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
+  const queryClient = new QueryClient();
+
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen
-          name="Home"
-          component={Home}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="EmailCheck"
-          component={EmailCheckScreen}
-          options={{
-            header: () => <Header title="회원가입" />,
-          }}
-        />
+    <QueryClientProvider client={queryClient}>
+      <DevToolsBubble />
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Home">
+          <Stack.Screen
+            name="Home"
+            component={Home}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="EmailCheck"
+            component={EmailCheckScreen}
+            options={{
+              header: () => <Header title="회원가입" />,
+            }}
+          />
 
-        <Stack.Screen
-          name="EmailInput"
-          component={EmailInputScreen}
-          options={{
-            header: () => <Header title="회원가입" />,
-          }}
-        />
+          <Stack.Screen
+            name="EmailInput"
+            component={EmailInputScreen}
+            options={{
+              header: () => <Header title="회원가입" />,
+            }}
+          />
 
-        <Stack.Screen
-          name="PasswordInput"
-          component={PasswordInputScreen}
-          options={{
-            header: () => <Header title="회원가입" />,
-          }}
-        />
-        <Stack.Screen
-          name="Login"
-          component={LoginScreen}
-          options={{
-            header: () => <Header title="시작하기" />,
-          }}
-        />
-        <Stack.Screen
-          name="ProfileSetting"
-          component={ProfileSettingScreen}
-          options={{
-            header: () => <Header title="프로필 설정" />,
-          }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+          <Stack.Screen
+            name="PasswordInput"
+            component={PasswordInputScreen}
+            options={{
+              header: () => <Header title="회원가입" />,
+            }}
+          />
+          <Stack.Screen
+            name="Login"
+            component={LoginScreen}
+            options={{
+              header: () => <Header title="시작하기" />,
+            }}
+          />
+          <Stack.Screen
+            name="ProfileSetting"
+            component={ProfileSettingScreen}
+            options={{
+              header: () => <Header title="프로필 설정" />,
+            }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </QueryClientProvider>
   );
 }

@@ -3,12 +3,9 @@ import customAxios from "./Axios";
 
 export const sendEmail = async (email: string) => {
   try {
-    const res = await customAxios.post<DefaultApiResponseType>(
-      "http://localhost:8080/auth/emails",
-      {
-        email,
-      }
-    );
+    const res = await customAxios.post<DefaultApiResponseType>("/auth/emails", {
+      email,
+    });
     return res.data;
   } catch (error) {
     console.error(error);
@@ -19,7 +16,7 @@ export const sendEmail = async (email: string) => {
 export const checkEmailAuthCode = async (email: string, authCode: string) => {
   try {
     const res = await customAxios.get<DefaultApiResponseType>(
-      `http://localhost:8080/auth/emails?email=${email}&code=${authCode}`
+      `/auth/emails?email=${email}&code=${authCode}`
     );
     return res.data;
   } catch (error) {
@@ -31,7 +28,7 @@ export const checkEmailAuthCode = async (email: string, authCode: string) => {
 export const registerMember = async (email: string, password: string) => {
   try {
     const res = await customAxios.post<DefaultApiResponseType>(
-      `http://localhost:8080/auth/register`,
+      `/auth/register`,
       {
         email,
         password,
@@ -51,13 +48,10 @@ type LoginResponseType = ApiResponseType<{
 
 export const login = async (email: string, password: string) => {
   try {
-    const res = await customAxios.post<LoginResponseType>(
-      `http://localhost:8080/auth/login`,
-      {
-        email,
-        password,
-      }
-    );
+    const res = await customAxios.post<LoginResponseType>(`/auth/login`, {
+      email,
+      password,
+    });
 
     return res.data;
   } catch (error) {
@@ -68,12 +62,9 @@ export const login = async (email: string, password: string) => {
 
 export const refresh = async (refreshToken: String) => {
   try {
-    const res = await customAxios.post<LoginResponseType>(
-      `http://localhost:8080/token/refresh`,
-      {
-        refreshToken,
-      }
-    );
+    const res = await customAxios.post<LoginResponseType>(`/token/refresh`, {
+      refreshToken,
+    });
 
     return res.data;
   } catch (error) {

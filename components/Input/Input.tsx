@@ -1,5 +1,5 @@
 import * as Styled from "./Styled";
-import { WithLocalSvg } from "react-native-svg";
+import { WithLocalSvg } from "react-native-svg/css";
 import CancelIcon from "../../assets/vectors/cancel.svg";
 
 export type InputProps = {
