@@ -24,7 +24,7 @@ export const enum Gender {
 export const updateProfile = async (name: string, gender: Gender) => {
   try {
     const res = await customAxios.patch<DefaultApiResponseType>(
-      "http://localhost:8080/setting/profile",
+      "http://localhost:8080/members/setting/profile",
       {
         name,
         gender,

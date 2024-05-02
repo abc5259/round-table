@@ -1,8 +1,5 @@
-import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-import { NavigationProp } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Button from "./components/Button/Button";
 import Home from "./screen/Home/home";
 import EmailCheckScreen from "./screen/Join/EmailCheckScreen/EmailCheckScreen";
 import Header from "./components/Header/Header";
