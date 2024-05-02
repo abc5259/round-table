@@ -12,7 +12,7 @@ export const Wrapper = styled.View`
 
 export const Top = styled.View`
   width: 100%;
-  height: 66px;
+  margin-bottom: 20px;
 `;
 
 export const H1 = styled.Text<{ isBottom?: boolean }>`

@@ -1,6 +1,8 @@
 import styled from "styled-components/native";
 
-export const Wrapper = styled.TouchableOpacity<{ isBg: Boolean }>`
+export const Wrapper = styled.TouchableOpacity<{
+  isBg: Boolean;
+}>`
   width: 100%;
   background-color: #69b4ff;
   justify-content: center;

@@ -4,18 +4,26 @@ import Button from "../../../components/Button/Button";
 import LabelInput from "../../../components/LabelInput/LabelInput";
 import { login } from "../../../api/authApi";
 import * as SecureStore from "expo-secure-store";
+import { NavigationProp, RouteProp } from "@react-navigation/native";
+import { RootStackParamList } from "../../../App";
+
+type LoginScreenRouteProp = RouteProp<RootStackParamList, "Login">;
+
+type LoginScreenProps = {
+  navigation: NavigationProp<RootStackParamList, "Login">;
+  route: LoginScreenRouteProp;
+};
 
 type FormValue = {
   email: string;
   password: string;
 };
 
-const LoginScreen = () => {
+const LoginScreen = ({ navigation }: LoginScreenProps) => {
   const {
     control,
     handleSubmit,
     setValue,
-    watch,
     formState: { errors },
   } = useForm<FormValue>({
     defaultValues: {
@@ -36,7 +44,8 @@ const LoginScreen = () => {
       SecureStore.setItemAsync("accessToken", data.accessToken),
       SecureStore.setItemAsync("refreshToken", data.refreshToken),
     ]);
-    return;
+
+    navigation.navigate("ProfileSetting");
   };
 
   return (
