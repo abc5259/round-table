@@ -6,6 +6,9 @@ import { login } from "../../../api/authApi";
 import * as SecureStore from "expo-secure-store";
 import { NavigationProp, RouteProp } from "@react-navigation/native";
 import { RootStackParamList } from "../../../App";
+import { useQuery } from "@tanstack/react-query";
+import { GetMeResponse, getMe } from "../../../api/memberApi";
+import { useState } from "react";
 
 type LoginScreenRouteProp = RouteProp<RootStackParamList, "Login">;
 
@@ -20,6 +23,12 @@ type FormValue = {
 };
 
 const LoginScreen = ({ navigation }: LoginScreenProps) => {
+  const { refetch } = useQuery({
+    queryKey: ["me"],
+    queryFn: getMe,
+    enabled: false,
+  });
+
   const {
     control,
     handleSubmit,
@@ -45,7 +54,23 @@ const LoginScreen = ({ navigation }: LoginScreenProps) => {
       SecureStore.setItemAsync("refreshToken", data.refreshToken),
     ]);
 
-    navigation.navigate("ProfileSetting");
+    const { isSuccess, isError, data: meData } = await refetch();
+
+    if (isSuccess && meData.success) {
+      navigateBy(meData);
+    }
+
+    if (isError) {
+      alert("다시 시도해주세요");
+    }
+  };
+
+  const navigateBy = (meData: GetMeResponse) => {
+    const { name, gender, house } = meData.data;
+    if (name == null || gender == null) {
+      navigation.navigate("ProfileSetting");
+      return;
+    }
   };
 
   return (

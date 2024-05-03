@@ -38,11 +38,16 @@ export const updateProfile = async (name: string, gender: Gender) => {
   }
 };
 
+export type GetMeResponse = ApiResponseType<{
+  memberId: number;
+  name: string;
+  gender: Gender;
+  house: { houseId: number; name: string };
+}>;
+
 export const getMe = async () => {
   try {
-    const res = await customAxios.get<DefaultApiResponseType>(
-      `${API_PREFIX.MEMBER}/me`
-    );
+    const res = await customAxios.get<GetMeResponse>(`${API_PREFIX.MEMBER}/me`);
     return res.data;
   } catch (error) {
     console.error(error);
