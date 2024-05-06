@@ -8,10 +8,17 @@ import * as Styled from "./Styled";
 import { TouchableOpacity, View } from "react-native";
 import InputButton from "../../Input/InputButton";
 import { useState } from "react";
+import { canInviteHouseEmail } from "../../../api/houseApi";
 
 const HouseInviteEmail = () => {
   const { next } = useHouseAppenderStore();
-  const [emails, setEmails] = useState([""]);
+  const [inputDatas, setInputDatas] = useState<
+    {
+      email: string;
+      errorMessage: string | null;
+      successMessage: string | null;
+    }[]
+  >([{ email: "", successMessage: null, errorMessage: null }]);
 
   const onPressInviteBtn = () => {};
 
@@ -19,15 +26,56 @@ const HouseInviteEmail = () => {
     next();
   };
 
+  const onPressAddIcon = () => {
+    setInputDatas(state => [
+      ...state,
+      { email: "", successMessage: null, errorMessage: null },
+    ]);
+  };
+
   const onChangeEmail = (idx: number, newEmail: string) => {
-    setEmails(state => {
+    setInputDatas(state => {
       const newState = [...state];
-      newState[idx] = newEmail;
+      const newFiled = {
+        ...newState[idx],
+        email: newEmail,
+        errorMessage: null,
+        successMessage: null,
+      };
+      newState[idx] = newFiled;
       return newState;
     });
   };
 
-  const onPressButton = (email: string) => {};
+  const onPressButton = async (email: string, idx: number) => {
+    const res = await canInviteHouseEmail(email);
+    if (!res.success) {
+      setInputDatas(state => {
+        const newState = [...state];
+        const newFiled = {
+          ...newState[idx],
+          errorMessage: "초대할 수 없는 이메일입니다.",
+          successMessage: null,
+        };
+        newState[idx] = newFiled;
+        return newState;
+      });
+    }
+
+    if (res.success) {
+      setInputDatas(state => {
+        const newState = [...state];
+        const newFiled = {
+          ...newState[idx],
+          errorMessage: null,
+          successMessage: "초대가능한 이메일입니다.",
+        };
+        newState[idx] = newFiled;
+        return newState;
+      });
+    }
+  };
+
   return (
     <TopBottomLayout
       topText="하우스에 함깨할"
@@ -39,20 +87,18 @@ const HouseInviteEmail = () => {
               style={{ flex: 1 }}
               text="초대할 맴버의 이메일을 알려주세요."
             />
-            <TouchableOpacity
-              onPress={() => setEmails(state => [...state, ""])}
-            >
+            <TouchableOpacity onPress={onPressAddIcon}>
               <WithLocalSvg asset={AddIcon} />
             </TouchableOpacity>
           </Styled.LabelWrapper>
-          {emails.map((email, idx) => (
+          {inputDatas.map((inputData, idx) => (
             <InputButton
               key={idx}
               placeholder="example@domain.com"
-              value={email}
+              value={inputData.email}
               onChange={text => onChangeEmail(idx, text)}
               onPressCancel={() => onChangeEmail(idx, "")}
-              onPressButton={() => onPressButton(email)}
+              onPressButton={() => onPressButton(inputData.email, idx)}
             />
           ))}
         </>

@@ -13,6 +13,7 @@ export type InputButtonProps = {
   onPressButton: () => void;
   secureTextEntry?: boolean;
   errorMessage?: string;
+  successMessage?: string;
 };
 
 const InputButton = ({
@@ -24,6 +25,7 @@ const InputButton = ({
   secureTextEntry = false,
   onPressButton,
   errorMessage,
+  successMessage,
 }: InputButtonProps) => {
   return (
     <View>
@@ -55,8 +57,11 @@ const InputButton = ({
           확인
         </Button>
       </Styled.Wrapper>
-      {errorMessage && (
+      {successMessage != null && errorMessage && (
         <Styled.ErrorMessage>{errorMessage}</Styled.ErrorMessage>
+      )}
+      {successMessage && (
+        <Styled.SuccessMessage>{successMessage}</Styled.SuccessMessage>
       )}
     </View>
   );

@@ -27,3 +27,8 @@ export const ErrorMessage = styled.Text`
   color: #e52828;
   font-size: 12px;
 `;
+
+export const SuccessMessage = styled.Text`
+  color: #5badff;
+  font-size: 12px;
+`;
