@@ -9,6 +9,7 @@ import LoginScreen from "./screen/Login/LoginScreen/LoginScreen";
 import ProfileSettingScreen from "./screen/Login/ProfileSettingScreen/ProfileSettingScreen";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { DevToolsBubble } from "react-native-react-query-devtools";
+import CreateHouseScreen from "./screen/House/CreateHouseScreen/CreateHouseScreen";
 
 export type RootStackParamList = {
   Home: undefined;
@@ -17,6 +18,7 @@ export type RootStackParamList = {
   PasswordInput: { email: string };
   Login: undefined;
   ProfileSetting: undefined;
+  CreateHouse: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -28,7 +30,7 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <DevToolsBubble />
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home">
+        <Stack.Navigator initialRouteName="CreateHouse">
           <Stack.Screen
             name="Home"
             component={Home}
@@ -69,6 +71,13 @@ export default function App() {
             component={ProfileSettingScreen}
             options={{
               header: () => <Header title="프로필 설정" />,
+            }}
+          />
+          <Stack.Screen
+            name="CreateHouse"
+            component={CreateHouseScreen}
+            options={{
+              header: () => <Header title="하우스 만들기" />,
             }}
           />
         </Stack.Navigator>

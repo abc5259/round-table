@@ -8,7 +8,6 @@ import { NavigationProp, RouteProp } from "@react-navigation/native";
 import { RootStackParamList } from "../../../App";
 import { useQuery } from "@tanstack/react-query";
 import { GetMeResponse, getMe } from "../../../api/memberApi";
-import { useState } from "react";
 
 type LoginScreenRouteProp = RouteProp<RootStackParamList, "Login">;
 
