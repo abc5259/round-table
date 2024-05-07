@@ -30,6 +30,7 @@ customAxios.interceptors.response.use(
     return response;
   },
   async error => {
+    console.log(error);
     // 특정 상태 코드 처리 로직
     if (error.response && resolveHttpStatus.includes(error.response.status)) {
       // 여기서 error.response 또는 커스텀 데이터 객체를 반환할 수 있음
@@ -37,8 +38,7 @@ customAxios.interceptors.response.use(
     }
 
     if (error.response && error.response.status === 401) {
-      if (error.response.code === "auth-001") {
-        //
+      if (error.response.data.code === "auth-001") {
         const refreshToken = await SecureStore.getItemAsync("refreshToken");
         if (refreshToken != null) {
           const { success, data } = await refresh(refreshToken);

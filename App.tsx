@@ -30,7 +30,7 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <DevToolsBubble />
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home">
+        <Stack.Navigator initialRouteName="CreateHouse">
           <Stack.Screen
             name="Home"
             component={Home}

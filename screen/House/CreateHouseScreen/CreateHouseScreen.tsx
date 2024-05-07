@@ -1,3 +1,4 @@
+import CreateHouseComposition from "../../../components/template/CreateHouseComposition/CreateHouseComposition";
 import CreateHouseName from "../../../components/template/CreateHouseName/CreateHouseName";
 import HouseInviteEmail from "../../../components/template/HouseInviteEmail/HouseInviteEmail";
 import { useHouseAppenderStore } from "../../../store/house/houseAppenderStore";
@@ -9,6 +10,7 @@ const CreateHouseScreen = () => {
     <>
       {step == 1 && <CreateHouseName />}
       {step == 2 && <HouseInviteEmail />}
+      {step == 3 && <CreateHouseComposition />}
     </>
   );
 };
