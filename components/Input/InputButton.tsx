@@ -28,7 +28,7 @@ const InputButton = ({
   successMessage,
 }: InputButtonProps) => {
   return (
-    <View>
+    <View style={{ gap: 10 }}>
       <Styled.Wrapper>
         <View style={{ flex: 0.8, width: "100%" }}>
           <Styled.CustomInput

@@ -4,13 +4,32 @@ import LabelInput from "../../../components/LabelInput/LabelInput";
 import Button from "../../../components/Button/Button";
 import SelectButton from "../../../components/SelectButton/SelectButton";
 import { useState } from "react";
-import { Gender, updateProfile } from "../../../api/memberApi";
+import { Gender, getMe, updateProfile } from "../../../api/memberApi";
+import { useQuery } from "@tanstack/react-query";
+import {
+  NavigationProp,
+  RouteProp,
+  useNavigation,
+} from "@react-navigation/native";
+import { RootStackParamList } from "../../../App";
+
+type ProfileSettingScreenRouteProp = RouteProp<RootStackParamList, "Login">;
+
+type ProfileSettingScreenProps = {
+  navigation: NavigationProp<RootStackParamList, "ProfileSetting">;
+  route: ProfileSettingScreenRouteProp;
+};
 
 type FormValue = {
   name: string;
 };
 
-const ProfileSettingScreen = () => {
+const ProfileSettingScreen = ({ navigation }: ProfileSettingScreenProps) => {
+  const { data } = useQuery({
+    queryKey: ["me"],
+    queryFn: getMe,
+    enabled: false,
+  });
   const [gender, setGender] = useState<Gender>(Gender.MEN);
   const {
     control,
@@ -43,6 +62,11 @@ const ProfileSettingScreen = () => {
     console.log(res);
     if (!res.success) {
       alert(res.message || "다시 시도해주세요");
+      return;
+    }
+
+    if (data?.data.house == null) {
+      navigation.navigate("CreateHouse");
       return;
     }
   };

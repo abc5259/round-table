@@ -54,3 +54,15 @@ export const getMe = async () => {
     throw new ApiError();
   }
 };
+
+export const canInviteHouseEmail = async (email: string) => {
+  try {
+    const res = await customAxios.get<DefaultApiResponseType>(
+      `${API_PREFIX.MEMBER}/check-invite?email=${email}`
+    );
+    return res.data;
+  } catch (error) {
+    console.error(error);
+    throw new ApiError();
+  }
+};

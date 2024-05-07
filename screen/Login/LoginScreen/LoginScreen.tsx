@@ -70,6 +70,11 @@ const LoginScreen = ({ navigation }: LoginScreenProps) => {
       navigation.navigate("ProfileSetting");
       return;
     }
+
+    if (house == null) {
+      navigation.navigate("CreateHouse");
+      return;
+    }
   };
 
   return (

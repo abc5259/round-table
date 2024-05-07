@@ -8,28 +8,23 @@ import * as Styled from "./Styled";
 import { TouchableOpacity, View } from "react-native";
 import InputButton from "../../Input/InputButton";
 import { useState } from "react";
-import { canInviteHouseEmail } from "../../../api/houseApi";
+import { canInviteHouseEmail } from "../../../api/memberApi";
+import { createHouse } from "../../../api/houseApi";
 
 const HouseInviteEmail = () => {
-  const { next } = useHouseAppenderStore();
+  const { next, name, updateHouseTotalPeople } = useHouseAppenderStore();
   const [inputDatas, setInputDatas] = useState<
     {
       email: string;
-      errorMessage: string | null;
-      successMessage: string | null;
+      errorMessage?: string;
+      successMessage?: string;
     }[]
-  >([{ email: "", successMessage: null, errorMessage: null }]);
-
-  const onPressInviteBtn = () => {};
-
-  const onPressSkipBtn = () => {
-    next();
-  };
+  >([{ email: "", successMessage: "", errorMessage: "" }]);
 
   const onPressAddIcon = () => {
     setInputDatas(state => [
       ...state,
-      { email: "", successMessage: null, errorMessage: null },
+      { email: "", successMessage: "", errorMessage: "" },
     ]);
   };
 
@@ -39,8 +34,8 @@ const HouseInviteEmail = () => {
       const newFiled = {
         ...newState[idx],
         email: newEmail,
-        errorMessage: null,
-        successMessage: null,
+        errorMessage: "",
+        successMessage: "",
       };
       newState[idx] = newFiled;
       return newState;
@@ -49,13 +44,14 @@ const HouseInviteEmail = () => {
 
   const onPressButton = async (email: string, idx: number) => {
     const res = await canInviteHouseEmail(email);
+
     if (!res.success) {
       setInputDatas(state => {
-        const newState = [...state];
+        const newState = state.map(s => ({ ...s }));
         const newFiled = {
           ...newState[idx],
           errorMessage: "초대할 수 없는 이메일입니다.",
-          successMessage: null,
+          successMessage: "",
         };
         newState[idx] = newFiled;
         return newState;
@@ -64,16 +60,34 @@ const HouseInviteEmail = () => {
 
     if (res.success) {
       setInputDatas(state => {
-        const newState = [...state];
+        const newState = state.map(s => ({ ...s }));
         const newFiled = {
           ...newState[idx],
-          errorMessage: null,
+          errorMessage: "",
           successMessage: "초대가능한 이메일입니다.",
         };
         newState[idx] = newFiled;
         return newState;
       });
     }
+  };
+
+  const onPressInviteBtn = async () => {
+    const inviteEmails = inputDatas.map(inputData => inputData.email);
+    const res = await createHouse(name, inviteEmails);
+
+    if (!res.success) {
+      alert(res.message);
+      return;
+    }
+
+    updateHouseTotalPeople(inviteEmails.length);
+    next();
+  };
+
+  const onPressSkipBtn = async () => {
+    await createHouse(name, []);
+    next();
   };
 
   return (
@@ -99,6 +113,8 @@ const HouseInviteEmail = () => {
               onChange={text => onChangeEmail(idx, text)}
               onPressCancel={() => onChangeEmail(idx, "")}
               onPressButton={() => onPressButton(inputData.email, idx)}
+              errorMessage={inputData.errorMessage}
+              successMessage={inputData.successMessage}
             />
           ))}
         </>

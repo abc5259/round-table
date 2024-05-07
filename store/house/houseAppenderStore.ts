@@ -4,8 +4,10 @@ type HouseAppenderStoreType = {
   name: string;
   inviteEmails: string[];
   step: number;
+  houseTotalPeople: number;
   next: () => void;
   updateName: (name: string) => void;
+  updateHouseTotalPeople: (newTotal: number) => void;
 };
 
 export const useHouseAppenderStore = create<HouseAppenderStoreType>(
@@ -13,6 +15,7 @@ export const useHouseAppenderStore = create<HouseAppenderStoreType>(
     name: "",
     inviteEmails: [],
     step: 1,
+    houseTotalPeople: 1,
     updateName: (name: string) =>
       set(state => {
         return {
@@ -25,6 +28,14 @@ export const useHouseAppenderStore = create<HouseAppenderStoreType>(
         return {
           ...state,
           step: state.step + 1,
+        };
+      }),
+
+    updateHouseTotalPeople: (newTotal: number) =>
+      set(state => {
+        return {
+          ...state,
+          houseTotalPeople: newTotal,
         };
       }),
   })
