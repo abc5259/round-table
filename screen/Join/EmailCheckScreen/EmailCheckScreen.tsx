@@ -1,7 +1,7 @@
 import { useForm, Controller } from "react-hook-form";
 import JoinLayout from "../../../layouts/JoinLayout/JoinLayout";
-import LabelInput from "../../../components/LabelInput/LabelInput";
-import Button from "../../../components/Button/Button";
+import LabelInput from "../../../components/molecules/LabelInput/LabelInput";
+import Button from "../../../components/atoms/Button/Button";
 import { NavigationProp, RouteProp } from "@react-navigation/native";
 import { RootStackParamList } from "../../../App";
 import { checkEmailAuthCode } from "../../../api/authApi";

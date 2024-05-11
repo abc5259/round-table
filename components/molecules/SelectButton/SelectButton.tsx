@@ -1,7 +1,7 @@
 import { useState } from "react";
-import Button from "../Button/Button";
+import Button from "../../atoms/Button/Button";
 import * as Styled from "./Styled";
-import Label from "../Label/Label";
+import Label from "../../atoms/Label/Label";
 
 type SelectButtonProps = {
   texts: string[];

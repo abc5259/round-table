@@ -1,7 +1,7 @@
 import { useState } from "react";
-import TimeInput from "../Input/TimeInput";
-import { Time } from "../TimePicker/TimePicker";
-import TimePickerModal from "../TimePickerModal/TimePcikerModal";
+import TimeInput from "../../atoms/Input/TimeInput";
+import { Time } from "../../molecules/TimePicker/TimePicker";
+import TimePickerModal from "../../molecules/TimePickerModal/TimePcikerModal";
 
 const TimeInputPickerModal = () => {
   const [time, setTime] = useState<Time | null>(null);

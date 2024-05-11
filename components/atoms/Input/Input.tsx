@@ -29,7 +29,7 @@ const Input = ({
         secureTextEntry={secureTextEntry}
       />
       <Styled.SvgWrapper onPress={onPressCancel}>
-        <WithLocalSvg asset={require("../../assets/vectors/cancel.svg")} />
+        <WithLocalSvg asset={require("../../../assets/vectors/cancel.svg")} />
       </Styled.SvgWrapper>
     </Styled.Wrapper>
   );

@@ -1,11 +1,11 @@
 import TopBottomLayout from "../../../layouts/TopBottomLayout/TopBottomLayout";
 import { useHouseAppenderStore } from "../../../store/house/houseAppenderStore";
-import Button from "../../Button/Button";
-import Label from "../../Label/Label";
+import Button from "../../atoms/Button/Button";
+import Label from "../../atoms/Label/Label";
 import { WithLocalSvg } from "react-native-svg/css";
 import * as Styled from "./Styled";
 import { TouchableOpacity, View } from "react-native";
-import InputButton from "../../Input/InputButton";
+import InputButton from "../../atoms/Input/InputButton";
 import { useState } from "react";
 import { canInviteHouseEmail } from "../../../api/memberApi";
 import { createHouse } from "../../../api/houseApi";

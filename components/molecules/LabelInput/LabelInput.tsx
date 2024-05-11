@@ -1,5 +1,5 @@
-import Input, { InputProps } from "../Input/Input";
-import Label, { LabelProps } from "../Label/Label";
+import Input, { InputProps } from "../../atoms/Input/Input";
+import Label, { LabelProps } from "../../atoms/Label/Label";
 import * as Styled from "./Styled";
 
 type Props = {

@@ -1,7 +1,7 @@
 import { Controller, useForm } from "react-hook-form";
 import TopBottomLayout from "../../../layouts/TopBottomLayout/TopBottomLayout";
-import LabelInput from "../../LabelInput/LabelInput";
-import Button from "../../Button/Button";
+import LabelInput from "../../molecules/LabelInput/LabelInput";
+import Button from "../../atoms/Button/Button";
 import { useHouseAppenderStore } from "../../../store/house/houseAppenderStore";
 
 type FormValue = {

@@ -1,6 +1,6 @@
 import { View } from "react-native";
 import * as Styled from "./Styled";
-import Button from "../../components/Button/Button";
+import Button from "../../components/atoms/Button/Button";
 import { NavigationProp } from "@react-navigation/native";
 import { RootStackParamList } from "../../App";
 

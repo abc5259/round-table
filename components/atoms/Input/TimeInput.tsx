@@ -24,7 +24,7 @@ const TimeInput = ({
         editable={false}
       />
       <Styled.SvgWrapper onPress={onPressTime} style={{ top: 20 }}>
-        <WithLocalSvg asset={require("../../assets/vectors/time.svg")} />
+        <WithLocalSvg asset={require("../../../assets/vectors/time.svg")} />
       </Styled.SvgWrapper>
     </Styled.Wrapper>
   );

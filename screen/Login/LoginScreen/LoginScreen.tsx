@@ -1,7 +1,7 @@
 import { Controller, useForm } from "react-hook-form";
 import LoginLayout from "../../../layouts/LoginLayout/LoginLayout";
-import Button from "../../../components/Button/Button";
-import LabelInput from "../../../components/LabelInput/LabelInput";
+import Button from "../../../components/atoms/Button/Button";
+import LabelInput from "../../../components/molecules/LabelInput/LabelInput";
 import { login } from "../../../api/authApi";
 import * as SecureStore from "expo-secure-store";
 import { NavigationProp, RouteProp } from "@react-navigation/native";

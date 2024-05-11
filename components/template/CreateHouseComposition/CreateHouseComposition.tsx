@@ -1,6 +1,6 @@
 import { Image, Text, View } from "react-native";
 import TopBottomLayout from "../../../layouts/TopBottomLayout/TopBottomLayout";
-import Button from "../../Button/Button";
+import Button from "../../atoms/Button/Button";
 import * as Styled from "./Styled";
 import { useHouseAppenderStore } from "../../../store/house/houseAppenderStore";
 

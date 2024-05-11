@@ -2,8 +2,8 @@ import { NavigationProp, RouteProp } from "@react-navigation/native";
 import { RootStackParamList } from "../../../App";
 import { Controller, useForm } from "react-hook-form";
 import JoinLayout from "../../../layouts/JoinLayout/JoinLayout";
-import LabelInput from "../../../components/LabelInput/LabelInput";
-import Button from "../../../components/Button/Button";
+import LabelInput from "../../../components/molecules/LabelInput/LabelInput";
+import Button from "../../../components/atoms/Button/Button";
 import { registerMember } from "../../../api/authApi";
 
 type PasswordInputScreenRouteProp = RouteProp<

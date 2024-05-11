@@ -2,7 +2,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Home from "./screen/Home/home";
 import EmailCheckScreen from "./screen/Join/EmailCheckScreen/EmailCheckScreen";
-import Header from "./components/Header/Header";
+import Header from "./components/atoms/Header/Header";
 import EmailInputScreen from "./screen/Join/EmailInputScreen/EmailInputScreen";
 import PasswordInputScreen from "./screen/Join/PasswordInputScreen/PasswordInputScreen";
 import LoginScreen from "./screen/Login/LoginScreen/LoginScreen";

@@ -24,7 +24,7 @@ const CalendarInput = ({
         editable={false}
       />
       <Styled.SvgWrapper onPress={onPressCalendar} style={{ top: 20 }}>
-        <WithLocalSvg asset={require("../../assets/vectors/calendar.svg")} />
+        <WithLocalSvg asset={require("../../../assets/vectors/calendar.svg")} />
       </Styled.SvgWrapper>
     </Styled.Wrapper>
   );

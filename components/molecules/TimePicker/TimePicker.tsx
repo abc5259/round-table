@@ -1,6 +1,6 @@
 import { View, Text } from "react-native";
 import { useRef } from "react";
-import WheelPicker from "../WheelPicker/WheelPicker";
+import WheelPicker from "../../atoms/WheelPicker/WheelPicker";
 
 export interface Time {
   ampm: string;

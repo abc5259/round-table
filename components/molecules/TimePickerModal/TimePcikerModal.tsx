@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 import ReactNativeModal from "react-native-modal";
-import Button from "../Button/Button";
+import Button from "../../atoms/Button/Button";
 import TimePicker from "../TimePicker/TimePicker";
 import { useState } from "react";
 

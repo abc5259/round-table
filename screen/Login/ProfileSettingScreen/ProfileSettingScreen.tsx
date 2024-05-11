@@ -1,8 +1,8 @@
 import { Controller, useForm } from "react-hook-form";
 import LoginLayout from "../../../layouts/LoginLayout/LoginLayout";
-import LabelInput from "../../../components/LabelInput/LabelInput";
-import Button from "../../../components/Button/Button";
-import SelectButton from "../../../components/SelectButton/SelectButton";
+import LabelInput from "../../../components/molecules/LabelInput/LabelInput";
+import Button from "../../../components/atoms/Button/Button";
+import SelectButton from "../../../components/molecules/SelectButton/SelectButton";
 import { useState } from "react";
 import { Gender, getMe, updateProfile } from "../../../api/memberApi";
 import { useQuery } from "@tanstack/react-query";

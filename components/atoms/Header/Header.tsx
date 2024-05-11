@@ -14,7 +14,9 @@ const Header = ({ title }: ButtonProps) => {
   return (
     <Styled.Wrapper>
       <Styled.SvgWrapper onPress={onPressArrow}>
-        <WithLocalSvg asset={require("../../assets/vectors/arrow-left.svg")} />
+        <WithLocalSvg
+          asset={require("../../../assets/vectors/arrow-left.svg")}
+        />
       </Styled.SvgWrapper>
       <Styled.TitleWrapper>
         <Styled.Title>{title}</Styled.Title>

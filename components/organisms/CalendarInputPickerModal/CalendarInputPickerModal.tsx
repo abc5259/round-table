@@ -1,6 +1,6 @@
 import { useState } from "react";
-import CalendarInput from "../Input/CalendarInput";
-import CalendarPickerModal from "../CalendarPickerModal/CalendarPickerModal";
+import CalendarInput from "../../atoms/Input/CalendarInput";
+import CalendarPickerModal from "../../molecules/CalendarPickerModal/CalendarPickerModal";
 
 const CalendarInputPickerModal = () => {
   const [dataValue, setDataValue] = useState("");
