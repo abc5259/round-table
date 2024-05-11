@@ -10,6 +10,7 @@ import ProfileSettingScreen from "./screen/Login/ProfileSettingScreen/ProfileSet
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { DevToolsBubble } from "react-native-react-query-devtools";
 import CreateHouseScreen from "./screen/House/CreateHouseScreen/CreateHouseScreen";
+import CreateScheduleScreen from "./screen/Schedule/CreateScheduleScreen/CreateScheduleScreen";
 
 export type RootStackParamList = {
   Home: undefined;
@@ -19,6 +20,7 @@ export type RootStackParamList = {
   Login: undefined;
   ProfileSetting: undefined;
   CreateHouse: undefined;
+  CreateSchedule: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -30,7 +32,7 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <DevToolsBubble />
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="CreateHouse">
+        <Stack.Navigator initialRouteName="CreateSchedule">
           <Stack.Screen
             name="Home"
             component={Home}
@@ -76,6 +78,13 @@ export default function App() {
           <Stack.Screen
             name="CreateHouse"
             component={CreateHouseScreen}
+            options={{
+              header: () => <Header title="하우스 만들기" />,
+            }}
+          />
+          <Stack.Screen
+            name="CreateSchedule"
+            component={CreateScheduleScreen}
             options={{
               header: () => <Header title="하우스 만들기" />,
             }}

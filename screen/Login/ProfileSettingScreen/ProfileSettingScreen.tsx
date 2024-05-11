@@ -13,7 +13,10 @@ import {
 } from "@react-navigation/native";
 import { RootStackParamList } from "../../../App";
 
-type ProfileSettingScreenRouteProp = RouteProp<RootStackParamList, "Login">;
+type ProfileSettingScreenRouteProp = RouteProp<
+  RootStackParamList,
+  "ProfileSetting"
+>;
 
 type ProfileSettingScreenProps = {
   navigation: NavigationProp<RootStackParamList, "ProfileSetting">;
