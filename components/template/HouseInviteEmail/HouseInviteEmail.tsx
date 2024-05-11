@@ -2,7 +2,6 @@ import TopBottomLayout from "../../../layouts/TopBottomLayout/TopBottomLayout";
 import { useHouseAppenderStore } from "../../../store/house/houseAppenderStore";
 import Button from "../../Button/Button";
 import Label from "../../Label/Label";
-import AddIcon from "../../../assets/vectors/add.svg";
 import { WithLocalSvg } from "react-native-svg/css";
 import * as Styled from "./Styled";
 import { TouchableOpacity, View } from "react-native";
@@ -102,7 +101,9 @@ const HouseInviteEmail = () => {
               text="초대할 맴버의 이메일을 알려주세요."
             />
             <TouchableOpacity onPress={onPressAddIcon}>
-              <WithLocalSvg asset={AddIcon} />
+              <WithLocalSvg
+                asset={require("../../../assets/vectors/add.svg")}
+              />
             </TouchableOpacity>
           </Styled.LabelWrapper>
           {inputDatas.map((inputData, idx) => (

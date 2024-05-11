@@ -1,6 +1,5 @@
 import * as Styled from "./Styled";
 import { WithLocalSvg } from "react-native-svg/css";
-import TimeIcon from "../../assets/vectors/time.svg";
 
 export type TimeInputProps = {
   placeholder?: string;
@@ -25,7 +24,7 @@ const TimeInput = ({
         editable={false}
       />
       <Styled.SvgWrapper onPress={onPressTime} style={{ top: 20 }}>
-        <WithLocalSvg asset={TimeIcon} />
+        <WithLocalSvg asset={require("../../assets/vectors/time.svg")} />
       </Styled.SvgWrapper>
     </Styled.Wrapper>
   );

@@ -1,6 +1,5 @@
 import * as Styled from "./Styled";
 import { WithLocalSvg } from "react-native-svg/css";
-import CalendarIcon from "../../assets/vectors/calendar.svg";
 
 export type CalendarInputProps = {
   placeholder?: string;
@@ -25,7 +24,7 @@ const CalendarInput = ({
         editable={false}
       />
       <Styled.SvgWrapper onPress={onPressCalendar} style={{ top: 20 }}>
-        <WithLocalSvg asset={CalendarIcon} />
+        <WithLocalSvg asset={require("../../assets/vectors/calendar.svg")} />
       </Styled.SvgWrapper>
     </Styled.Wrapper>
   );

@@ -1,6 +1,5 @@
 import { WithLocalSvg } from "react-native-svg/css";
 import { useNavigation } from "@react-navigation/native";
-import ArrowLeft from "../../assets/vectors/arrow-left.svg";
 import * as Styled from "./Styled";
 
 type ButtonProps = {
@@ -15,7 +14,7 @@ const Header = ({ title }: ButtonProps) => {
   return (
     <Styled.Wrapper>
       <Styled.SvgWrapper onPress={onPressArrow}>
-        <WithLocalSvg asset={ArrowLeft} />
+        <WithLocalSvg asset={require("../../assets/vectors/arrow-left.svg")} />
       </Styled.SvgWrapper>
       <Styled.TitleWrapper>
         <Styled.Title>{title}</Styled.Title>
