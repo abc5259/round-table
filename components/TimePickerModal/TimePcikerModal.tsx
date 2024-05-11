@@ -24,6 +24,7 @@ const TimePickerModal = ({
     hour: string;
     minute: string;
   }>({ ampm: "", hour: "", minute: "" });
+
   return (
     <ReactNativeModal
       animationOutTiming={600}
@@ -39,6 +40,7 @@ const TimePickerModal = ({
         </View>
         <View style={{ marginBottom: 20 }}>
           <TimePicker
+            initValue={time}
             itemHeight={50}
             onTimeChange={time => {
               setTime(time);

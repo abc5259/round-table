@@ -4,6 +4,8 @@ import CalendarInput from "../../../components/Input/CalendarInput";
 import CalendarPicker from "../../../components/CalendarPickerModal/CalendarPickerModal";
 import TimePicker, { Time } from "../../../components/TimePicker/TimePicker";
 import TimePickerModal from "../../../components/TimePickerModal/TimePcikerModal";
+import CalendarInputPickerModal from "../../../components/CalendarInputPickerModal/CalendarInputPickerModal";
+import TimeInputPickerModal from "../../../components/TimeInputPickerModal/TimeInputPickerModal";
 
 const CreateScheduleScreen = () => {
   const [dataValue, setDataValue] = useState("");
@@ -17,21 +19,8 @@ const CreateScheduleScreen = () => {
   };
   return (
     <AppLayout>
-      <CalendarInput
-        value={dataValue}
-        onPressCalendar={() => setVisible(true)}
-      />
-      <TimePickerModal
-        isVisible={isVisible}
-        setVisible={setVisible}
-        onChangeValue={onChangeTime}
-      />
-      <TimePicker
-        itemHeight={36}
-        onTimeChange={time => {
-          console.log(time);
-        }}
-      />
+      <CalendarInputPickerModal />
+      <TimeInputPickerModal />
     </AppLayout>
   );
 };
