@@ -12,6 +12,7 @@ import {
   useNavigation,
 } from "@react-navigation/native";
 import { RootStackParamList } from "../../../App";
+import useMe from "../../../hooks/queries/member/useMe";
 
 type ProfileSettingScreenRouteProp = RouteProp<
   RootStackParamList,
@@ -28,11 +29,7 @@ type FormValue = {
 };
 
 const ProfileSettingScreen = ({ navigation }: ProfileSettingScreenProps) => {
-  const { data } = useQuery({
-    queryKey: ["me"],
-    queryFn: getMe,
-    enabled: false,
-  });
+  const { data } = useMe({ enabled: false });
   const [gender, setGender] = useState<Gender>(Gender.MEN);
   const {
     control,

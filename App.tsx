@@ -38,29 +38,17 @@ export default function App() {
             component={Home}
             options={{ headerShown: false }}
           />
-          <Stack.Screen
-            name="EmailCheck"
-            component={EmailCheckScreen}
-            options={{
-              header: () => <Header title="회원가입" />,
-            }}
-          />
+          <Stack.Group
+            screenOptions={{ header: () => <Header title="회원가입" /> }}
+          >
+            <Stack.Screen name="EmailCheck" component={EmailCheckScreen} />
+            <Stack.Screen name="EmailInput" component={EmailInputScreen} />
+            <Stack.Screen
+              name="PasswordInput"
+              component={PasswordInputScreen}
+            />
+          </Stack.Group>
 
-          <Stack.Screen
-            name="EmailInput"
-            component={EmailInputScreen}
-            options={{
-              header: () => <Header title="회원가입" />,
-            }}
-          />
-
-          <Stack.Screen
-            name="PasswordInput"
-            component={PasswordInputScreen}
-            options={{
-              header: () => <Header title="회원가입" />,
-            }}
-          />
           <Stack.Screen
             name="Login"
             component={LoginScreen}
@@ -86,7 +74,7 @@ export default function App() {
             name="CreateSchedule"
             component={CreateScheduleScreen}
             options={{
-              header: () => <Header title="하우스 만들기" />,
+              header: () => <Header title="일정 만들기" />,
             }}
           />
         </Stack.Navigator>

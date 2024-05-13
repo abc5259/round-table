@@ -17,3 +17,21 @@ export const createHouse = async (name: string, inviteEmails?: string[]) => {
     throw new ApiError();
   }
 };
+
+export type HouseMemberResponse = {
+  memberId: number;
+  name: string;
+  profileUrl?: string;
+};
+
+export const getHouseMembers = async (houseId: number) => {
+  try {
+    const res = await customAxios.get<ApiResponseType<HouseMemberResponse[]>>(
+      `${API_PREFIX.HOUSE}/${houseId}`
+    );
+    return res.data;
+  } catch (error) {
+    console.error(error);
+    throw new ApiError();
+  }
+};

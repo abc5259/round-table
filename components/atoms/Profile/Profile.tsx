@@ -1,4 +1,4 @@
-import { Image, Text, View } from "react-native";
+import { Image, Pressable, Text, View } from "react-native";
 import * as Styled from "./Styled";
 import { WithLocalSvg } from "react-native-svg/css";
 
@@ -6,11 +6,20 @@ type Props = {
   url?: string;
   name?: string;
   isSelected?: boolean;
+  onPressContainer: () => void;
 };
 
-const Profile = ({ url, name, isSelected = false }: Props) => {
+const Profile = ({
+  url,
+  name,
+  isSelected = false,
+  onPressContainer,
+}: Props) => {
   return (
-    <View style={{ width: 62, gap: 10, position: "relative" }}>
+    <Pressable
+      onPress={onPressContainer}
+      style={{ width: 62, gap: 10, position: "relative" }}
+    >
       <Styled.Wrapper isDefault={url == null}>
         {url == null ? (
           <WithLocalSvg
@@ -49,7 +58,7 @@ const Profile = ({ url, name, isSelected = false }: Props) => {
           />
         </View>
       )}
-    </View>
+    </Pressable>
   );
 };
 
