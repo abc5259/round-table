@@ -10,6 +10,7 @@ type OneTimeScheduleAppenderStoreType = {
   changeDate: (date: string) => void;
   changeTime: (time: Time) => void;
   toggleAllocator: (memberId: number) => void;
+  validateSubmit: () => { success: boolean; message?: string };
 };
 
 export const useOneTimeScheduleAppednerStore =
@@ -38,4 +39,23 @@ export const useOneTimeScheduleAppednerStore =
           };
         }
       }),
+
+    validateSubmit: () => {
+      if (get().name == null || get().name.trim().length === 0) {
+        return { success: false, message: "이벤트 이름은 필수입니다." };
+      }
+
+      if (get().date == null || get().date.trim().length === 0) {
+        return { success: false, message: "실행 날짜는 필수입니다." };
+      }
+
+      if (get().time == null) {
+        return { success: false, message: "실행 시간은 필수입니다." };
+      }
+
+      if (get().allocators.length === 0) {
+        return { success: false, message: "담당자를 선택해주세요." };
+      }
+      return { success: true };
+    },
   }));

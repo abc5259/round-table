@@ -5,7 +5,7 @@ import { ApiError } from "./ApiError";
 const resolveHttpStatus = [400, 404];
 
 const customAxios = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL: "http://172.30.81.24:8080",
 });
 
 customAxios.interceptors.request.use(
