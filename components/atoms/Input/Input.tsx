@@ -5,7 +5,7 @@ export type InputProps = {
   placeholder?: string;
   defaultValue?: string;
   value: string;
-  onChange: () => void;
+  onChange: (text: string) => void;
   onPressCancel: () => void;
   secureTextEntry?: boolean;
 };
