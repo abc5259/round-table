@@ -15,6 +15,12 @@ function formatTime(timeObj: Time) {
   return `${formattedHour}:${minute}`;
 }
 
+function getDayOfWeekNumber(dateString: string): number {
+  const date = new Date(dateString);
+  const dayOfWeek = date.getDay();
+  return dayOfWeek === 0 ? 7 : dayOfWeek;
+}
+
 export const createOneTimeSchele = async ({
   houseId,
   name,
@@ -30,16 +36,15 @@ export const createOneTimeSchele = async ({
 }) => {
   try {
     const res = await customAxios.post<ApiResponseType<number>>(
-      `${API_PREFIX.SCHEDULE}/house/${houseId}`,
+      `/house/${houseId}${API_PREFIX.SCHEDULE}/one-time`,
       {
         name,
-        frequencyType: "ONCE",
-        frequencyInterval: 0,
         startDate: date,
         startTime: formatTime(time),
         divisionType: "FIX",
         memberIds: allocators,
         category: "ONE_TIME",
+        dayIds: [getDayOfWeekNumber(date)],
       }
     );
     return res.data;
