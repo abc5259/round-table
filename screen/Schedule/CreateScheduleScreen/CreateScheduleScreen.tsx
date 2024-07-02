@@ -9,6 +9,8 @@ import { useOneTimeScheduleAppednerStore } from "../../../store/schedule/oneTime
 import { createOneTimeSchele } from "../../../api/scheduleApi";
 import useMe from "../../../hooks/queries/member/useMe";
 import { Time } from "../../../components/molecules/TimePicker/TimePicker";
+import CreateRepeatSchedule from "../../../components/template/CreateRepeatScheduleForm/Styled";
+import CreateRepeatScheduleForm from "../../../components/template/CreateRepeatScheduleForm/CreateRepeatScheduleForm";
 
 type ScheduleType = "일회성 일정" | "반복 일정";
 
@@ -84,6 +86,7 @@ const CreateScheduleScreen = () => {
         ))}
       </View>
       {scehduleType === "일회성 일정" && <CreateOneTimeSchedule />}
+      {scehduleType === "반복 일정" && <CreateRepeatScheduleForm />}
       <Button onPress={onSubmit}>완료</Button>
     </AppLayout>
   );
