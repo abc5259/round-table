@@ -6,11 +6,16 @@ import { useState } from "react";
 
 import * as Styled from "./Styled";
 import { useOneTimeScheduleAppednerStore } from "../../../store/schedule/oneTimeScheduleAppenderStore";
-import { createOneTimeSchele } from "../../../api/scheduleApi";
+import {
+  createOneTimeSchele,
+  createRepeatSchele,
+} from "../../../api/scheduleApi";
 import useMe from "../../../hooks/queries/member/useMe";
 import { Time } from "../../../components/molecules/TimePicker/TimePicker";
 import CreateRepeatScheduleForm from "../../../components/template/CreateRepeatScheduleForm/CreateRepeatScheduleForm";
 import { useRepeatScheduleAppednerStore } from "../../../store/schedule/repeateScheduleAppenderStore";
+import { Category } from "../../../components/organisms/CategorySelector/CategorySelector";
+import { Day } from "../../../components/organisms/DaySelector/DaySelector";
 
 type ScheduleType = "일회성 일정" | "반복 일정";
 
@@ -94,26 +99,32 @@ const CreateScheduleScreen = () => {
       divisionType
     );
 
-    // const houseId = meData.data.house.houseId;
-    // const res = await createOneTimeSchele({
-    //   houseId,
-    //   name,
-    //   date,
-    //   time,
-    //   allocators,
-    // } as {
-    //   houseId: number;
-    //   name: string;
-    //   time: Time;
-    //   date: string;
-    //   allocators: number[];
-    // });
-    // if (!res.success) {
-    //   alert(res.message);
-    //   return;
-    // }
+    const houseId = meData.data.house.houseId;
+    const res = await createRepeatSchele({
+      houseId,
+      category,
+      name: repeatName,
+      date: new Date(),
+      time: repeatTime,
+      allocators: repeatAllocators,
+      divisionType,
+      days,
+    } as {
+      houseId: number;
+      category: Category;
+      name: string;
+      date: Date;
+      time: Time;
+      allocators: number[];
+      divisionType: string;
+      days: Day[];
+    });
+    if (!res.success) {
+      alert(res.message);
+      return;
+    }
 
-    // alert("스케줄 생성 완료");
+    alert("스케줄 생성 완료");
   };
 
   return (

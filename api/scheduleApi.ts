@@ -1,4 +1,6 @@
 import { Time } from "../components/molecules/TimePicker/TimePicker";
+import { Category } from "../components/organisms/CategorySelector/CategorySelector";
+import { Day } from "../components/organisms/DaySelector/DaySelector";
 import { ApiError } from "./ApiError";
 import customAxios from "./Axios";
 import { API_PREFIX } from "./common";
@@ -19,6 +21,14 @@ function getDayOfWeekNumber(dateString: string): number {
   const date = new Date(dateString);
   const dayOfWeek = date.getDay();
   return dayOfWeek === 0 ? 7 : dayOfWeek;
+}
+
+function getFormattedDate(date: Date): string {
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, "0"); // 월은 0부터 시작하므로 1을 더합니다.
+  const day = date.getDate().toString().padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
 }
 
 export const createOneTimeSchele = async ({
@@ -45,6 +55,55 @@ export const createOneTimeSchele = async ({
         memberIds: allocators,
         category: "ONE_TIME",
         dayIds: [getDayOfWeekNumber(date)],
+      }
+    );
+    return res.data;
+  } catch (error) {
+    console.error(error);
+    throw new ApiError();
+  }
+};
+
+const dayIds: Record<Day, number> = {
+  월: 1,
+  화: 2,
+  수: 3,
+  목: 4,
+  금: 5,
+  토: 6,
+  일: 7,
+};
+
+export const createRepeatSchele = async ({
+  houseId,
+  category,
+  name,
+  date,
+  time,
+  allocators,
+  divisionType,
+  days,
+}: {
+  houseId: number;
+  category: Category;
+  name: string;
+  date: Date;
+  time: Time;
+  allocators: number[];
+  divisionType: string;
+  days: Day[];
+}) => {
+  try {
+    const res = await customAxios.post<ApiResponseType<number>>(
+      `/house/${houseId}${API_PREFIX.SCHEDULE}/repeat`,
+      {
+        name,
+        startDate: getFormattedDate(date),
+        startTime: formatTime(time),
+        divisionType: divisionType === "선택 인원 고정" ? "FIX" : "ROTATION",
+        memberIds: allocators,
+        category,
+        dayIds: days.map(d => dayIds[d]),
       }
     );
     return res.data;
