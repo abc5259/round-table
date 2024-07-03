@@ -21,7 +21,11 @@ const EmailInputScreen = () => {
     },
   });
   const onSubmit = async ({ email }: FormValue) => {
-    await sendEmail(email);
+    const res = await sendEmail(email);
+    if (!res.success) {
+      alert(res.message);
+      return;
+    }
     navigation.navigate("EmailCheck", { email });
   };
 

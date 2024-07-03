@@ -9,8 +9,8 @@ import { useOneTimeScheduleAppednerStore } from "../../../store/schedule/oneTime
 import { createOneTimeSchele } from "../../../api/scheduleApi";
 import useMe from "../../../hooks/queries/member/useMe";
 import { Time } from "../../../components/molecules/TimePicker/TimePicker";
-import CreateRepeatSchedule from "../../../components/template/CreateRepeatScheduleForm/Styled";
 import CreateRepeatScheduleForm from "../../../components/template/CreateRepeatScheduleForm/CreateRepeatScheduleForm";
+import { useRepeatScheduleAppednerStore } from "../../../store/schedule/repeateScheduleAppenderStore";
 
 type ScheduleType = "일회성 일정" | "반복 일정";
 
@@ -20,6 +20,12 @@ const CreateScheduleScreen = () => {
   const { data: meData } = useMe();
   const { validateSubmit, name, date, time, allocators } =
     useOneTimeScheduleAppednerStore();
+  const {
+    validateSubmit: validateRepeatSubmit,
+    name: repeatName,
+    time: repeatTime,
+    allocators: repeatAllocators,
+  } = useRepeatScheduleAppednerStore();
   const [scehduleType, setScheduleType] = useState<ScheduleType>("일회성 일정");
 
   const onSubmit = () => {
@@ -30,6 +36,40 @@ const CreateScheduleScreen = () => {
   };
 
   const onSubmitOneTimeSchedule = async () => {
+    const result = validateSubmit();
+    if (!result.success) {
+      alert(result.message);
+      return;
+    }
+
+    if (!meData) {
+      alert("다시 시도해 주세요");
+      return;
+    }
+
+    const houseId = meData.data.house.houseId;
+    const res = await createOneTimeSchele({
+      houseId,
+      name,
+      date,
+      time,
+      allocators,
+    } as {
+      houseId: number;
+      name: string;
+      time: Time;
+      date: string;
+      allocators: number[];
+    });
+    if (!res.success) {
+      alert(res.message);
+      return;
+    }
+
+    alert("스케줄 생성 완료");
+  };
+
+  const onSubmitRepeatSchedule = async () => {
     const result = validateSubmit();
     if (!result.success) {
       alert(result.message);
