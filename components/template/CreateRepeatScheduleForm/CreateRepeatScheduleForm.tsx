@@ -15,9 +15,7 @@ import Select from "../../organisms/Select/Select";
 const CreateRepeatScheduleForm = () => {
   const { data: houseMemberData, isLoading } = useHouseMembers();
   const {
-    category,
     name,
-    time,
     allocators,
     divisionType,
     changeDivisionType,

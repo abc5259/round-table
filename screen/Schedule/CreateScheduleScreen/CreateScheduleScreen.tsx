@@ -22,9 +22,12 @@ const CreateScheduleScreen = () => {
     useOneTimeScheduleAppednerStore();
   const {
     validateSubmit: validateRepeatSubmit,
+    category,
     name: repeatName,
     time: repeatTime,
     allocators: repeatAllocators,
+    days,
+    divisionType,
   } = useRepeatScheduleAppednerStore();
   const [scehduleType, setScheduleType] = useState<ScheduleType>("일회성 일정");
 
@@ -32,6 +35,7 @@ const CreateScheduleScreen = () => {
     if (scehduleType === "일회성 일정") {
       onSubmitOneTimeSchedule();
     } else if (scehduleType === "반복 일정") {
+      onSubmitRepeatSchedule();
     }
   };
 
@@ -70,7 +74,7 @@ const CreateScheduleScreen = () => {
   };
 
   const onSubmitRepeatSchedule = async () => {
-    const result = validateSubmit();
+    const result = validateRepeatSubmit();
     if (!result.success) {
       alert(result.message);
       return;
@@ -81,26 +85,35 @@ const CreateScheduleScreen = () => {
       return;
     }
 
-    const houseId = meData.data.house.houseId;
-    const res = await createOneTimeSchele({
-      houseId,
-      name,
-      date,
-      time,
-      allocators,
-    } as {
-      houseId: number;
-      name: string;
-      time: Time;
-      date: string;
-      allocators: number[];
-    });
-    if (!res.success) {
-      alert(res.message);
-      return;
-    }
+    console.log(
+      category,
+      repeatName,
+      repeatTime,
+      repeatAllocators,
+      days,
+      divisionType
+    );
 
-    alert("스케줄 생성 완료");
+    // const houseId = meData.data.house.houseId;
+    // const res = await createOneTimeSchele({
+    //   houseId,
+    //   name,
+    //   date,
+    //   time,
+    //   allocators,
+    // } as {
+    //   houseId: number;
+    //   name: string;
+    //   time: Time;
+    //   date: string;
+    //   allocators: number[];
+    // });
+    // if (!res.success) {
+    //   alert(res.message);
+    //   return;
+    // }
+
+    // alert("스케줄 생성 완료");
   };
 
   return (

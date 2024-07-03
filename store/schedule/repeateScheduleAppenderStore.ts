@@ -70,6 +70,10 @@ export const useRepeatScheduleAppednerStore =
       if (get().allocators.length === 0) {
         return { success: false, message: "담당자를 선택해주세요." };
       }
+
+      if (get().divisionType === null) {
+        return { success: false, message: "역할 분담 방식을 선택해주세요." };
+      }
       return { success: true };
     },
   }));
