@@ -9,9 +9,11 @@ type RepeatScheduleAppenderStoreType = {
   time: Time | null;
   days: Day[];
   allocators: number[];
+  divisionType: string;
   changeCategory: (category: Category | null) => void;
   changeName: (name: string) => void;
   changeTime: (time: Time) => void;
+  changeDivisionType: (divisionType: string) => void;
   toggleAllocator: (memberId: number) => void;
   changeDays: (days: Day[]) => void;
   validateSubmit: () => { success: boolean; message?: string };
@@ -24,10 +26,12 @@ export const useRepeatScheduleAppednerStore =
     time: null,
     allocators: [],
     days: [],
+    divisionType: "선택 인원 고정",
     changeCategory: (category: Category | null) => set(() => ({ category })),
     changeName: (name: string) => set(() => ({ name })),
     changeTime: (time: Time) => set(() => ({ time })),
     changeDays: (days: Day[]) => set(() => ({ days })),
+    changeDivisionType: (divisionType: string) => set(() => ({ divisionType })),
     toggleAllocator: (memberId: number) =>
       set(() => {
         const currentAllocators = get().allocators;

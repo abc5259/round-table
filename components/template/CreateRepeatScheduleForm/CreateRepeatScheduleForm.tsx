@@ -10,6 +10,7 @@ import Profile from "../../atoms/Profile/Profile";
 import useHouseMembers from "../../../hooks/queries/house/useHouseMembers";
 import TimeInputPickerModal from "../../organisms/TimeInputPickerModal/TimeInputPickerModal";
 import DaySelector from "../../organisms/DaySelector/DaySelector";
+import Select from "../../organisms/Select/Select";
 
 const CreateRepeatScheduleForm = () => {
   const { data: houseMemberData, isLoading } = useHouseMembers();
@@ -18,6 +19,8 @@ const CreateRepeatScheduleForm = () => {
     name,
     time,
     allocators,
+    divisionType,
+    changeDivisionType,
     changeCategory,
     changeName,
     changeTime,
@@ -55,9 +58,12 @@ const CreateRepeatScheduleForm = () => {
           <TimeInputPickerModal onChangeValue={changeTime} />
         </View>
         <View style={{ gap: 20 }}>
-          <Label
-            textStyle={{ fontSize: 17, fontWeight: "bold" }}
-            text="담당자를 선택해주세요!"
+          <Select
+            labelText="담당자를 선택해주세요!"
+            selectedValue={divisionType}
+            modalTitle="역할분담 방식 선택하기"
+            values={["선택 인원 고정", "한명씩 교대로"]}
+            onChange={changeDivisionType}
           />
           <View style={{ flexDirection: "row", gap: 20 }}>
             {isLoading ? (
