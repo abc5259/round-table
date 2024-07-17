@@ -1,16 +1,16 @@
 import { create } from "zustand";
 import { Time } from "../../components/molecules/TimePicker/TimePicker";
-import { Category } from "../../components/organisms/CategorySelector/CategorySelector";
 import { Day } from "../../components/organisms/DaySelector/DaySelector";
+import { RepeateCategory } from "../../type/Chore";
 
 type RepeatScheduleAppenderStoreType = {
-  category: Category | null;
+  category: RepeateCategory | null;
   name: string;
   time: Time | null;
   days: Day[];
   allocators: number[];
   divisionType: string;
-  changeCategory: (category: Category | null) => void;
+  changeCategory: (category: RepeateCategory | null) => void;
   changeName: (name: string) => void;
   changeTime: (time: Time) => void;
   changeDivisionType: (divisionType: string) => void;
@@ -27,7 +27,8 @@ export const useRepeatScheduleAppednerStore =
     allocators: [],
     days: [],
     divisionType: "선택 인원 고정",
-    changeCategory: (category: Category | null) => set(() => ({ category })),
+    changeCategory: (category: RepeateCategory | null) =>
+      set(() => ({ category })),
     changeName: (name: string) => set(() => ({ name })),
     changeTime: (time: Time) => set(() => ({ time })),
     changeDays: (days: Day[]) => set(() => ({ days })),

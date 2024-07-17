@@ -7,9 +7,9 @@ import {
 } from "react-native";
 import * as Styled from "./Styled";
 import { useState } from "react";
+import { RepeateCategory } from "../../../type/Chore";
 
 //COOKING, CLEANING, LAUNDRY, TRASH, GROCERY, ONE_TIME
-export type Category = "COOKING" | "CLEANING" | "LAUNDRY" | "TRASH" | "GROCERY";
 
 // const category = ["빨래하기", "청소하기", "요리하기", "쓰레기 버리기", "장보기"]
 
@@ -19,7 +19,7 @@ interface CategoryInfo {
   url: ImageSourcePropType;
 }
 
-const categories: Record<Category, CategoryInfo> = {
+const categories: Record<RepeateCategory, CategoryInfo> = {
   LAUNDRY: {
     value: "세탁하기",
     url: require("../../../assets/images/basket.png"),
@@ -45,15 +45,14 @@ const categories: Record<Category, CategoryInfo> = {
 const keys = Object.keys(categories) as (keyof typeof categories)[];
 
 type Props = {
-  changeCategory: (category: Category | null) => void;
+  changeCategory: (category: RepeateCategory | null) => void;
 };
 
 const CategorySelector = ({ changeCategory }: Props) => {
-  const [selectedCategory, setSelectedCategory] = useState<Category | null>(
-    null
-  );
+  const [selectedCategory, setSelectedCategory] =
+    useState<RepeateCategory | null>(null);
 
-  const onChangeCategory = (category: Category) => {
+  const onChangeCategory = (category: RepeateCategory) => {
     if (selectedCategory === category) {
       setSelectedCategory(null);
       changeCategory(null);

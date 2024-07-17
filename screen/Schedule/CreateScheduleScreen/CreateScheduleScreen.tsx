@@ -14,8 +14,8 @@ import useMe from "../../../hooks/queries/member/useMe";
 import { Time } from "../../../components/molecules/TimePicker/TimePicker";
 import CreateRepeatScheduleForm from "../../../components/template/CreateRepeatScheduleForm/CreateRepeatScheduleForm";
 import { useRepeatScheduleAppednerStore } from "../../../store/schedule/repeateScheduleAppenderStore";
-import { Category } from "../../../components/organisms/CategorySelector/CategorySelector";
 import { Day } from "../../../components/organisms/DaySelector/DaySelector";
+import { RepeateCategory } from "../../../type/Chore";
 
 type ScheduleType = "일회성 일정" | "반복 일정";
 
@@ -111,7 +111,7 @@ const CreateScheduleScreen = () => {
       days,
     } as {
       houseId: number;
-      category: Category;
+      category: RepeateCategory;
       name: string;
       date: Date;
       time: Time;
