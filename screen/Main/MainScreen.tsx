@@ -1,10 +1,15 @@
-import { ScrollView, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import * as Styled from "./Styled";
 import useMe from "../../hooks/queries/member/useMe";
 import ChoreCard from "../../components/molecules/ChoreCard/ChoreCard";
+import { getChoresOfMeByNow } from "../../api/choreApi";
+import useGetMyChores from "../../hooks/queries/chore/useGetMyChores";
+import { WithLocalSvg } from "react-native-svg/css";
 
 const MainScreen = () => {
   const { data: meData } = useMe();
+  const { data: myChoreData } = useGetMyChores();
+
   return (
     <Styled.Wrapper>
       <Styled.Header
@@ -29,18 +34,47 @@ const MainScreen = () => {
           </Styled.ContentTitle>
         </View>
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-          <View>
-            <ChoreCard
-              isCompleted={false}
-              name="test"
-              category="TRASH"
-              startTime="11:30"
-            />
-          </View>
+          {myChoreData && myChoreData?.data.length > 0 ? (
+            myChoreData?.data.map(chore => (
+              <View key={chore.choreId} style={{ marginRight: 20 }}>
+                <ChoreCard
+                  isCompleted={chore.isCompleted}
+                  name={chore.name}
+                  category={chore.category}
+                  startTime={chore.startTime}
+                />
+              </View>
+            ))
+          ) : (
+            <Styled.Card style={styles.card}>
+              <View style={{ alignItems: "center", gap: 10 }}>
+                <WithLocalSvg
+                  asset={require("../../assets/vectors/smile.svg")}
+                />
+                <Text
+                  style={{ color: "#9CA3AB", fontWeight: "bold", fontSize: 14 }}
+                >
+                  오늘 먹을 알약이 없어요!
+                </Text>
+              </View>
+            </Styled.Card>
+          )}
         </ScrollView>
       </Styled.ContentWrapper>
     </Styled.Wrapper>
   );
 };
+
+const styles = StyleSheet.create({
+  card: {
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 0.8,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.2,
+  },
+});
 
 export default MainScreen;

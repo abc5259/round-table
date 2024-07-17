@@ -1,6 +1,6 @@
 import { Time } from "../components/molecules/TimePicker/TimePicker";
-import { Category } from "../components/organisms/CategorySelector/CategorySelector";
 import { Day } from "../components/organisms/DaySelector/DaySelector";
+import { Category } from "../type/Chore";
 import { ApiError } from "./ApiError";
 import customAxios from "./Axios";
 import { API_PREFIX } from "./common";

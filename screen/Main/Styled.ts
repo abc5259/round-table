@@ -32,3 +32,12 @@ export const ContentWrapper = styled.View`
   padding-top: 20px;
   gap: 10px;
 `;
+
+export const Card = styled.View`
+  background-color: #fff;
+  width: 207px;
+  height: 291px;
+  border-radius: 6px;
+  justify-content: center;
+  align-items: center;
+`;
