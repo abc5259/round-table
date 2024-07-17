@@ -11,6 +11,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { DevToolsBubble } from "react-native-react-query-devtools";
 import CreateHouseScreen from "./screen/House/CreateHouseScreen/CreateHouseScreen";
 import CreateScheduleScreen from "./screen/Schedule/CreateScheduleScreen/CreateScheduleScreen";
+import MainScreen from "./screen/Main/MainScreen";
+import MainHeader from "./components/molecules/MainHeader/MainHeader";
 
 export type RootStackParamList = {
   Home: undefined;
@@ -21,6 +23,7 @@ export type RootStackParamList = {
   ProfileSetting: undefined;
   CreateHouse: undefined;
   CreateSchedule: undefined;
+  Main: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -32,7 +35,7 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <DevToolsBubble />
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="CreateSchedule">
+        <Stack.Navigator initialRouteName="Main">
           <Stack.Screen
             name="Home"
             component={Home}
@@ -62,6 +65,11 @@ export default function App() {
             options={{
               header: () => <Header title="프로필 설정" />,
             }}
+          />
+          <Stack.Screen
+            name="Main"
+            component={MainScreen}
+            options={{ header: () => <MainHeader /> }}
           />
           <Stack.Screen
             name="CreateHouse"
