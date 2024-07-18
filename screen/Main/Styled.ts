@@ -47,3 +47,15 @@ export const Bar = styled.View`
   height: 6px;
   background-color: #eff0f5;
 `;
+
+export const AddWrapper = styled.TouchableOpacity`
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  background-color: #5badff;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 40px;
+  right: 20px;
+`;
