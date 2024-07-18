@@ -53,6 +53,7 @@ customAxios.interceptors.response.use(
           }
         }
       }
+      return Promise.resolve(error.response);
     }
     // 다른 모든 에러는 그대로 다음으로 넘김
     return Promise.reject(error);

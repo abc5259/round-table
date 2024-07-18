@@ -1,22 +1,9 @@
 import styled from "styled-components/native";
 
 export const Wrapper = styled.View`
-  flex: 1;
-`;
-
-export const Header = styled.View`
-  /* height: 50px; */
-`;
-
-export const Title = styled.Text`
-  font-size: 20px;
-  font-weight: bold;
-  color: #3f4245;
-`;
-
-export const SubTitle = styled.Text`
-  font-size: 14px;
-  color: #80878e;
+  padding: 15px;
+  padding-top: 20px;
+  gap: 10px;
 `;
 
 export const ContentTitle = styled.Text`
@@ -40,10 +27,4 @@ export const Card = styled.View`
   border-radius: 6px;
   justify-content: center;
   align-items: center;
-`;
-
-export const Bar = styled.View`
-  width: 100%;
-  height: 6px;
-  background-color: #eff0f5;
 `;
