@@ -19,7 +19,10 @@ const ChoreCards = () => {
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
           {myChoreData && myChoreData?.data.length > 0 ? (
             myChoreData?.data.map(chore => (
-              <View key={chore.choreId} style={{ marginRight: 20 }}>
+              <View
+                key={chore.choreId}
+                style={{ marginRight: 20, ...styles.card }}
+              >
                 <ChoreCard
                   isCompleted={chore.isCompleted}
                   name={chore.name}
@@ -41,7 +44,7 @@ const ChoreCards = () => {
                     fontSize: 14,
                   }}
                 >
-                  오늘 먹을 알약이 없어요!
+                  오늘 할일이 없어요!
                 </Text>
               </View>
             </Styled.Card>
@@ -54,13 +57,13 @@ const ChoreCards = () => {
 
 const styles = StyleSheet.create({
   card: {
-    shadowColor: "#000",
+    shadowColor: "#9CA3AB",
     shadowOffset: {
       width: 0,
       height: 0.8,
     },
-    shadowOpacity: 0.2,
-    shadowRadius: 1.2,
+    shadowOpacity: 0.1,
+    shadowRadius: 1.5,
   },
 });
 

@@ -1,4 +1,10 @@
-import { Image, ImageSourcePropType, Text, View } from "react-native";
+import {
+  Image,
+  ImageSourcePropType,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { Category } from "../../../type/Chore";
 import * as Styled from "./Styled";
 
@@ -46,7 +52,7 @@ const ChoreCard = ({ isCompleted, name, category, startTime }: Props) => {
     <Styled.Wrapper>
       <Styled.Badge isCompleted={isCompleted}>
         <Styled.BadgeText isCompleted={isCompleted}>
-          {isCompleted ? "복용" : "미복용"}
+          {isCompleted ? "완료" : "미완료"}
         </Styled.BadgeText>
       </Styled.Badge>
 
@@ -73,5 +79,17 @@ const ChoreCard = ({ isCompleted, name, category, startTime }: Props) => {
     </Styled.Wrapper>
   );
 };
+
+const styles = StyleSheet.create({
+  card: {
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 0.8,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.2,
+  },
+});
 
 export default ChoreCard;
