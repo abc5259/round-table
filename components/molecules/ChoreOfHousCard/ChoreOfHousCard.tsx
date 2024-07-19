@@ -17,7 +17,7 @@ const ChoreOfHousCard = ({
 }: Props) => {
   return (
     <Styled.Wrapper style={styles.card}>
-      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+      <View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
         <Styled.Badge isCompleted={isCompleted}>
           <Styled.BadgeText isCompleted={isCompleted}>
             {isCompleted ? "완료" : "미완료"}

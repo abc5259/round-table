@@ -36,9 +36,9 @@ export type ChoreOfHouseResponse = {
 
 export const getChoresOfHouse = async (houseId: number) => {
   try {
-    const res = await customAxios.get<ApiResponseType<ChoreOfHouseResponse[]>>(
-      `/house/${houseId}${API_PREFIX.CHORE}`
-    );
+    const res = await customAxios.get<
+      ApiCursorBasedResponseType<ChoreOfHouseResponse[]>
+    >(`/house/${houseId}${API_PREFIX.CHORE}`);
     return res.data;
   } catch (error) {
     console.error(error);

@@ -80,16 +80,4 @@ const ChoreCard = ({ isCompleted, name, category, startTime }: Props) => {
   );
 };
 
-const styles = StyleSheet.create({
-  card: {
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 0.8,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 1.2,
-  },
-});
-
 export default ChoreCard;

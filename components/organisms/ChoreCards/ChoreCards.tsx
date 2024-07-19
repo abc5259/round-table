@@ -57,7 +57,7 @@ const ChoreCards = () => {
 
 const styles = StyleSheet.create({
   card: {
-    shadowColor: "#9CA3AB",
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 0.8,

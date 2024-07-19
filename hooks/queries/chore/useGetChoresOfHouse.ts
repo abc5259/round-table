@@ -5,9 +5,9 @@ import { ChoreOfHouseResponse, getChoresOfHouse } from "../../../api/choreApi";
 interface UseGetChoresOfHouseOptions
   extends Omit<
     UseQueryOptions<
-      ApiResponseType<ChoreOfHouseResponse[]>,
+      ApiCursorBasedResponseType<ChoreOfHouseResponse[]>,
       any,
-      ApiResponseType<ChoreOfHouseResponse[]>,
+      ApiCursorBasedResponseType<ChoreOfHouseResponse[]>,
       any
     >,
     "queryKey" | "queryFn"
