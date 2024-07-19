@@ -7,6 +7,7 @@ import {
 } from "react-native";
 import { Category } from "../../../type/Chore";
 import * as Styled from "./Styled";
+import { formatDateToKorean } from "../../../util/formatDateToKorean";
 
 type Props = {
   isCompleted: boolean;
@@ -58,7 +59,9 @@ const ChoreCard = ({ isCompleted, name, category, startTime }: Props) => {
 
       <View style={{ gap: 4 }}>
         <Styled.Name>{name}</Styled.Name>
-        <Styled.Sub>{startTime}분</Styled.Sub>
+        <Styled.Sub>
+          {formatDateToKorean(new Date())} {startTime}
+        </Styled.Sub>
       </View>
       <Styled.CategoryWrapper>
         <Image

@@ -27,7 +27,7 @@ const ChoreCards = () => {
                   isCompleted={chore.isCompleted}
                   name={chore.name}
                   category={chore.category}
-                  startTime={chore.startTime}
+                  startTime={chore.startTime.slice(0, -3)}
                 />
               </View>
             ))

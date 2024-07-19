@@ -2,14 +2,10 @@ import { View } from "react-native";
 import * as Styled from "./Styled";
 import useMe from "../../hooks/queries/member/useMe";
 import ChoreCards from "../../components/organisms/ChoreCards/ChoreCards";
-import useGetChoresOfHouse from "../../hooks/queries/chore/useGetChoresOfHouse";
-import { WithLocalSvg } from "react-native-svg/css";
 import ChoreOfHouseCards from "../../components/organisms/ChoresOfHouseCards/ChoreOfHouseCards";
 
 const MainScreen = () => {
   const { data: meData } = useMe();
-  const { data } = useGetChoresOfHouse();
-  console.log(data);
   return (
     <Styled.Wrapper>
       <Styled.Header

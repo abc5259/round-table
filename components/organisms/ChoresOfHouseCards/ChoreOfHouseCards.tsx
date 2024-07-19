@@ -30,7 +30,7 @@ const ChoreOfHouseCards = () => {
             key={chore.choreId}
             isCompleted={chore.isCompleted}
             scheduleName={chore.name}
-            time={chore.startTime}
+            time={chore.startTime.slice(0, -3)}
             allocatorNames={chore.memberNames}
           />
         ))
