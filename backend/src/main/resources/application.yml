@@ -1,0 +1,77 @@
+spring:
+  profiles:
+    active: local
+    include: aws
+  jpa:
+    open-in-view: false # sse 사용으로 인해 false
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+    auth-code-expiration-millis: 1800000  # 30 * 60 * 1000 == 30분
+
+jwt:
+  secretKey: djawlifhlwalawdawdhkawhdkawudhakuwdhkuawhfukawfhkuawhfawkesjiawfukawfgaw
+  access-token-expire-time: 1800000 # 30분
+  refresh-token-expire-time: 2592000000 # 30일
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+
+  datasource:
+    url: ${MYSQL_URL}
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    properties:
+      hibernate:
+        default_batch_fetch_size: 1000
+        format_sql: true
+        show_sql: true
+    hibernate:
+      ddl-auto: create
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+---
+spring:
+  config:
+    activate:
+      on-profile: test
+
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:test;
+    username: sa
+    password:
+  jpa:
+    properties:
+      hibernate:
+        default_batch_fetch_size: 1000
+        format_sql: true
+        show_sql: true
+    hibernate:
+      ddl-auto: create
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
