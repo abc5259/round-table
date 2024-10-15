@@ -6,6 +6,7 @@ import useGetChoresOfHouse from "../../../hooks/queries/chore/useGetChoresOfHous
 
 const ChoreOfHouseCards = () => {
   const { data } = useGetChoresOfHouse();
+
   return (
     <Styled.Wrapper style={{ gap: 20 }}>
       <View
@@ -19,7 +20,7 @@ const ChoreOfHouseCards = () => {
         <Styled.Title>하우스 할 일 현황</Styled.Title>
         <Styled.SubTitle>{formatDateToKorean(new Date())}</Styled.SubTitle>
       </View>
-      {data && data?.data.content.length <= 0 ? (
+      {!data || data?.data?.content.length <= 0 ? (
         <Styled.NoContentWrapper>
           <Styled.ContentTitle>하우스의 휴일인가요?</Styled.ContentTitle>
           <Styled.ContentTitle>오늘은 할 일이 없어요!</Styled.ContentTitle>

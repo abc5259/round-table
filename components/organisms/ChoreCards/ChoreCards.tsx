@@ -1,11 +1,11 @@
 import { ScrollView, StyleSheet, Text, View } from "react-native";
-import useGetMyChores from "../../../hooks/queries/chore/useGetMyChores";
 import * as Styled from "./styled";
 import ChoreCard from "../../molecules/ChoreCard/ChoreCard";
 import { WithLocalSvg } from "react-native-svg/css";
+import useGetMySchedules from "../../../hooks/queries/chore/useGetMyScgedules";
 
 const ChoreCards = () => {
-  const { data: myChoreData } = useGetMyChores();
+  const { data: myScheduleData } = useGetMySchedules();
 
   return (
     <Styled.Wrapper>
@@ -17,17 +17,17 @@ const ChoreCards = () => {
       </View>
       <View>
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-          {myChoreData && myChoreData?.data.length > 0 ? (
-            myChoreData?.data.map(chore => (
+          {myScheduleData && myScheduleData?.data.content.length > 0 ? (
+            myScheduleData?.data.content.map(schedule => (
               <View
-                key={chore.choreId}
+                key={schedule.id}
                 style={{ marginRight: 20, ...styles.card }}
               >
                 <ChoreCard
-                  isCompleted={chore.isCompleted}
-                  name={chore.name}
-                  category={chore.category}
-                  startTime={chore.startTime.slice(0, -3)}
+                  isCompleted={schedule.isCompleted}
+                  name={schedule.name}
+                  category={schedule.category}
+                  startTime={schedule.startTime.slice(0, -3)}
                 />
               </View>
             ))

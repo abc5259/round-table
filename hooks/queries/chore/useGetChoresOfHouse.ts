@@ -15,7 +15,7 @@ interface UseGetChoresOfHouseOptions
 
 const useGetChoresOfHouse = (options?: UseGetChoresOfHouseOptions) => {
   const { data: meData } = useMe();
-  const houseId = meData?.data.house?.houseId;
+  const houseId = meData?.data?.house?.houseId;
   return useQuery({
     queryKey: ["chores"],
     queryFn: () => getChoresOfHouse(houseId as number),

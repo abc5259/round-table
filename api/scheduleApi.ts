@@ -112,3 +112,23 @@ export const createRepeatSchele = async ({
     throw new ApiError();
   }
 };
+
+export interface ScheduleOfMeResponse {
+  id: number;
+  name: string;
+  category: Category;
+  isCompleted: boolean;
+  startTime: string;
+}
+
+export const getSchedulesOfMeByNow = async (houseId: number) => {
+  try {
+    const res = await customAxios.get<
+      ApiCursorBasedResponseType<ScheduleOfMeResponse[]>
+    >(`/house/${houseId}${API_PREFIX.SCHEDULE}/me`);
+    return res.data;
+  } catch (error) {
+    console.error(error);
+    throw new ApiError();
+  }
+};
