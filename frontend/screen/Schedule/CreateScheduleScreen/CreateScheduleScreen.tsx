@@ -1,25 +1,25 @@
-import AppLayout from "../../../layouts/AppLayout/AppLayout";
-import CreateOneTimeSchedule from "../../../components/template/CreateOneTimeSchedule/CreateOneTimeSchedule";
-import { View } from "react-native";
-import Button from "../../../components/atoms/Button/Button";
-import { useState } from "react";
+import AppLayout from '../../../layouts/AppLayout/AppLayout';
+import CreateOneTimeSchedule from '../../../components/template/CreateOneTimeSchedule/CreateOneTimeSchedule';
+import { View } from 'react-native';
+import Button from '../../../components/atoms/Button/Button';
+import { useState } from 'react';
 
-import * as Styled from "./Styled";
-import { useOneTimeScheduleAppednerStore } from "../../../store/schedule/oneTimeScheduleAppenderStore";
+import * as Styled from './Styled';
+import { useOneTimeScheduleAppednerStore } from '../../../store/schedule/oneTimeScheduleAppenderStore';
 import {
-  createOneTimeSchele,
-  createRepeatSchele,
-} from "../../../api/scheduleApi";
-import useMe from "../../../hooks/queries/member/useMe";
-import { Time } from "../../../components/molecules/TimePicker/TimePicker";
-import CreateRepeatScheduleForm from "../../../components/template/CreateRepeatScheduleForm/CreateRepeatScheduleForm";
-import { useRepeatScheduleAppednerStore } from "../../../store/schedule/repeateScheduleAppenderStore";
-import { Day } from "../../../components/organisms/DaySelector/DaySelector";
-import { RepeateCategory } from "../../../type/Chore";
+  createOneTimeSchedule,
+  createRepeatSchedule,
+} from '../../../api/scheduleApi';
+import useMe from '../../../hooks/queries/member/useMe';
+import { Time } from '../../../components/molecules/TimePicker/TimePicker';
+import CreateRepeatScheduleForm from '../../../components/template/CreateRepeatScheduleForm/CreateRepeatScheduleForm';
+import { useRepeatScheduleAppednerStore } from '../../../store/schedule/repeateScheduleAppenderStore';
+import { Day } from '../../../components/organisms/DaySelector/DaySelector';
+import { RepeateCategory } from '../../../type/Chore';
 
-type ScheduleType = "일회성 일정" | "반복 일정";
+type ScheduleType = '일회성 일정' | '반복 일정';
 
-const scheduleTypeArr: ScheduleType[] = ["일회성 일정", "반복 일정"];
+const scheduleTypeArr: ScheduleType[] = ['일회성 일정', '반복 일정'];
 
 const CreateScheduleScreen = () => {
   const { data: meData } = useMe();
@@ -34,12 +34,12 @@ const CreateScheduleScreen = () => {
     days,
     divisionType,
   } = useRepeatScheduleAppednerStore();
-  const [scehduleType, setScheduleType] = useState<ScheduleType>("일회성 일정");
+  const [scehduleType, setScheduleType] = useState<ScheduleType>('일회성 일정');
 
   const onSubmit = () => {
-    if (scehduleType === "일회성 일정") {
+    if (scehduleType === '일회성 일정') {
       onSubmitOneTimeSchedule();
-    } else if (scehduleType === "반복 일정") {
+    } else if (scehduleType === '반복 일정') {
       onSubmitRepeatSchedule();
     }
   };
@@ -52,12 +52,12 @@ const CreateScheduleScreen = () => {
     }
 
     if (!meData) {
-      alert("다시 시도해 주세요");
+      alert('다시 시도해 주세요');
       return;
     }
 
     const houseId = meData.data.house.houseId;
-    const res = await createOneTimeSchele({
+    const res = await createOneTimeSchedule({
       houseId,
       name,
       date,
@@ -75,7 +75,7 @@ const CreateScheduleScreen = () => {
       return;
     }
 
-    alert("스케줄 생성 완료");
+    alert('스케줄 생성 완료');
   };
 
   const onSubmitRepeatSchedule = async () => {
@@ -86,7 +86,7 @@ const CreateScheduleScreen = () => {
     }
 
     if (!meData) {
-      alert("다시 시도해 주세요");
+      alert('다시 시도해 주세요');
       return;
     }
 
@@ -96,11 +96,11 @@ const CreateScheduleScreen = () => {
       repeatTime,
       repeatAllocators,
       days,
-      divisionType
+      divisionType,
     );
 
     const houseId = meData.data.house.houseId;
-    const res = await createRepeatSchele({
+    const res = await createRepeatSchedule({
       houseId,
       category,
       name: repeatName,
@@ -124,7 +124,7 @@ const CreateScheduleScreen = () => {
       return;
     }
 
-    alert("스케줄 생성 완료");
+    alert('스케줄 생성 완료');
   };
 
   return (
@@ -132,7 +132,7 @@ const CreateScheduleScreen = () => {
       <View
         style={{
           gap: 10,
-          flexDirection: "row",
+          flexDirection: 'row',
           marginBottom: 20,
           marginTop: -10,
         }}
@@ -149,8 +149,8 @@ const CreateScheduleScreen = () => {
           </Styled.ToggleButton>
         ))}
       </View>
-      {scehduleType === "일회성 일정" && <CreateOneTimeSchedule />}
-      {scehduleType === "반복 일정" && <CreateRepeatScheduleForm />}
+      {scehduleType === '일회성 일정' && <CreateOneTimeSchedule />}
+      {scehduleType === '반복 일정' && <CreateRepeatScheduleForm />}
       <Button onPress={onSubmit}>완료</Button>
     </AppLayout>
   );

@@ -1,18 +1,18 @@
-import { Time } from "../components/molecules/TimePicker/TimePicker";
-import { Day } from "../components/organisms/DaySelector/DaySelector";
-import { Category } from "../type/Chore";
-import { ApiError } from "./ApiError";
-import customAxios from "./Axios";
-import { API_PREFIX } from "./common";
+import { Time } from '../components/molecules/TimePicker/TimePicker';
+import { Day } from '../components/organisms/DaySelector/DaySelector';
+import { Category } from '../type/Chore';
+import { ApiError } from './ApiError';
+import customAxios from './Axios';
+import { API_PREFIX } from './common';
 
 function formatTime(timeObj: Time) {
   let { ampm, hour, minute } = timeObj;
   let numberHour = Number(hour);
-  if (ampm === "오후" && numberHour < 12) numberHour += 12; // 오후 시간 변환
-  if (ampm === "오전" && numberHour === 12) numberHour = 0; // 자정 처리
+  if (ampm === '오후' && numberHour < 12) numberHour += 12; // 오후 시간 변환
+  if (ampm === '오전' && numberHour === 12) numberHour = 0; // 자정 처리
 
   // 시간과 분을 두 자리 숫자 형식으로 포맷팅
-  let formattedHour = numberHour.toString().padStart(2, "0");
+  let formattedHour = numberHour.toString().padStart(2, '0');
 
   return `${formattedHour}:${minute}`;
 }
@@ -25,13 +25,13 @@ function getDayOfWeekNumber(dateString: string): number {
 
 function getFormattedDate(date: Date): string {
   const year = date.getFullYear();
-  const month = (date.getMonth() + 1).toString().padStart(2, "0"); // 월은 0부터 시작하므로 1을 더합니다.
-  const day = date.getDate().toString().padStart(2, "0");
+  const month = (date.getMonth() + 1).toString().padStart(2, '0'); // 월은 0부터 시작하므로 1을 더합니다.
+  const day = date.getDate().toString().padStart(2, '0');
 
   return `${year}-${month}-${day}`;
 }
 
-export const createOneTimeSchele = async ({
+export const createOneTimeSchedule = async ({
   houseId,
   name,
   date,
@@ -52,11 +52,8 @@ export const createOneTimeSchele = async ({
         name,
         startDate: date,
         startTime: formatTime(time),
-        divisionType: "FIX",
         memberIds: allocators,
-        category: "ONE_TIME",
-        days: [getDayOfWeekNumber(date)],
-      }
+      },
     );
     return res.data;
   } catch (error) {
@@ -66,16 +63,16 @@ export const createOneTimeSchele = async ({
 };
 
 const engDays: Record<Day, string> = {
-  월: "MONDAY",
-  화: "TUESDAY",
-  수: "WEDNESDAY",
-  목: "THURSDAY",
-  금: "FRIDAY",
-  토: "SATURDAY",
-  일: "SUNDAY",
+  월: 'MONDAY',
+  화: 'TUESDAY',
+  수: 'WEDNESDAY',
+  목: 'THURSDAY',
+  금: 'FRIDAY',
+  토: 'SATURDAY',
+  일: 'SUNDAY',
 };
 
-export const createRepeatSchele = async ({
+export const createRepeatSchedule = async ({
   houseId,
   category,
   name,
@@ -101,11 +98,11 @@ export const createRepeatSchele = async ({
         name,
         startDate: getFormattedDate(date),
         startTime: formatTime(time),
-        divisionType: divisionType === "선택 인원 고정" ? "FIX" : "ROTATION",
+        divisionType: divisionType === '선택 인원 고정' ? 'FIX' : 'ROTATION',
         memberIds: allocators,
         category,
         days: days.map(d => engDays[d]),
-      }
+      },
     );
     return res.data;
   } catch (error) {
@@ -127,6 +124,28 @@ export const getSchedulesOfMeByNow = async (houseId: number) => {
     const res = await customAxios.get<
       ApiCursorBasedResponseType<ScheduleOfMeResponse[]>
     >(`/house/${houseId}${API_PREFIX.SCHEDULE}/me`);
+    return res.data;
+  } catch (error) {
+    console.error(error);
+    throw new ApiError();
+  }
+};
+
+export interface ScheduleOfHouseResponse {
+  id: number;
+  name: string;
+  category: Category;
+  isCompleted: boolean;
+  startTime: string;
+  managers: string;
+  extraManagers: string;
+}
+
+export const getSchedulesOfHouse = async (houseId: number) => {
+  try {
+    const res = await customAxios.get<
+      ApiCursorBasedResponseType<ScheduleOfHouseResponse[]>
+    >(`/house/${houseId}${API_PREFIX.SCHEDULE}`);
     return res.data;
   } catch (error) {
     console.error(error);

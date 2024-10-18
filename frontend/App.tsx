@@ -1,21 +1,21 @@
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer } from '@react-navigation/native';
 import {
   createNativeStackNavigator,
   NativeStackNavigationProp,
-} from "@react-navigation/native-stack";
-import Home from "./screen/Home/home";
-import EmailCheckScreen from "./screen/Join/EmailCheckScreen/EmailCheckScreen";
-import Header from "./components/atoms/Header/Header";
-import EmailInputScreen from "./screen/Join/EmailInputScreen/EmailInputScreen";
-import PasswordInputScreen from "./screen/Join/PasswordInputScreen/PasswordInputScreen";
-import LoginScreen from "./screen/Login/LoginScreen/LoginScreen";
-import ProfileSettingScreen from "./screen/Login/ProfileSettingScreen/ProfileSettingScreen";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { DevToolsBubble } from "react-native-react-query-devtools";
-import CreateHouseScreen from "./screen/House/CreateHouseScreen/CreateHouseScreen";
-import CreateScheduleScreen from "./screen/Schedule/CreateScheduleScreen/CreateScheduleScreen";
-import MainScreen from "./screen/Main/MainScreen";
-import MainHeader from "./components/molecules/MainHeader/MainHeader";
+} from '@react-navigation/native-stack';
+import Home from './screen/Home/home';
+import EmailCheckScreen from './screen/Join/EmailCheckScreen/EmailCheckScreen';
+import Header from './components/atoms/Header/Header';
+import EmailInputScreen from './screen/Join/EmailInputScreen/EmailInputScreen';
+import PasswordInputScreen from './screen/Join/PasswordInputScreen/PasswordInputScreen';
+import LoginScreen from './screen/Login/LoginScreen/LoginScreen';
+import ProfileSettingScreen from './screen/Login/ProfileSettingScreen/ProfileSettingScreen';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { DevToolsBubble } from 'react-native-react-query-devtools';
+import CreateHouseScreen from './screen/House/CreateHouseScreen/CreateHouseScreen';
+import CreateScheduleScreen from './screen/Schedule/CreateScheduleScreen/CreateScheduleScreen';
+import MainScreen from './screen/Main/MainScreen';
+import MainHeader from './components/molecules/MainHeader/MainHeader';
 
 export type RootStackParamList = {
   Home: undefined;

@@ -1,20 +1,20 @@
-import { View } from "react-native";
-import * as Styled from "./Styled";
-import ChoreOfHousCard from "../../molecules/ChoreOfHousCard/ChoreOfHousCard";
-import { formatDateToKorean } from "../../../util/formatDateToKorean";
-import useGetChoresOfHouse from "../../../hooks/queries/chore/useGetChoresOfHouse";
+import { View } from 'react-native';
+import * as Styled from './Styled';
+import ChoreOfHouseCard from '../../molecules/ChoreOfHouseCard/ChoreOfHousCard';
+import { formatDateToKorean } from '../../../util/formatDateToKorean';
+import useGetScheduleOfHouse from '../../../hooks/queries/chore/useGetScheduleOfHouse';
 
 const ChoreOfHouseCards = () => {
-  const { data } = useGetChoresOfHouse();
+  const { data } = useGetScheduleOfHouse();
 
   return (
     <Styled.Wrapper style={{ gap: 20 }}>
       <View
         style={{
-          flexDirection: "row",
+          flexDirection: 'row',
           gap: 10,
-          alignItems: "center",
-          justifyContent: "space-between",
+          alignItems: 'center',
+          justifyContent: 'space-between',
         }}
       >
         <Styled.Title>하우스 할 일 현황</Styled.Title>
@@ -27,12 +27,12 @@ const ChoreOfHouseCards = () => {
         </Styled.NoContentWrapper>
       ) : (
         data?.data.content.map(chore => (
-          <ChoreOfHousCard
-            key={chore.choreId}
+          <ChoreOfHouseCard
+            key={chore.id}
             isCompleted={chore.isCompleted}
             scheduleName={chore.name}
             time={chore.startTime.slice(0, -3)}
-            allocatorNames={chore.memberNames}
+            allocatorNames={chore.managers}
           />
         ))
       )}
