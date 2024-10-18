@@ -3,9 +3,19 @@ import TopBottomLayout from "../../../layouts/TopBottomLayout/TopBottomLayout";
 import Button from "../../atoms/Button/Button";
 import * as Styled from "./Styled";
 import { useHouseAppenderStore } from "../../../store/house/houseAppenderStore";
+import {
+  NavigationProp,
+  RouteProp,
+  useNavigation,
+} from "@react-navigation/native";
+import { RootStackNavigationProp, RootStackParamList } from "../../../App";
 
 const CreateHouseComposition = () => {
   const { name, houseTotalPeople } = useHouseAppenderStore();
+  const navigation = useNavigation<RootStackNavigationProp>();
+  const onPressBtn = () => {
+    navigation.navigate("Main");
+  };
   return (
     <TopBottomLayout
       topText="준비가 모두 끝났어요"
@@ -55,7 +65,7 @@ const CreateHouseComposition = () => {
           </Styled.TextWrapper>
         </Styled.Wrapper>
       }
-      button={<Button>하우스 입장하기</Button>}
+      button={<Button onPress={onPressBtn}>하우스 입장하기</Button>}
     />
   );
 };

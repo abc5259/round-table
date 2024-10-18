@@ -1,5 +1,8 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import {
+  createNativeStackNavigator,
+  NativeStackNavigationProp,
+} from "@react-navigation/native-stack";
 import Home from "./screen/Home/home";
 import EmailCheckScreen from "./screen/Join/EmailCheckScreen/EmailCheckScreen";
 import Header from "./components/atoms/Header/Header";
@@ -27,6 +30,9 @@ export type RootStackParamList = {
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
+
+export type RootStackNavigationProp =
+  NativeStackNavigationProp<RootStackParamList>;
 
 export default function App() {
   const queryClient = new QueryClient();
