@@ -1,6 +1,6 @@
-import { UseQueryOptions, useQuery } from "@tanstack/react-query";
-import useMe from "../member/useMe";
-import { ChoreOfHouseResponse, getChoresOfHouse } from "../../../api/choreApi";
+import { useQuery, UseQueryOptions } from '@tanstack/react-query';
+import useMe from '../member/useMe';
+import { ChoreOfHouseResponse, getChoresOfHouse } from '../../../api/choreApi';
 
 interface UseGetChoresOfHouseOptions
   extends Omit<
@@ -10,14 +10,14 @@ interface UseGetChoresOfHouseOptions
       ApiCursorBasedResponseType<ChoreOfHouseResponse[]>,
       any
     >,
-    "queryKey" | "queryFn"
+    'queryKey' | 'queryFn'
   > {}
 
 const useGetChoresOfHouse = (options?: UseGetChoresOfHouseOptions) => {
   const { data: meData } = useMe();
   const houseId = meData?.data?.house?.houseId;
   return useQuery({
-    queryKey: ["chores"],
+    queryKey: ['chores'],
     queryFn: () => getChoresOfHouse(houseId as number),
     enabled: !!houseId,
     ...options,
