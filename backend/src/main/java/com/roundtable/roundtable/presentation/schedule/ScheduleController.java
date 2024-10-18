@@ -74,6 +74,9 @@ public class ScheduleController {
             @RequestParam(required = false) LocalDate date,
             @ModelAttribute CursorBasedPaginationRequest cursorBasedPaginationRequest
     ) {
+        if(date == null) {
+            date = LocalDate.now();
+        }
         var response = scheduleService.findMemberSchedulesByDate(authMember.toHouseAuthMember(houseId), date, cursorBasedPaginationRequest.toCursorBasedRequest());
         return ResponseEntity.ok(SuccessResponse.from(response));
     }
@@ -87,6 +90,9 @@ public class ScheduleController {
             @RequestParam(required = false) LocalDate date,
             @ModelAttribute CursorBasedPaginationRequest cursorBasedPaginationRequest
     ) {
+        if(date == null) {
+            date = LocalDate.now();
+        }
         var response = scheduleService.findSchedulesByDate(authMember.toHouseAuthMember(houseId), date, cursorBasedPaginationRequest.toCursorBasedRequest());
         return ResponseEntity.ok(SuccessResponse.from(response));
     }

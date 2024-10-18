@@ -72,8 +72,8 @@ public class ScheduleQueryRepository {
                         schedule.id,
                         schedule.name,
                         schedule.category,
-                        scheduleCompletion.isNotNull(),
-                        schedule.startTime
+                        scheduleCompletion.count().isNotNull(),
+                        schedule.startTime.max()
                 ))
                 .from(schedule)
                 .leftJoin(scheduleCompletion).on(schedule.id.eq(scheduleCompletion.schedule.id).and(scheduleCompletion.completionDate.eq(now)))
