@@ -67,12 +67,11 @@ class ChoreAppenderTest extends IntegrationTestSupport {
 
         LocalDate startDate = LocalDate.now();
 
-        Schedule schedule = Schedule.create(
+        Schedule schedule = Schedule.creatRepeatSchedule(
                 "schedule1",
                 startDate,
                 LocalTime.of(1, 0),
                 DivisionType.FIX,
-                ScheduleType.REPEAT,
                 member.getHouse(),
                 1,
                 category

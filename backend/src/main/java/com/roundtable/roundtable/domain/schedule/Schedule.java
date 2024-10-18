@@ -33,6 +33,7 @@ import lombok.NoArgsConstructor;
 public class Schedule extends BaseEntity {
 
     public static final int START_SEQUENCE = 0;
+    public static final int ONE_TIME_SCHEDULE_SEQUENCE_SIZE = 1;
     public static final int SEQUENCE_STEP = 1;
 
     @Id
@@ -107,36 +108,49 @@ public class Schedule extends BaseEntity {
         return Schedule.builder().id(scheduleId).build();
     }
 
-    public static Schedule create(
+    public static Schedule creatRepeatSchedule(
             String name,
             LocalDate startDate,
             LocalTime startTime,
             DivisionType divisionType,
-            ScheduleType scheduleType,
             House house,
             int sequenceSize,
             Category category
     ) {
-        if(scheduleType == ScheduleType.ONE_TIME && divisionType != FIX) {
-            throw new IllegalArgumentException("일회성 스케줄은 고정 분담 방식만 사용가능합니다.");
-        }
-
-        //분담방식이 FIX 라면 sequence 크기는 최대 1
         if(divisionType == FIX) {
             sequenceSize = 1;
         }
-
 
         return Schedule.builder()
                 .name(name)
                 .startDate(startDate)
                 .startTime(startTime)
                 .divisionType(divisionType)
-                .scheduleType(scheduleType)
+                .scheduleType(ScheduleType.REPEAT)
                 .house(house)
                 .sequence(START_SEQUENCE)
                 .sequenceSize(sequenceSize)
                 .category(category)
+                .build();
+    }
+
+    public static Schedule createOneTimeSchedule(
+            String name,
+            LocalDate startDate,
+            LocalTime startTime,
+            House house
+    ) {
+
+        return Schedule.builder()
+                .name(name)
+                .startDate(startDate)
+                .startTime(startTime)
+                .divisionType(FIX)
+                .scheduleType(ScheduleType.ONE_TIME)
+                .house(house)
+                .sequence(START_SEQUENCE)
+                .sequenceSize(ONE_TIME_SCHEDULE_SEQUENCE_SIZE)
+                .category(Category.ONE_TIME)
                 .build();
     }
 
@@ -168,5 +182,13 @@ public class Schedule extends BaseEntity {
         if(!sender.isSameHouse(house)) {
             throw new IllegalArgumentException("같은 하우스의 사용자만 피드백을 보낼 수 있습니다.");
         }
+    }
+
+    public Day getStartDay() {
+        return Day.forDayOfWeek(startDate.getDayOfWeek());
+    }
+
+    public boolean isSameDivisionType(DivisionType divisionType) {
+        return this.divisionType == divisionType;
     }
 }

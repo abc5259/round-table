@@ -49,8 +49,7 @@ public class ScheduleDay {
                 .toList();
     }
 
-    public static ScheduleDay createScheduleDay(Schedule schedule, LocalDate date) {
-        Day day = Day.forDayOfWeek(date.getDayOfWeek());
-        return new ScheduleDay(schedule, day);
+    public static ScheduleDay createScheduleDay(Schedule schedule) {
+        return new ScheduleDay(schedule, schedule.getStartDay());
     }
 }

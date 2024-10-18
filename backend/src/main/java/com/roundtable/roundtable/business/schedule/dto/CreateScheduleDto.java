@@ -13,7 +13,6 @@ public record CreateScheduleDto(
     LocalDate startDate,
     LocalTime startTime,
     DivisionType divisionType,
-    ScheduleType scheduleType,
     List<Long> memberIds,
     Category category,
     List<Day> days

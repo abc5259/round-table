@@ -46,7 +46,7 @@ public class ScheduleController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 SuccessResponse.from(
-                        scheduleService.create(createScheduleRequest.toCreateScheduleDto(ScheduleType.REPEAT), authMember.toHouseAuthMember(houseId))
+                        scheduleService.create(createScheduleRequest.toCreateScheduleDto(), authMember.toHouseAuthMember(houseId))
                 )
         );
     }
@@ -61,7 +61,7 @@ public class ScheduleController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 SuccessResponse.from(
-                        scheduleService.create(createOneTimeScheduleRequest.toCreateScheduleDto(ScheduleType.ONE_TIME), authMember.toHouseAuthMember(houseId))
+                        scheduleService.create(createOneTimeScheduleRequest.toCreateScheduleDto(), authMember.toHouseAuthMember(houseId))
                 )
         );
     }

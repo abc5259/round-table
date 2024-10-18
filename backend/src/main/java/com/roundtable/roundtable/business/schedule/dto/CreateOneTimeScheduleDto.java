@@ -12,10 +12,6 @@ public record CreateOneTimeScheduleDto(
     String name,
     LocalDate startDate,
     LocalTime startTime,
-    DivisionType divisionType,
-    ScheduleType scheduleType,
-    List<Long> memberIds,
-    Category category,
-    LocalDate date
+    List<Long> memberIds
 ) {
 }

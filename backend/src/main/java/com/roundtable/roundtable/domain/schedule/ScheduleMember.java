@@ -56,9 +56,9 @@ public class ScheduleMember extends BaseEntity {
         return this.schedule.isEqualSequence(sequence);
     }
 
-    public static List<ScheduleMember> createScheduleMembers(DivisionType divisionType, List<Member> members, Schedule schedule) {
+    public static List<ScheduleMember> createScheduleMembers(List<Member> members, Schedule schedule) {
 
-        if(divisionType == DivisionType.FIX) {
+        if(schedule.isSameDivisionType(DivisionType.FIX)) {
             return members.stream()
                     .map(item -> ScheduleMember.of(item, schedule, Schedule.START_SEQUENCE))
                     .toList();

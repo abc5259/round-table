@@ -24,25 +24,15 @@ public record CreateOneTimeScheduleRequest(
         @NotNull(message = "startTime에 빈 값이 올 수 없습니다.")
         LocalTime startTime,
 
-        @NotNull(message = "divisionType에 빈 값이 올 수 없습니다.")
-        DivisionType divisionType,
-
         @Size(min = 1, max = 30, message = "담당자는 최소 1명 최대 30명까지 가능합니다.")
-        List<Long> memberIds,
-
-        @NotNull(message = "category에 빈 값이 올 수 없습니다.")
-        Category category
+        List<Long> memberIds
 ) {
-    public CreateOneTimeScheduleDto toCreateScheduleDto(ScheduleType scheduleType) {
+    public CreateOneTimeScheduleDto toCreateScheduleDto() {
         return new CreateOneTimeScheduleDto(
                 name,
                 startDate,
                 startTime,
-                divisionType,
-                scheduleType,
-                memberIds,
-                category,
-                LocalDate.now()
+                memberIds
         );
     }
 }

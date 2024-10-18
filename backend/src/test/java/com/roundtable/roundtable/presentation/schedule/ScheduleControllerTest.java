@@ -162,9 +162,7 @@ class ScheduleControllerTest extends ControllerTestSupport {
             String name,
             LocalDate localDate,
             LocalTime localTime,
-            DivisionType divisionType,
             List<Long> memberIds,
-            Category category,
             String expectedMessage
     ) throws Exception {
         //given
@@ -172,9 +170,7 @@ class ScheduleControllerTest extends ControllerTestSupport {
                 name,
                 localDate,
                 localTime,
-                divisionType,
-                memberIds,
-                category
+                memberIds
         );
 
         Mockito.when(scheduleService.create(Mockito.any(CreateOneTimeScheduleDto.class), Mockito.any())).thenReturn(1L);
@@ -309,73 +305,43 @@ class ScheduleControllerTest extends ControllerTestSupport {
                         null,
                         LocalDate.now(),
                         LocalTime.now(),
-                        DivisionType.FIX,
                         List.of(1L),
-                        Category.CLEANING,
                         "name에 빈 값이 올 수 없습니다."
                 ),
                 Arguments.of(
                         " ",
                         LocalDate.now(),
                         LocalTime.now(),
-                        DivisionType.FIX,
                         List.of(1L),
-                        Category.CLEANING,
                         "name에 빈 값이 올 수 없습니다."
                 ),
                 Arguments.of(
                         "name",
                         null,
                         LocalTime.now(),
-                        DivisionType.FIX,
                         List.of(1L),
-                        Category.CLEANING,
                         "startDate에 빈 값이 올 수 없습니다."
                 ),
                 Arguments.of(
                         "name",
                         LocalDate.now(),
                         null,
-                        DivisionType.FIX,
                         List.of(1L),
-                        Category.CLEANING,
                         "startTime에 빈 값이 올 수 없습니다."
                 ),
                 Arguments.of(
                         "name",
                         LocalDate.now(),
                         LocalTime.now(),
-                        null,
-                        List.of(1L),
-                        Category.CLEANING,
-                        "divisionType에 빈 값이 올 수 없습니다."
-                ),
-                Arguments.of(
-                        "name",
-                        LocalDate.now(),
-                        LocalTime.now(),
-                        DivisionType.FIX,
                         List.of(),
-                        Category.CLEANING,
                         "담당자는 최소 1명 최대 30명까지 가능합니다."
                 ),
                 Arguments.of(
                         "name",
                         LocalDate.now(),
                         LocalTime.now(),
-                        DivisionType.FIX,
                         LongStream.rangeClosed(1,31).boxed().toList(),
-                        Category.CLEANING,
                         "담당자는 최소 1명 최대 30명까지 가능합니다."
-                ),
-                Arguments.of(
-                        "name",
-                        LocalDate.now(),
-                        LocalTime.now(),
-                        DivisionType.FIX,
-                        LongStream.rangeClosed(1,30).boxed().toList(),
-                        null,
-                        "category에 빈 값이 올 수 없습니다."
                 )
         );
     }

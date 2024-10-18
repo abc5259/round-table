@@ -16,6 +16,7 @@ import com.roundtable.roundtable.domain.schedule.ScheduleDayRepository;
 import com.roundtable.roundtable.domain.schedule.ScheduleMember;
 import com.roundtable.roundtable.domain.schedule.ScheduleMemberRepository;
 import com.roundtable.roundtable.domain.schedule.ScheduleRepository;
+import com.roundtable.roundtable.domain.schedule.ScheduleType;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -35,17 +36,16 @@ public class ScheduleService {
         House house = House.Id(authMember.houseId());
         List<Member> members = memberReader.findAllByIdOrThrow(createScheduleDto.memberIds());
 
-        Schedule schedule = Schedule.create(
+        Schedule schedule = Schedule.creatRepeatSchedule(
                 createScheduleDto.name(),
                 createScheduleDto.startDate(),
                 createScheduleDto.startTime(),
                 createScheduleDto.divisionType(),
-                createScheduleDto.scheduleType(),
                 house,
                 members.size(),
                 createScheduleDto.category()
         );
-        List<ScheduleMember> scheduleMembers = ScheduleMember.createScheduleMembers(createScheduleDto.divisionType(), members, schedule);
+        List<ScheduleMember> scheduleMembers = ScheduleMember.createScheduleMembers(members, schedule);
         List<ScheduleDay> scheduleDays = ScheduleDay.createScheduleDays(schedule, createScheduleDto.days());
 
         scheduleRepository.save(schedule);
@@ -59,18 +59,14 @@ public class ScheduleService {
         House house = House.Id(authMember.houseId());
         List<Member> members = memberReader.findAllByIdOrThrow(createOneTimeScheduleDto.memberIds());
 
-        Schedule schedule = Schedule.create(
+        Schedule schedule = Schedule.createOneTimeSchedule(
                 createOneTimeScheduleDto.name(),
                 createOneTimeScheduleDto.startDate(),
                 createOneTimeScheduleDto.startTime(),
-                createOneTimeScheduleDto.divisionType(),
-                createOneTimeScheduleDto.scheduleType(),
-                house,
-                members.size(),
-                createOneTimeScheduleDto.category()
+                house
         );
-        List<ScheduleMember> scheduleMembers = ScheduleMember.createScheduleMembers(createOneTimeScheduleDto.divisionType(), members, schedule);
-        ScheduleDay scheduleDays = ScheduleDay.createScheduleDay(schedule, createOneTimeScheduleDto.date());
+        List<ScheduleMember> scheduleMembers = ScheduleMember.createScheduleMembers(members, schedule);
+        ScheduleDay scheduleDays = ScheduleDay.createScheduleDay(schedule);
 
         scheduleRepository.save(schedule);
         scheduleMemberRepository.saveAll(scheduleMembers);
