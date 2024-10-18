@@ -41,7 +41,9 @@ public class ScheduleQueryRepository {
                         schedule.id,
                         schedule.name,
                         schedule.category,
-                        scheduleCompletion.isNotNull(),
+                        new CaseBuilder().when(scheduleCompletion.id.isNull())
+                                .then(false)
+                                .otherwise(true),
                         schedule.startTime,
                         stringTemplate("GROUP_CONCAT(DISTINCT {0})", scheduleMember.member.name),
                         stringTemplate("GROUP_CONCAT(DISTINCT {0})", extraScheduleMember.member.name)
@@ -54,7 +56,7 @@ public class ScheduleQueryRepository {
                 .leftJoin(extraScheduleMember).on(extraScheduleMember.schedule.id.eq(schedule.id))
                 .leftJoin(extraScheduleMember.member)
                 .where(schedule.house.id.eq(houseId).and(schedule.id.gt(cursorPagination.lastId())))
-                .groupBy(schedule.id)
+                .groupBy(schedule.id, scheduleCompletion.id)
                 .orderBy(schedule.id.asc())
                 .limit(cursorPagination.limit())
                 .fetch();
