@@ -45,6 +45,7 @@ export const createOneTimeSchele = async ({
   allocators: number[];
 }) => {
   try {
+    console.log(getDayOfWeekNumber(date));
     const res = await customAxios.post<ApiResponseType<number>>(
       `/house/${houseId}${API_PREFIX.SCHEDULE}/one-time`,
       {
@@ -54,7 +55,7 @@ export const createOneTimeSchele = async ({
         divisionType: "FIX",
         memberIds: allocators,
         category: "ONE_TIME",
-        dayIds: [getDayOfWeekNumber(date)],
+        days: [getDayOfWeekNumber(date)],
       }
     );
     return res.data;
@@ -64,14 +65,14 @@ export const createOneTimeSchele = async ({
   }
 };
 
-const dayIds: Record<Day, number> = {
-  월: 1,
-  화: 2,
-  수: 3,
-  목: 4,
-  금: 5,
-  토: 6,
-  일: 7,
+const engDays: Record<Day, string> = {
+  월: "MONDAY",
+  화: "TUESDAY",
+  수: "WEDNESDAY",
+  목: "THURSDAY",
+  금: "FRIDAY",
+  토: "SATURDAY",
+  일: "SUNDAY",
 };
 
 export const createRepeatSchele = async ({
@@ -103,7 +104,7 @@ export const createRepeatSchele = async ({
         divisionType: divisionType === "선택 인원 고정" ? "FIX" : "ROTATION",
         memberIds: allocators,
         category,
-        dayIds: days.map(d => dayIds[d]),
+        days: days.map(d => engDays[d]),
       }
     );
     return res.data;

@@ -3,12 +3,8 @@ import TopBottomLayout from "../../../layouts/TopBottomLayout/TopBottomLayout";
 import Button from "../../atoms/Button/Button";
 import * as Styled from "./Styled";
 import { useHouseAppenderStore } from "../../../store/house/houseAppenderStore";
-import {
-  NavigationProp,
-  RouteProp,
-  useNavigation,
-} from "@react-navigation/native";
-import { RootStackNavigationProp, RootStackParamList } from "../../../App";
+import { useNavigation } from "@react-navigation/native";
+import { RootStackNavigationProp } from "../../../App";
 
 const CreateHouseComposition = () => {
   const { name, houseTotalPeople } = useHouseAppenderStore();
