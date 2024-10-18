@@ -72,7 +72,9 @@ public class ScheduleQueryRepository {
                         schedule.id,
                         schedule.name,
                         schedule.category,
-                        scheduleCompletion.count().isNotNull(),
+                        new CaseBuilder().when(scheduleCompletion.id.isNull())
+                                .then(false)
+                                .otherwise(true),
                         schedule.startTime.max()
                 ))
                 .from(schedule)
@@ -86,7 +88,7 @@ public class ScheduleQueryRepository {
                         .and(schedule.id.gt(cursorPagination.lastId()))
                         .and(scheduleMember.member.id.eq(memberId).or(extraScheduleMember.member.id.eq(memberId)))
                 )
-                .groupBy(schedule.id)
+                .groupBy(schedule.id, scheduleCompletion.id)
                 .orderBy(schedule.id.asc())
                 .limit(cursorPagination.limit())
                 .fetch();
