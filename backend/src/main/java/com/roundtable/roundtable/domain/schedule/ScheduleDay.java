@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -46,5 +47,10 @@ public class ScheduleDay {
         return days.stream()
                 .map(day -> ScheduleDay.create(schedule, day))
                 .toList();
+    }
+
+    public static ScheduleDay createScheduleDay(Schedule schedule, LocalDate date) {
+        Day day = Day.forDayOfWeek(date.getDayOfWeek());
+        return new ScheduleDay(schedule, day);
     }
 }

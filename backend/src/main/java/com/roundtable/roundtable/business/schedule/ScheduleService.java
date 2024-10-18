@@ -4,6 +4,7 @@ import com.roundtable.roundtable.business.common.AuthMember;
 import com.roundtable.roundtable.business.common.CursorBasedRequest;
 import com.roundtable.roundtable.business.common.CursorBasedResponse;
 import com.roundtable.roundtable.business.member.MemberReader;
+import com.roundtable.roundtable.business.schedule.dto.CreateOneTimeScheduleDto;
 import com.roundtable.roundtable.business.schedule.dto.CreateScheduleDto;
 import com.roundtable.roundtable.business.schedule.dto.ScheduleOfMemberResponse;
 import com.roundtable.roundtable.business.schedule.dto.ScheduleResponse;
@@ -50,6 +51,30 @@ public class ScheduleService {
         scheduleRepository.save(schedule);
         scheduleMemberRepository.saveAll(scheduleMembers);
         scheduleDayRepository.saveAll(scheduleDays);
+
+        return schedule.getId();
+    }
+
+    public Long create(CreateOneTimeScheduleDto createOneTimeScheduleDto, AuthMember authMember) {
+        House house = House.Id(authMember.houseId());
+        List<Member> members = memberReader.findAllByIdOrThrow(createOneTimeScheduleDto.memberIds());
+
+        Schedule schedule = Schedule.create(
+                createOneTimeScheduleDto.name(),
+                createOneTimeScheduleDto.startDate(),
+                createOneTimeScheduleDto.startTime(),
+                createOneTimeScheduleDto.divisionType(),
+                createOneTimeScheduleDto.scheduleType(),
+                house,
+                members.size(),
+                createOneTimeScheduleDto.category()
+        );
+        List<ScheduleMember> scheduleMembers = ScheduleMember.createScheduleMembers(createOneTimeScheduleDto.divisionType(), members, schedule);
+        ScheduleDay scheduleDays = ScheduleDay.createScheduleDay(schedule, createOneTimeScheduleDto.date());
+
+        scheduleRepository.save(schedule);
+        scheduleMemberRepository.saveAll(scheduleMembers);
+        scheduleDayRepository.save(scheduleDays);
 
         return schedule.getId();
     }

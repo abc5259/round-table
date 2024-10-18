@@ -8,9 +8,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.roundtable.roundtable.ControllerTestSupport;
+import com.roundtable.roundtable.business.schedule.dto.CreateOneTimeScheduleDto;
+import com.roundtable.roundtable.business.schedule.dto.CreateScheduleDto;
 import com.roundtable.roundtable.domain.schedule.Category;
 import com.roundtable.roundtable.domain.schedule.Day;
 import com.roundtable.roundtable.domain.schedule.DivisionType;
+import com.roundtable.roundtable.domain.schedule.ScheduleType;
+import com.roundtable.roundtable.presentation.schedule.request.CreateOneTimeScheduleRequest;
 import com.roundtable.roundtable.presentation.schedule.request.CreateScheduleRequest;
 import com.roundtable.roundtable.security.WithMockCustomUser;
 import java.time.LocalDate;
@@ -47,7 +51,7 @@ class ScheduleControllerTest extends ControllerTestSupport {
                 Category.CLEANING
         );
 
-        Mockito.when(scheduleService.create(Mockito.any(), Mockito.any())).thenReturn(1L);
+        Mockito.when(scheduleService.create(Mockito.any(CreateScheduleDto.class), Mockito.any())).thenReturn(1L);
 
         //when
         ResultActions resultActions = mockMvc.perform(
@@ -83,7 +87,7 @@ class ScheduleControllerTest extends ControllerTestSupport {
                 Category.CLEANING
         );
 
-        Mockito.when(scheduleService.create(Mockito.any(), Mockito.any())).thenReturn(1L);
+        Mockito.when(scheduleService.create(Mockito.any(CreateOneTimeScheduleDto.class), Mockito.any())).thenReturn(1L);
 
         //when
         ResultActions resultActions = mockMvc.perform(
@@ -129,7 +133,7 @@ class ScheduleControllerTest extends ControllerTestSupport {
                 category
         );
 
-        Mockito.when(scheduleService.create(Mockito.any(), Mockito.any())).thenReturn(1L);
+        Mockito.when(scheduleService.create(Mockito.any(CreateScheduleDto.class), Mockito.any())).thenReturn(1L);
 
         //when
         ResultActions resultActions = mockMvc.perform(
@@ -153,29 +157,27 @@ class ScheduleControllerTest extends ControllerTestSupport {
     @DisplayName("일회성 스케줄을 생성할떄 요청 body에 잘못된 값을 주면 실패한다.")
     @WithMockCustomUser
     @ParameterizedTest
-    @MethodSource("invalidCreateScheduleRequestProvider")
+    @MethodSource("invalidCreateOneTimeScheduleRequestProvider")
     void createOneTimeScheduleWithInvalidRequest(
             String name,
             LocalDate localDate,
             LocalTime localTime,
             DivisionType divisionType,
             List<Long> memberIds,
-            List<Day> days,
             Category category,
             String expectedMessage
     ) throws Exception {
         //given
-        CreateScheduleRequest request = new CreateScheduleRequest(
+        CreateOneTimeScheduleRequest request = new CreateOneTimeScheduleRequest(
                 name,
                 localDate,
                 localTime,
                 divisionType,
                 memberIds,
-                days,
                 category
         );
 
-        Mockito.when(scheduleService.create(Mockito.any(), Mockito.any())).thenReturn(1L);
+        Mockito.when(scheduleService.create(Mockito.any(CreateOneTimeScheduleDto.class), Mockito.any())).thenReturn(1L);
 
         //when
         ResultActions resultActions = mockMvc.perform(
@@ -295,6 +297,83 @@ class ScheduleControllerTest extends ControllerTestSupport {
                         DivisionType.FIX,
                         LongStream.rangeClosed(1,30).boxed().toList(),
                         List.of(Day.MONDAY),
+                        null,
+                        "category에 빈 값이 올 수 없습니다."
+                )
+        );
+    }
+
+    private static Stream<Arguments> invalidCreateOneTimeScheduleRequestProvider() {
+        return Stream.of(
+                Arguments.of(
+                        null,
+                        LocalDate.now(),
+                        LocalTime.now(),
+                        DivisionType.FIX,
+                        List.of(1L),
+                        Category.CLEANING,
+                        "name에 빈 값이 올 수 없습니다."
+                ),
+                Arguments.of(
+                        " ",
+                        LocalDate.now(),
+                        LocalTime.now(),
+                        DivisionType.FIX,
+                        List.of(1L),
+                        Category.CLEANING,
+                        "name에 빈 값이 올 수 없습니다."
+                ),
+                Arguments.of(
+                        "name",
+                        null,
+                        LocalTime.now(),
+                        DivisionType.FIX,
+                        List.of(1L),
+                        Category.CLEANING,
+                        "startDate에 빈 값이 올 수 없습니다."
+                ),
+                Arguments.of(
+                        "name",
+                        LocalDate.now(),
+                        null,
+                        DivisionType.FIX,
+                        List.of(1L),
+                        Category.CLEANING,
+                        "startTime에 빈 값이 올 수 없습니다."
+                ),
+                Arguments.of(
+                        "name",
+                        LocalDate.now(),
+                        LocalTime.now(),
+                        null,
+                        List.of(1L),
+                        Category.CLEANING,
+                        "divisionType에 빈 값이 올 수 없습니다."
+                ),
+                Arguments.of(
+                        "name",
+                        LocalDate.now(),
+                        LocalTime.now(),
+                        DivisionType.FIX,
+                        List.of(),
+                        Category.CLEANING,
+                        "담당자는 최소 1명 최대 30명까지 가능합니다."
+                ),
+                Arguments.of(
+                        "name",
+                        LocalDate.now(),
+                        LocalTime.now(),
+                        DivisionType.FIX,
+                        LongStream.rangeClosed(1,31).boxed().toList(),
+                        Category.CLEANING,
+                        "담당자는 최소 1명 최대 30명까지 가능합니다."
+                ),
+                Arguments.of(
+                        "name",
+                        LocalDate.now(),
+                        LocalTime.now(),
+                        DivisionType.FIX,
+                        LongStream.rangeClosed(1,30).boxed().toList(),
                         null,
                         "category에 빈 값이 올 수 없습니다."
                 )

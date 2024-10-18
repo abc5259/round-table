@@ -7,6 +7,7 @@ import com.roundtable.roundtable.business.schedule.dto.ScheduleOfMemberResponse;
 import com.roundtable.roundtable.business.schedule.dto.ScheduleResponse;
 import com.roundtable.roundtable.domain.schedule.ScheduleType;
 import com.roundtable.roundtable.presentation.common.request.CursorBasedPaginationRequest;
+import com.roundtable.roundtable.presentation.schedule.request.CreateOneTimeScheduleRequest;
 import com.roundtable.roundtable.presentation.schedule.request.CreateScheduleRequest;
 import com.roundtable.roundtable.global.support.annotation.Login;
 import com.roundtable.roundtable.global.response.ResponseDto;
@@ -56,11 +57,11 @@ public class ScheduleController {
     public ResponseEntity<ResponseDto<Long>> createOneTimeSchedule(
             @Login AuthMember authMember,
             @PathVariable Long houseId,
-            @Valid @RequestBody CreateScheduleRequest createScheduleRequest) {
+            @Valid @RequestBody CreateOneTimeScheduleRequest createOneTimeScheduleRequest) {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 SuccessResponse.from(
-                        scheduleService.create(createScheduleRequest.toCreateScheduleDto(ScheduleType.ONE_TIME), authMember.toHouseAuthMember(houseId))
+                        scheduleService.create(createOneTimeScheduleRequest.toCreateScheduleDto(ScheduleType.ONE_TIME), authMember.toHouseAuthMember(houseId))
                 )
         );
     }
