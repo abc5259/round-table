@@ -1,19 +1,19 @@
-import axios from "axios";
-import * as SecureStore from "expo-secure-store";
-import { ApiError } from "./ApiError";
+import axios from 'axios';
+import * as SecureStore from 'expo-secure-store';
+import { ApiError } from './ApiError';
 
 const resolveHttpStatus = [400, 404];
 
 const customAxios = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL: 'http://192.168.0.5:8080',
 });
 
 customAxios.interceptors.request.use(
   async config => {
-    const accessToken = await SecureStore.getItemAsync("accessToken");
+    const accessToken = await SecureStore.getItemAsync('accessToken');
 
     if (accessToken != null) {
-      config.headers["Authorization"] = `Bearer ${accessToken}`;
+      config.headers['Authorization'] = `Bearer ${accessToken}`;
     }
 
     return config;
@@ -21,7 +21,7 @@ customAxios.interceptors.request.use(
   (error: any) => {
     console.log(error);
     return Promise.reject(error);
-  }
+  },
 );
 
 customAxios.interceptors.response.use(
@@ -38,14 +38,14 @@ customAxios.interceptors.response.use(
     }
 
     if (error.response && error.response.status === 401) {
-      if (error.response.data.code === "auth-001") {
-        const refreshToken = await SecureStore.getItemAsync("refreshToken");
+      if (error.response.data.code === 'auth-001') {
+        const refreshToken = await SecureStore.getItemAsync('refreshToken');
         if (refreshToken != null) {
           const { success, data } = await refresh(refreshToken);
           if (success) {
             await Promise.all([
-              SecureStore.setItemAsync("accessToken", data.accessToken),
-              SecureStore.setItemAsync("refreshToken", data.refreshToken),
+              SecureStore.setItemAsync('accessToken', data.accessToken),
+              SecureStore.setItemAsync('refreshToken', data.refreshToken),
             ]);
 
             error.config.headers.Authorization = `Bearer ${data.accessToken}`;
@@ -57,7 +57,7 @@ customAxios.interceptors.response.use(
     }
     // 다른 모든 에러는 그대로 다음으로 넘김
     return Promise.reject(error);
-  }
+  },
 );
 
 type RefreshResponseType = ApiResponseType<{

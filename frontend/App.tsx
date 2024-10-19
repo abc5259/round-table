@@ -14,8 +14,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { DevToolsBubble } from 'react-native-react-query-devtools';
 import CreateHouseScreen from './screen/House/CreateHouseScreen/CreateHouseScreen';
 import CreateScheduleScreen from './screen/Schedule/CreateScheduleScreen/CreateScheduleScreen';
-import MainScreen from './screen/Main/MainScreen';
-import MainHeader from './components/molecules/MainHeader/MainHeader';
+import BottomTabNavigator from './BottomTabNavigator';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -26,7 +25,7 @@ export type RootStackParamList = {
   ProfileSetting: undefined;
   CreateHouse: undefined;
   CreateSchedule: undefined;
-  Main: undefined;
+  BottomTabNavigator: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -41,7 +40,7 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <DevToolsBubble />
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Main">
+        <Stack.Navigator initialRouteName="BottomTabNavigator">
           <Stack.Screen
             name="Home"
             component={Home}
@@ -73,11 +72,6 @@ export default function App() {
             }}
           />
           <Stack.Screen
-            name="Main"
-            component={MainScreen}
-            options={{ header: () => <MainHeader /> }}
-          />
-          <Stack.Screen
             name="CreateHouse"
             component={CreateHouseScreen}
             options={{
@@ -90,6 +84,11 @@ export default function App() {
             options={{
               header: () => <Header title="일정 만들기" />,
             }}
+          />
+          <Stack.Screen
+            name={'BottomTabNavigator'}
+            component={BottomTabNavigator}
+            options={{ headerShown: false }}
           />
         </Stack.Navigator>
       </NavigationContainer>
