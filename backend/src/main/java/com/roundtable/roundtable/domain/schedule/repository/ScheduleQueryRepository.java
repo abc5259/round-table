@@ -51,11 +51,19 @@ public class ScheduleQueryRepository {
                         stringTemplate(MEMBER_NAME_JOIN_PATTER, extraScheduleMember.member.name)
                 ))
                 .from(schedule)
-                .leftJoin(scheduleCompletion).on(scheduleIdEq(scheduleCompletion.schedule.id).and(scheduleCompletionDateEq(now)))
-                .join(scheduleDay).on(scheduleIdEq(scheduleDay.schedule.id).and(scheduleDayEq(now)))
-                .join(scheduleMember).on(scheduleIdEq(scheduleMember.schedule.id).and(scheduleMemberSequenceEq(sequenceCondition)))
+                .leftJoin(scheduleCompletion).on(
+                        scheduleIdEq(scheduleCompletion.schedule.id),
+                        scheduleCompletionDateEq(now))
+                .join(scheduleDay).on(
+                        scheduleIdEq(scheduleDay.schedule.id),
+                        scheduleDayEq(now))
+                .join(scheduleMember).on(
+                        scheduleIdEq(scheduleMember.schedule.id),
+                        scheduleMemberSequenceEq(sequenceCondition))
                 .join(scheduleMember.member)
-                .leftJoin(extraScheduleMember).on(scheduleIdEq(extraScheduleMember.schedule.id))
+                .leftJoin(extraScheduleMember).on(
+                        scheduleIdEq(extraScheduleMember.schedule.id),
+                        extraMemberAssignedDateEq(now))
                 .leftJoin(extraScheduleMember.member)
                 .where(
                         scheduleHouseIdEq(houseId),
@@ -78,11 +86,19 @@ public class ScheduleQueryRepository {
                         schedule.startTime.max()
                 ))
                 .from(schedule)
-                .leftJoin(scheduleCompletion).on(scheduleIdEq(scheduleCompletion.schedule.id).and(scheduleCompletionDateEq(now)))
-                .join(scheduleDay).on(scheduleIdEq(scheduleDay.schedule.id).and(scheduleDayEq(now)))
-                .join(scheduleMember).on(scheduleIdEq(scheduleMember.schedule.id).and(scheduleMemberSequenceEq(sequenceCondition)))
+                .leftJoin(scheduleCompletion).on(
+                        scheduleIdEq(scheduleCompletion.schedule.id),
+                        scheduleCompletionDateEq(now))
+                .join(scheduleDay).on(
+                        scheduleIdEq(scheduleDay.schedule.id),
+                        scheduleDayEq(now))
+                .join(scheduleMember).on(
+                        scheduleIdEq(scheduleMember.schedule.id),
+                        scheduleMemberSequenceEq(sequenceCondition))
                 .join(scheduleMember.member)
-                .leftJoin(extraScheduleMember).on(scheduleIdEq(extraScheduleMember.schedule.id))
+                .leftJoin(extraScheduleMember).on(
+                        scheduleIdEq(extraScheduleMember.schedule.id),
+                        extraMemberAssignedDateEq(now))
                 .leftJoin(extraScheduleMember.member)
                 .where(
                         scheduleHouseIdEq(houseId),
@@ -93,6 +109,10 @@ public class ScheduleQueryRepository {
                 .orderBy(schedule.id.asc())
                 .limit(cursorPagination.limit())
                 .fetch();
+    }
+
+    private static BooleanExpression extraMemberAssignedDateEq(LocalDate now) {
+        return extraScheduleMember.assignedDate.eq(now);
     }
 
     private BooleanExpression extraMemberIdEq(Long memberId) {
