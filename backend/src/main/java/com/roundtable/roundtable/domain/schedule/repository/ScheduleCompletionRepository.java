@@ -1,5 +1,6 @@
-package com.roundtable.roundtable.domain.schedule;
+package com.roundtable.roundtable.domain.schedule.repository;
 
+import com.roundtable.roundtable.domain.schedule.ScheduleCompletion;
 import java.time.LocalDate;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;

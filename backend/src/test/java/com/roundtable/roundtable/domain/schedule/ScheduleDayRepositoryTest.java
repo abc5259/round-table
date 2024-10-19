@@ -8,6 +8,7 @@ import com.roundtable.roundtable.domain.house.HouseRepository;
 import com.roundtable.roundtable.domain.house.InviteCode;
 import com.roundtable.roundtable.domain.member.Member;
 import com.roundtable.roundtable.domain.member.MemberRepository;
+import com.roundtable.roundtable.domain.schedule.repository.ScheduleRepository;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;

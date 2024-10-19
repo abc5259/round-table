@@ -1,23 +1,16 @@
 package com.roundtable.roundtable.business.feedback;
 
-import com.roundtable.roundtable.business.chore.ChoreReader;
 import com.roundtable.roundtable.business.feedback.dto.CreateFeedbackServiceDto;
 import com.roundtable.roundtable.business.feedback.event.CreateFeedbackEvent;
 import com.roundtable.roundtable.business.member.MemberReader;
 import com.roundtable.roundtable.business.schedule.ScheduleReader;
-import com.roundtable.roundtable.domain.chore.Chore;
 import com.roundtable.roundtable.domain.feedback.Feedback;
 import com.roundtable.roundtable.domain.member.Member;
-import com.roundtable.roundtable.domain.schedule.Schedule;
 import com.roundtable.roundtable.domain.schedule.ScheduleCompletion;
-import com.roundtable.roundtable.domain.schedule.ScheduleCompletionMemberRepository;
-import com.roundtable.roundtable.domain.schedule.ScheduleCompletionRepository;
-import com.roundtable.roundtable.domain.schedule.ScheduleRepository;
-import com.roundtable.roundtable.global.exception.CoreException;
-import com.roundtable.roundtable.global.exception.CoreException.NotFoundEntityException;
+import com.roundtable.roundtable.domain.schedule.repository.ScheduleCompletionMemberRepository;
+import com.roundtable.roundtable.domain.schedule.repository.ScheduleCompletionRepository;
 import com.roundtable.roundtable.global.exception.FeedbackException;
 import com.roundtable.roundtable.global.exception.errorcode.FeedbackErrorCode;
-import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;

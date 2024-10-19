@@ -1,4 +1,4 @@
-package com.roundtable.roundtable.domain.schedule;
+package com.roundtable.roundtable.domain.schedule.repository;
 
 import static com.roundtable.roundtable.domain.member.QMember.*;
 import static com.roundtable.roundtable.domain.schedule.QSchedule.schedule;
@@ -8,11 +8,11 @@ import static java.util.stream.Collectors.*;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.roundtable.roundtable.domain.member.Member;
+import com.roundtable.roundtable.domain.schedule.Schedule;
 import com.roundtable.roundtable.domain.schedule.dto.QScheduleMemberDetailDto;
 import com.roundtable.roundtable.domain.schedule.dto.ScheduleIdDto;
 import com.roundtable.roundtable.domain.schedule.dto.ScheduleMemberDetailDto;
 import jakarta.persistence.EntityManager;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import org.springframework.stereotype.Repository;

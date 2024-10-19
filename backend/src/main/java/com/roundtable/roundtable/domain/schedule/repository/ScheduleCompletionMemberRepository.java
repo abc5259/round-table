@@ -1,6 +1,7 @@
-package com.roundtable.roundtable.domain.schedule;
+package com.roundtable.roundtable.domain.schedule.repository;
 
 import com.roundtable.roundtable.domain.member.Member;
+import com.roundtable.roundtable.domain.schedule.ScheduleCompletionMember;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

@@ -12,7 +12,7 @@ import com.roundtable.roundtable.domain.member.MemberRepository;
 import com.roundtable.roundtable.domain.schedule.Category;
 import com.roundtable.roundtable.domain.schedule.DivisionType;
 import com.roundtable.roundtable.domain.schedule.Schedule;
-import com.roundtable.roundtable.domain.schedule.ScheduleRepository;
+import com.roundtable.roundtable.domain.schedule.repository.ScheduleRepository;
 import com.roundtable.roundtable.domain.schedule.ScheduleType;
 import com.roundtable.roundtable.domain.schedulecomment.ScheduleComment;
 import java.time.LocalDate;

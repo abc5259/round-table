@@ -7,7 +7,7 @@ import com.roundtable.roundtable.domain.member.Member;
 import com.roundtable.roundtable.domain.notification.NotificationRepository;
 import com.roundtable.roundtable.domain.notification.ScheduleCompletionNotification;
 import com.roundtable.roundtable.domain.schedule.Schedule;
-import com.roundtable.roundtable.domain.schedule.ScheduleRepository;
+import com.roundtable.roundtable.domain.schedule.repository.ScheduleRepository;
 import com.roundtable.roundtable.global.exception.CoreException.NotFoundEntityException;
 import com.roundtable.roundtable.global.exception.errorcode.ScheduleErrorCode;
 import java.util.List;
