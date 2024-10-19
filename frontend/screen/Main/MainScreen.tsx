@@ -1,22 +1,22 @@
-import { View } from "react-native";
-import * as Styled from "./Styled";
-import useMe from "../../hooks/queries/member/useMe";
-import ChoreCards from "../../components/organisms/ChoreCards/ChoreCards";
-import ChoreOfHouseCards from "../../components/organisms/ChoresOfHouseCards/ChoreOfHouseCards";
-import useGetMySchedules from "../../hooks/queries/chore/useGetMyScgedules";
+import { View } from 'react-native';
+import * as Styled from './Styled';
+import useMe from '../../hooks/queries/member/useMe';
+import ChoreCards from '../../components/organisms/ChoreCards/ChoreCards';
+import ChoreOfHouseCards from '../../components/organisms/ChoresOfHouseCards/ChoreOfHouseCards';
+import useGetMySchedules from '../../hooks/queries/chore/useGetMyScgedules';
 
 const MainScreen = () => {
   const { data: meData } = useMe();
   const { data } = useGetMySchedules();
   console.log(data);
   return (
-    <Styled.Wrapper>
+    <Styled.Wrapper showsVerticalScrollIndicator={false}>
       <Styled.Header
         style={{
           paddingLeft: 20,
           paddingTop: 20,
           paddingBottom: 20,
-          backgroundColor: "#FFFFFF",
+          backgroundColor: '#FFFFFF',
         }}
       >
         <View style={{ gap: 6 }}>

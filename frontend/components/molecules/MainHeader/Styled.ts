@@ -1,4 +1,4 @@
-import styled from "styled-components/native";
+import styled from 'styled-components/native';
 
 export const Wrapper = styled.View`
   width: 100%;
@@ -7,7 +7,7 @@ export const Wrapper = styled.View`
   padding-top: 65px;
   padding-left: 20px;
   padding-right: 20px;
-
+  padding-bottom: 10px;
   display: flex;
   flex-direction: row;
   align-items: center;

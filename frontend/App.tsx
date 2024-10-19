@@ -15,6 +15,7 @@ import { DevToolsBubble } from 'react-native-react-query-devtools';
 import CreateHouseScreen from './screen/House/CreateHouseScreen/CreateHouseScreen';
 import CreateScheduleScreen from './screen/Schedule/CreateScheduleScreen/CreateScheduleScreen';
 import BottomTabNavigator from './BottomTabNavigator';
+import { StatusBar } from 'react-native';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -39,6 +40,7 @@ export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <DevToolsBubble />
+      <StatusBar />
       <NavigationContainer>
         <Stack.Navigator initialRouteName="BottomTabNavigator">
           <Stack.Screen

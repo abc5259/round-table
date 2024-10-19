@@ -1,6 +1,6 @@
-import styled from "styled-components/native";
+import styled from 'styled-components/native';
 
-export const Wrapper = styled.View`
+export const Wrapper = styled.ScrollView`
   flex: 1;
 `;
 
@@ -29,7 +29,7 @@ export const ContentWrapper = styled.View`
   flex: 1;
   background-color: #f8f9fd;
   /* padding: 15px;
-  padding-top: 20px; */
+    padding-top: 20px; */
   gap: 10px;
 `;
 
