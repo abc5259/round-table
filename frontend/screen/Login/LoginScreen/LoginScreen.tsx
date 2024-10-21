@@ -1,18 +1,18 @@
-import { Controller, useForm } from "react-hook-form";
-import LoginLayout from "../../../layouts/LoginLayout/LoginLayout";
-import Button from "../../../components/atoms/Button/Button";
-import LabelInput from "../../../components/molecules/LabelInput/LabelInput";
-import { login } from "../../../api/authApi";
-import * as SecureStore from "expo-secure-store";
-import { NavigationProp, RouteProp } from "@react-navigation/native";
-import { RootStackParamList } from "../../../App";
-import { useQuery } from "@tanstack/react-query";
-import { GetMeResponse, getMe } from "../../../api/memberApi";
+import { Controller, useForm } from 'react-hook-form';
+import LoginLayout from '../../../layouts/LoginLayout/LoginLayout';
+import Button from '../../../components/atoms/Button/Button';
+import LabelInput from '../../../components/molecules/LabelInput/LabelInput';
+import { login } from '../../../api/authApi';
+import * as SecureStore from 'expo-secure-store';
+import { NavigationProp, RouteProp } from '@react-navigation/native';
+import { RootStackParamList } from '../../../App';
+import { useQuery } from '@tanstack/react-query';
+import { getMe, GetMeResponse } from '../../../api/memberApi';
 
-type LoginScreenRouteProp = RouteProp<RootStackParamList, "Login">;
+type LoginScreenRouteProp = RouteProp<RootStackParamList, 'Login'>;
 
 type LoginScreenProps = {
-  navigation: NavigationProp<RootStackParamList, "Login">;
+  navigation: NavigationProp<RootStackParamList, 'Login'>;
   route: LoginScreenRouteProp;
 };
 
@@ -23,7 +23,7 @@ type FormValue = {
 
 const LoginScreen = ({ navigation }: LoginScreenProps) => {
   const { refetch } = useQuery({
-    queryKey: ["me"],
+    queryKey: ['me'],
     queryFn: getMe,
     enabled: false,
   });
@@ -35,8 +35,8 @@ const LoginScreen = ({ navigation }: LoginScreenProps) => {
     formState: { errors },
   } = useForm<FormValue>({
     defaultValues: {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
     },
   });
 
@@ -49,8 +49,8 @@ const LoginScreen = ({ navigation }: LoginScreenProps) => {
     }
 
     await Promise.all([
-      SecureStore.setItemAsync("accessToken", data.accessToken),
-      SecureStore.setItemAsync("refreshToken", data.refreshToken),
+      SecureStore.setItemAsync('accessToken', data.accessToken),
+      SecureStore.setItemAsync('refreshToken', data.refreshToken),
     ]);
 
     const { isSuccess, isError, data: meData } = await refetch();
@@ -60,19 +60,19 @@ const LoginScreen = ({ navigation }: LoginScreenProps) => {
     }
 
     if (isError) {
-      alert("다시 시도해주세요");
+      alert('다시 시도해주세요');
     }
   };
 
   const navigateBy = (meData: GetMeResponse) => {
     const { name, gender, house } = meData.data;
     if (name == null || gender == null) {
-      navigation.navigate("ProfileSetting");
+      navigation.navigate('ProfileSetting');
       return;
     }
 
     if (house == null) {
-      navigation.navigate("CreateHouse");
+      navigation.navigate('CreateHouse');
       return;
     }
   };
@@ -86,20 +86,20 @@ const LoginScreen = ({ navigation }: LoginScreenProps) => {
           <Controller
             control={control}
             rules={{
-              required: "이메일은 필수입니다.",
+              required: '이메일은 필수입니다.',
               pattern: {
                 value: /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i,
-                message: "이메일 형식이 아닙니다.",
+                message: '이메일 형식이 아닙니다.',
               },
             }}
             render={({ field: { value, onChange } }) => (
               <LabelInput
-                labelProps={{ text: "이메일 주소" }}
+                labelProps={{ text: '이메일 주소' }}
                 inputProps={{
-                  placeholder: "example@domin.com",
+                  placeholder: 'example@domin.com',
                   onChange,
                   value,
-                  onPressCancel: () => setValue("email", ""),
+                  onPressCancel: () => setValue('email', ''),
                 }}
                 errorMessage={errors.email?.message}
               />
@@ -109,19 +109,19 @@ const LoginScreen = ({ navigation }: LoginScreenProps) => {
           <Controller
             control={control}
             rules={{
-              required: "비밀번호를 적어주세요",
+              required: '비밀번호를 적어주세요',
               pattern: {
                 value: /^(?=.*[A-Z])(?=.*\d).{8,}$/,
-                message: "대문자와 숫자를 포함해 8자 이상 입력해주세요",
+                message: '대문자와 숫자를 포함해 8자 이상 입력해주세요',
               },
             }}
             render={({ field: { value, onChange } }) => (
               <LabelInput
-                labelProps={{ text: "비밀번호" }}
+                labelProps={{ text: '비밀번호' }}
                 inputProps={{
                   onChange,
                   value,
-                  onPressCancel: () => setValue("password", ""),
+                  onPressCancel: () => setValue('password', ''),
                   secureTextEntry: true,
                 }}
                 errorMessage={errors.password?.message}

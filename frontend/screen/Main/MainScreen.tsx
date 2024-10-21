@@ -4,11 +4,12 @@ import useMe from '../../hooks/queries/member/useMe';
 import ChoreCards from '../../components/organisms/ChoreCards/ChoreCards';
 import ChoreOfHouseCards from '../../components/organisms/ChoresOfHouseCards/ChoreOfHouseCards';
 import useGetMySchedules from '../../hooks/queries/chore/useGetMyScgedules';
+import useConnectionSse from '../../hooks/common/useConnectionSse';
 
 const MainScreen = () => {
   const { data: meData } = useMe();
   const { data } = useGetMySchedules();
-  console.log(data);
+  useConnectionSse();
   return (
     <Styled.Wrapper showsVerticalScrollIndicator={false}>
       <Styled.Header
