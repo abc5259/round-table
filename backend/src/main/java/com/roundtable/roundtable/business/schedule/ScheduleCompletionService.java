@@ -2,8 +2,10 @@ package com.roundtable.roundtable.business.schedule;
 
 import com.roundtable.roundtable.business.common.AuthMember;
 import com.roundtable.roundtable.business.schedule.dto.ScheduleCompletionEvent;
+import com.roundtable.roundtable.domain.member.Member;
 import com.roundtable.roundtable.domain.schedule.Day;
 import com.roundtable.roundtable.domain.schedule.ExtraScheduleMember;
+import com.roundtable.roundtable.domain.schedule.ScheduleManagers;
 import com.roundtable.roundtable.domain.schedule.repository.ExtraScheduleMemberRepository;
 import com.roundtable.roundtable.domain.schedule.Schedule;
 import com.roundtable.roundtable.domain.schedule.ScheduleCompletion;
@@ -30,24 +32,22 @@ import org.springframework.transaction.annotation.Transactional;
 public class ScheduleCompletionService {
 
     private final ScheduleDayRepository scheduleDayRepository;
-    private final ScheduleMemberRepository scheduleMemberRepository;
     private final ScheduleCompletionRepository scheduleCompletionRepository;
     private final ScheduleCompletionMemberRepository scheduleCompletionMemberRepository;
-    private final ExtraScheduleMemberRepository extraScheduleMemberRepository;
     private final ApplicationEventPublisher applicationEventPublisher;
+    private final ScheduleManagerReader scheduleManagerReader;
+    private final ScheduleReader scheduleReader;
 
     @Transactional
     public void complete(Long scheduleId, AuthMember member, LocalDate now) {
+        Schedule schedule = scheduleReader.findById(scheduleId);
+        ScheduleManagers scheduleManagers = scheduleManagerReader.readScheduleManagersByDate(schedule, now);
+
         validateCompletionSchedule(scheduleId, now);
-        ScheduleMember manager = scheduleMemberRepository.findByScheduleIdAndMemberId(scheduleId, member.memberId())
-                .orElseThrow(() -> new NotFoundEntityException(ScheduleErrorCode.NOT_ASSIGNED_MANAGER));
+        ScheduleCompletion scheduleCompletion = scheduleManagers.complete(Member.Id(member.memberId()), now);
 
-        manager.complete();
-        ScheduleCompletion scheduleCompletion = appendScheduleCompletion(scheduleId, now, manager.getSequence());
-
-        List<ScheduleMember> managers = scheduleMemberRepository.findByScheduleIdAndSequence(scheduleId, manager.getSequence());
-        List<ExtraScheduleMember> extraScheduleMembers = extraScheduleMemberRepository.findByScheduleIdAndAssignedDate(scheduleId, now);
-        List<ScheduleCompletionMember> scheduleCompletionMembers = appendScheduleCompletionMember(managers, extraScheduleMembers, scheduleCompletion);
+        scheduleCompletionRepository.save(scheduleCompletion);
+        List<ScheduleCompletionMember> scheduleCompletionMembers = appendScheduleCompletionMember(scheduleManagers, scheduleCompletion);
         applicationEventPublisher.publishEvent(new ScheduleCompletionEvent(member.houseId(), scheduleId, scheduleCompletionMembers.stream().map(ScheduleCompletionMember::getMemberId).toList()));
     }
 
@@ -60,18 +60,8 @@ public class ScheduleCompletionService {
         }
     }
 
-    private ScheduleCompletion appendScheduleCompletion(Long scheduleId, LocalDate completionDate, Integer sequence) {
-        ScheduleCompletion scheduleCompletion = ScheduleCompletion.create(Schedule.Id(scheduleId), completionDate, sequence);
-        scheduleCompletionRepository.save(scheduleCompletion);
-        return scheduleCompletion;
-    }
-
-    private List<ScheduleCompletionMember> appendScheduleCompletionMember(List<ScheduleMember> managers, List<ExtraScheduleMember> extraManagers, ScheduleCompletion scheduleCompletion) {
-        List<ScheduleCompletionMember> scheduleCompletionMembers = Stream.concat(
-                managers.stream().map(scheduleMember -> scheduleMember.toScheduleCompletionMember(scheduleCompletion)),
-                extraManagers.stream().map(extraManager -> extraManager.toScheduleCompletionMember(scheduleCompletion))
-        ).toList();
-
+    private List<ScheduleCompletionMember> appendScheduleCompletionMember(ScheduleManagers scheduleManagers, ScheduleCompletion scheduleCompletion) {
+        List<ScheduleCompletionMember> scheduleCompletionMembers = scheduleManagers.toScheduleCompletionMembers(scheduleCompletion);
         return scheduleCompletionMemberRepository.saveAll(scheduleCompletionMembers);
     }
 }

@@ -103,4 +103,8 @@ public class Member extends BaseEntity {
     public boolean isEnterHouse() {
         return Objects.nonNull(house);
     }
+
+    public boolean isEqualId(Member member) {
+        return Objects.equals(getId(), member.getId());
+    }
 }

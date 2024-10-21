@@ -6,6 +6,7 @@ import com.roundtable.roundtable.business.house.HouseService;
 import com.roundtable.roundtable.business.member.MemberReader;
 import com.roundtable.roundtable.business.member.MemberService;
 import com.roundtable.roundtable.business.member.MemberValidator;
+import com.roundtable.roundtable.business.schedule.ScheduleCompletionService;
 import com.roundtable.roundtable.business.schedule.ScheduleService;
 import com.roundtable.roundtable.presentation.auth.AuthController;
 import com.roundtable.roundtable.presentation.house.HouseController;
@@ -34,6 +35,9 @@ public abstract class ControllerTestSupport {
 
     @MockBean
     private MemberValidator memberValidator;
+
+    @MockBean
+    protected ScheduleCompletionService scheduleCompletionService;
 
     @Autowired
     protected ObjectMapper objectMapper;

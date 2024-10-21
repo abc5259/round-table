@@ -20,4 +20,6 @@ public interface ScheduleMemberRepository extends JpaRepository<ScheduleMember, 
         where s.id = :scheduleId
     """)
     List<ScheduleMember> findByScheduleManagers(@Param("scheduleId") Long scheduleId);
+
+    List<ScheduleMember> findByScheduleId(@Param("scheduleId") Long scheduleId);
 }

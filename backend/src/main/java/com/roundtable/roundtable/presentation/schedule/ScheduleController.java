@@ -2,6 +2,7 @@ package com.roundtable.roundtable.presentation.schedule;
 
 import com.roundtable.roundtable.business.common.AuthMember;
 import com.roundtable.roundtable.business.common.CursorBasedResponse;
+import com.roundtable.roundtable.business.schedule.ScheduleCompletionService;
 import com.roundtable.roundtable.business.schedule.ScheduleService;
 import com.roundtable.roundtable.business.schedule.dto.ScheduleOfMemberResponse;
 import com.roundtable.roundtable.business.schedule.dto.ScheduleResponse;
@@ -35,6 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ScheduleController {
 
     private final ScheduleService scheduleService;
+    private final ScheduleCompletionService scheduleCompletionService;
 
     @Operation(summary = "반복 스케줄 생성", description = "반복 스케줄을 생성합니다.")
     @ApiResponse(responseCode = "201", description = "성공")
@@ -96,5 +98,16 @@ public class ScheduleController {
         }
         var response = scheduleService.findSchedulesByDate(authMember.toHouseAuthMember(houseId), date, cursorBasedPaginationRequest.toCursorBasedRequest());
         return ResponseEntity.ok(SuccessResponse.from(response));
+    }
+
+    @PostMapping("/{scheduleId}")
+    public ResponseEntity<ResponseDto<Void>> completeSchedule(
+            @Login AuthMember authMember,
+            @PathVariable("houseId") Long houseId,
+            @PathVariable("scheduleId") Long scheduleId
+    ) {
+        scheduleCompletionService.complete(scheduleId, authMember.toHouseAuthMember(houseId), LocalDate.now());
+
+        return ResponseEntity.ok(SuccessResponse.ok());
     }
 }

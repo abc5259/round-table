@@ -40,12 +40,17 @@ public class ScheduleCompletion extends BaseEntity {
     private List<ScheduleCompletionMember> scheduleCompletionMembers = new ArrayList<>();
 
     @Builder
-    public ScheduleCompletion(Long id, LocalDate completionDate, Schedule schedule, Integer sequence, List<ScheduleCompletionMember> scheduleCompletionMembers) {
+    private ScheduleCompletion(
+            Long id,
+            LocalDate completionDate,
+            Schedule schedule,
+            List<ScheduleCompletionMember> scheduleCompletionMembers,
+            Integer sequence) {
         this.id = id;
         this.completionDate = completionDate;
         this.schedule = schedule;
-        this.sequence = sequence;
         this.scheduleCompletionMembers = scheduleCompletionMembers;
+        this.sequence = sequence;
     }
 
     public static ScheduleCompletion create(Schedule schedule, LocalDate completionDate, Integer sequence) {
