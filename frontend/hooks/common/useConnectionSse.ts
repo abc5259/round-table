@@ -1,6 +1,5 @@
 import EventSource, { EventSourceListener } from 'react-native-sse';
 import { useEffect } from 'react';
-import 'react-native-url-polyfill/auto';
 import * as SecureStore from 'expo-secure-store';
 import useMe from '../queries/member/useMe';
 

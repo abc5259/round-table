@@ -1,6 +1,6 @@
-import { ApiError } from "./ApiError";
-import customAxios from "./Axios";
-import { API_PREFIX } from "./common";
+import { ApiError } from './ApiError';
+import customAxios from './Axios';
+import { API_PREFIX } from './common';
 
 export const existMemberEmail = async (email: string) => {
   try {
@@ -8,7 +8,7 @@ export const existMemberEmail = async (email: string) => {
       `${API_PREFIX.MEMBER}/exists`,
       {
         email,
-      }
+      },
     );
     return res.data;
   } catch (error) {
@@ -18,8 +18,8 @@ export const existMemberEmail = async (email: string) => {
 };
 
 export const enum Gender {
-  MEN = "MEN",
-  GIRL = "GIRL",
+  MALE = 'MALE',
+  FEMALE = 'FEMALE',
 }
 
 export const updateProfile = async (name: string, gender: Gender) => {
@@ -29,7 +29,7 @@ export const updateProfile = async (name: string, gender: Gender) => {
       {
         name,
         gender,
-      }
+      },
     );
     return res.data;
   } catch (error) {
@@ -58,7 +58,7 @@ export const getMe = async () => {
 export const canInviteHouseEmail = async (email: string) => {
   try {
     const res = await customAxios.get<DefaultApiResponseType>(
-      `${API_PREFIX.MEMBER}/check-invite?email=${email}`
+      `${API_PREFIX.MEMBER}/check-invite?email=${email}`,
     );
     return res.data;
   } catch (error) {
