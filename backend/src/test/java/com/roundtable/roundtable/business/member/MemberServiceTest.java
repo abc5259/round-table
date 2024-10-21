@@ -36,7 +36,7 @@ class MemberServiceTest extends IntegrationTestSupport {
     @Test
     void findMemberDetail() {
         //given
-        Member member = createMember("lee", Gender.MEN, null);
+        Member member = createMember("lee", Gender.MALE, null);
 
         //when
         MemberDetailResponse result = memberService.findMemberDetail(member.getId());
@@ -51,7 +51,7 @@ class MemberServiceTest extends IntegrationTestSupport {
     void findMemberDetail_with_house() {
         //given
         House house = createHouse("house");
-        Member member = createMember("lee", Gender.MEN, house);
+        Member member = createMember("lee", Gender.MALE, house);
 
         //when
         MemberDetailResponse result = memberService.findMemberDetail(member.getId());
@@ -79,7 +79,7 @@ class MemberServiceTest extends IntegrationTestSupport {
     @Test
     void canInviteHouse() {
         //given
-        Member member = createMember("name", Gender.MEN, null);
+        Member member = createMember("name", Gender.MALE, null);
 
         //when
         boolean result = memberService.canInviteHouse(member.getId());
@@ -92,7 +92,7 @@ class MemberServiceTest extends IntegrationTestSupport {
     @Test
     void canInviteHouse_already_enter_house() {
         //given
-        Member member = createMember("name", Gender.MEN, createHouse("house"));
+        Member member = createMember("name", Gender.MALE, createHouse("house"));
 
         //when
         boolean result = memberService.canInviteHouse(member.getId());
@@ -153,7 +153,7 @@ class MemberServiceTest extends IntegrationTestSupport {
                 .email("email")
                 .password("password")
                 .name("name")
-                .gender(Gender.GIRL)
+                .gender(Gender.FEMALE)
                 .house(house)
                 .build();
         return memberRepository.save(member);

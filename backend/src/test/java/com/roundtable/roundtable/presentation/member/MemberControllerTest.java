@@ -33,7 +33,7 @@ class MemberControllerTest extends ControllerTestSupport {
         MemberDetailResponse response = new MemberDetailResponse(
                 1L,
                 "name",
-                Gender.MEN,
+                Gender.MALE,
                 new HouseDetailResponse(
                         1L,
                         "name"

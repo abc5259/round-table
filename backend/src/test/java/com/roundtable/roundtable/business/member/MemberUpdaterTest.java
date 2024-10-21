@@ -35,7 +35,7 @@ class MemberUpdaterTest extends IntegrationTestSupport {
         Member savedMember = memberRepository.save(member);
 
         String name = "name";
-        Gender gender = Gender.MEN;
+        Gender gender = Gender.MALE;
         MemberProfile memberProfile = new MemberProfile(name, gender);
 
         //when

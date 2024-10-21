@@ -10,7 +10,7 @@ import com.roundtable.roundtable.domain.schedule.ScheduleCompletion;
 import com.roundtable.roundtable.domain.schedule.ScheduleCompletionMember;
 import com.roundtable.roundtable.domain.schedule.repository.ScheduleCompletionMemberRepository;
 import com.roundtable.roundtable.domain.schedule.repository.ScheduleCompletionRepository;
-import com.roundtable.roundtable.domain.schedule.ScheduleDayRepository;
+import com.roundtable.roundtable.domain.schedule.repository.ScheduleDayRepository;
 import com.roundtable.roundtable.domain.schedule.ScheduleMember;
 import com.roundtable.roundtable.domain.schedule.repository.ScheduleMemberRepository;
 import com.roundtable.roundtable.global.exception.CoreException.NotFoundEntityException;

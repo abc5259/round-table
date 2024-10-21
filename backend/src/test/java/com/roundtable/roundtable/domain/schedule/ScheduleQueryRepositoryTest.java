@@ -15,6 +15,7 @@ import com.roundtable.roundtable.domain.schedule.dto.ScheduleDto;
 import com.roundtable.roundtable.domain.schedule.dto.ScheduleOfMemberDto;
 import com.roundtable.roundtable.domain.schedule.repository.ExtraScheduleMemberRepository;
 import com.roundtable.roundtable.domain.schedule.repository.ScheduleCompletionRepository;
+import com.roundtable.roundtable.domain.schedule.repository.ScheduleDayRepository;
 import com.roundtable.roundtable.domain.schedule.repository.ScheduleMemberRepository;
 import com.roundtable.roundtable.domain.schedule.repository.ScheduleQueryRepository;
 import com.roundtable.roundtable.domain.schedule.repository.ScheduleRepository;
@@ -64,9 +65,9 @@ class ScheduleQueryRepositoryTest extends IntegrationTestSupport {
         Member member3 = appendMember(house, "email3", "name3");
         Member member4 = appendMember(house, "email4", "name4");
 
-        Schedule schedule1 = prepareSchedule(house, date.getDayOfWeek(), List.of(member1, member2), List.of(member3, member4));
+        Schedule schedule1 = prepareSchedule(house, date, List.of(member1, member2), List.of(member3, member4));
         Schedule schedule2 = prepareCompletionSchedule(house, date, member2, member3);
-        Schedule schedule3 = prepareSchedule(house, date.getDayOfWeek().plus(1), List.of(member1, member2), List.of(member3, member4));
+        Schedule schedule3 = prepareSchedule(house, date.minusDays(1), List.of(member1, member2), List.of(member3, member4));
 
         //when
         List<ScheduleDto> schedules = sut.findSchedulesByDate(house.getId(), date, new CursorPagination(0L, 2));
@@ -108,9 +109,9 @@ class ScheduleQueryRepositoryTest extends IntegrationTestSupport {
         Member member3 = appendMember(house, "email3", "name3");
         Member member4 = appendMember(house, "email4", "name4");
 
-        Schedule schedule1 = prepareSchedule(house, date.getDayOfWeek(), List.of(member1, member2), List.of(member3, member4));
+        Schedule schedule1 = prepareSchedule(house, date, List.of(member1, member2), List.of(member3, member4));
         Schedule schedule2 = prepareCompletionSchedule(house, date, member2, member3);
-        Schedule schedule3 = prepareSchedule(house, date.getDayOfWeek(), List.of(member2), List.of(member1, member4));
+        Schedule schedule3 = prepareSchedule(house, date, List.of(member2), List.of(member1, member4));
 
         //when
         List<ScheduleOfMemberDto> schedules = sut.findSchedulesByDateAndMemberId(house.getId(), date, member1.getId(), new CursorPagination(0L,2));
@@ -137,11 +138,11 @@ class ScheduleQueryRepositoryTest extends IntegrationTestSupport {
 
     }
 
-    private Schedule prepareSchedule(House house, DayOfWeek date, List<Member> managers, List<Member> extraMembers) {
+    private Schedule prepareSchedule(House house, LocalDate date, List<Member> managers, List<Member> extraMembers) {
         Schedule schedule = appendSchedule(house, FIX, ONE_TIME, 0);
-        appendScheduleDay(schedule, Day.forDayOfWeek(date));
+        appendScheduleDay(schedule, Day.forDayOfWeek(date.getDayOfWeek()));
         managers.forEach(member -> appendScheduleMember(schedule, member, 0));
-        extraMembers.forEach(member -> appendExtraScheduleMember(schedule, member));
+        extraMembers.forEach(member -> appendExtraScheduleMember(schedule, member, date));
         return schedule;
     }
 
@@ -207,11 +208,11 @@ class ScheduleQueryRepositoryTest extends IntegrationTestSupport {
         return scheduleCompletionRepository.save(scheduleCompletion);
     }
 
-    private ExtraScheduleMember appendExtraScheduleMember(Schedule schedule, Member member) {
+    private ExtraScheduleMember appendExtraScheduleMember(Schedule schedule, Member member, LocalDate date) {
         ExtraScheduleMember extraScheduleMember = ExtraScheduleMember.builder()
                 .schedule(schedule)
                 .member(member)
-                .assignedDate(LocalDate.now())
+                .assignedDate(date)
                 .build();
         return extraScheduleMemberRepository.save(extraScheduleMember);
     }

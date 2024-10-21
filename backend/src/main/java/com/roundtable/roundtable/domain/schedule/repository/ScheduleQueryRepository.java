@@ -38,7 +38,10 @@ public class ScheduleQueryRepository {
         this.queryFactory = new JPAQueryFactory(em);
     }
 
-    public List<ScheduleDto> findSchedulesByDate(Long houseId, LocalDate now, CursorPagination cursorPagination) {
+    public List<ScheduleDto> findSchedulesByDate(
+            Long houseId,
+            LocalDate date,
+            CursorPagination cursorPagination) {
 
         return queryFactory
                 .select(new QScheduleDto(
@@ -53,17 +56,17 @@ public class ScheduleQueryRepository {
                 .from(schedule)
                 .leftJoin(scheduleCompletion).on(
                         scheduleIdEq(scheduleCompletion.schedule.id),
-                        scheduleCompletionDateEq(now))
+                        scheduleCompletionDateEq(date))
                 .join(scheduleDay).on(
                         scheduleIdEq(scheduleDay.schedule.id),
-                        scheduleDayEq(now))
+                        scheduleDayEq(date))
                 .join(scheduleMember).on(
                         scheduleIdEq(scheduleMember.schedule.id),
                         scheduleMemberSequenceEq(sequenceCondition))
                 .join(scheduleMember.member)
                 .leftJoin(extraScheduleMember).on(
                         scheduleIdEq(extraScheduleMember.schedule.id),
-                        extraMemberAssignedDateEq(now))
+                        extraMemberAssignedDateEq(date))
                 .leftJoin(extraScheduleMember.member)
                 .where(
                         scheduleHouseIdEq(houseId),
@@ -75,7 +78,11 @@ public class ScheduleQueryRepository {
                 .fetch();
     }
 
-    public List<ScheduleOfMemberDto> findSchedulesByDateAndMemberId(Long houseId, LocalDate now, Long memberId, CursorPagination cursorPagination) {
+    public List<ScheduleOfMemberDto> findSchedulesByDateAndMemberId(
+            Long houseId,
+            LocalDate date,
+            Long memberId,
+            CursorPagination cursorPagination) {
 
         return queryFactory
                 .select(new QScheduleOfMemberDto(
@@ -88,17 +95,17 @@ public class ScheduleQueryRepository {
                 .from(schedule)
                 .leftJoin(scheduleCompletion).on(
                         scheduleIdEq(scheduleCompletion.schedule.id),
-                        scheduleCompletionDateEq(now))
+                        scheduleCompletionDateEq(date))
                 .join(scheduleDay).on(
                         scheduleIdEq(scheduleDay.schedule.id),
-                        scheduleDayEq(now))
+                        scheduleDayEq(date))
                 .join(scheduleMember).on(
                         scheduleIdEq(scheduleMember.schedule.id),
                         scheduleMemberSequenceEq(sequenceCondition))
                 .join(scheduleMember.member)
                 .leftJoin(extraScheduleMember).on(
                         scheduleIdEq(extraScheduleMember.schedule.id),
-                        extraMemberAssignedDateEq(now))
+                        extraMemberAssignedDateEq(date))
                 .leftJoin(extraScheduleMember.member)
                 .where(
                         scheduleHouseIdEq(houseId),
@@ -111,8 +118,8 @@ public class ScheduleQueryRepository {
                 .fetch();
     }
 
-    private static BooleanExpression extraMemberAssignedDateEq(LocalDate now) {
-        return extraScheduleMember.assignedDate.eq(now);
+    private static BooleanExpression extraMemberAssignedDateEq(LocalDate date) {
+        return extraScheduleMember.assignedDate.eq(date);
     }
 
     private BooleanExpression extraMemberIdEq(Long memberId) {
@@ -135,12 +142,12 @@ public class ScheduleQueryRepository {
         return schedule.id.eq(id);
     }
 
-    private BooleanExpression scheduleCompletionDateEq(LocalDate now) {
-        return scheduleCompletion.completionDate.eq(now);
+    private BooleanExpression scheduleCompletionDateEq(LocalDate date) {
+        return scheduleCompletion.completionDate.eq(date);
     }
 
-    private BooleanExpression scheduleDayEq(LocalDate now) {
-        return scheduleDay.dayOfWeek.eq(Day.forDayOfWeek(now.getDayOfWeek()));
+    private BooleanExpression scheduleDayEq(LocalDate date) {
+        return scheduleDay.dayOfWeek.eq(Day.forDayOfWeek(date.getDayOfWeek()));
     }
 
     private BooleanExpression scheduleMemberSequenceEq(NumberExpression<Integer> sequenceCondition) {

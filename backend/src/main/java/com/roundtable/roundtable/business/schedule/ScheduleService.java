@@ -12,7 +12,7 @@ import com.roundtable.roundtable.domain.house.House;
 import com.roundtable.roundtable.domain.member.Member;
 import com.roundtable.roundtable.domain.schedule.Schedule;
 import com.roundtable.roundtable.domain.schedule.ScheduleDay;
-import com.roundtable.roundtable.domain.schedule.ScheduleDayRepository;
+import com.roundtable.roundtable.domain.schedule.repository.ScheduleDayRepository;
 import com.roundtable.roundtable.domain.schedule.ScheduleMember;
 import com.roundtable.roundtable.domain.schedule.repository.ScheduleMemberRepository;
 import com.roundtable.roundtable.domain.schedule.repository.ScheduleRepository;

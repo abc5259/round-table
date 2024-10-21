@@ -59,7 +59,7 @@ class MemberTest {
     void settingProfile() {
         //given
         String name = "name";
-        Gender gender = MEN;
+        Gender gender = MALE;
         String password = "password";
         Member member = Member.of("email", password, passwordEncoder);
 
