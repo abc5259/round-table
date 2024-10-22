@@ -152,3 +152,15 @@ export const getSchedulesOfHouse = async (houseId: number) => {
     throw new ApiError();
   }
 };
+
+export const completeSchedule = async (houseId: number, scheduleId: number) => {
+  try {
+    const res = await customAxios.post<DefaultApiResponseType>(
+      `/house/${houseId}${API_PREFIX.SCHEDULE}/${scheduleId}/complete`,
+    );
+    return res.data;
+  } catch (error) {
+    console.error(error);
+    throw new ApiError();
+  }
+};

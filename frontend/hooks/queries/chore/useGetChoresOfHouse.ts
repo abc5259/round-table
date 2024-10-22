@@ -21,6 +21,7 @@ const useGetChoresOfHouse = (options?: UseGetChoresOfHouseOptions) => {
     queryFn: () => getChoresOfHouse(houseId as number),
     enabled: !!houseId,
     ...options,
+    refetchOnWindowFocus: true,
   });
 };
 

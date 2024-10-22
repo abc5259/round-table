@@ -5,13 +5,12 @@ import { ApiError } from './ApiError';
 const resolveHttpStatus = [400, 404];
 
 const customAxios = axios.create({
-  baseURL: 'http://localhost:8080',
+  baseURL: 'http://192.168.0.5:8080',
 });
 
 customAxios.interceptors.request.use(
   async config => {
     const accessToken = await SecureStore.getItemAsync('accessToken');
-    console.log('accessToken', accessToken);
     if (accessToken != null) {
       config.headers['Authorization'] = `Bearer ${accessToken}`;
     }

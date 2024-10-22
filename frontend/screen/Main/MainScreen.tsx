@@ -3,7 +3,7 @@ import * as Styled from './Styled';
 import useMe from '../../hooks/queries/member/useMe';
 import ChoreCards from '../../components/organisms/ChoreCards/ChoreCards';
 import ChoreOfHouseCards from '../../components/organisms/ChoresOfHouseCards/ChoreOfHouseCards';
-import useGetMySchedules from '../../hooks/queries/chore/useGetMyScgedules';
+import useGetMySchedules from '../../hooks/queries/chore/useGetMySchedules';
 import useConnectionSse from '../../hooks/common/useConnectionSse';
 
 const MainScreen = () => {

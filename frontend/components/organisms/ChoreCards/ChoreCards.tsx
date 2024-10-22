@@ -2,7 +2,7 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import * as Styled from './styled';
 import ChoreCard from '../../molecules/ChoreCard/ChoreCard';
 import { WithLocalSvg } from 'react-native-svg/css';
-import useGetMySchedules from '../../../hooks/queries/chore/useGetMyScgedules';
+import useGetMySchedules from '../../../hooks/queries/chore/useGetMySchedules';
 
 const ChoreCards = () => {
   const { data: myScheduleData } = useGetMySchedules();
@@ -24,6 +24,7 @@ const ChoreCards = () => {
                 style={{ marginRight: 20, ...styles.card }}
               >
                 <ChoreCard
+                  id={schedule.id}
                   isCompleted={schedule.isCompleted}
                   name={schedule.name}
                   category={schedule.category}

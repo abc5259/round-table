@@ -1,4 +1,4 @@
-import styled from "styled-components/native";
+import styled from 'styled-components/native';
 
 export const Wrapper = styled.View`
   background-color: #fff;
@@ -16,11 +16,11 @@ export const Badge = styled.View<{ isCompleted: boolean }>`
   justify-content: center;
   align-items: center;
   border: ${props =>
-    props.isCompleted ? "1px solid #11D78F" : "1px solid #9CA3AB"};
+    props.isCompleted ? '1px solid #11D78F' : '1px solid #9CA3AB'};
 `;
 
 export const BadgeText = styled.Text<{ isCompleted: boolean }>`
-  color: ${props => (props.isCompleted ? "#11D78F" : "#9CA3AB")};
+  color: ${props => (props.isCompleted ? '#11D78F' : '#9CA3AB')};
   font-weight: bold;
   font-size: 12px;
 `;
@@ -43,7 +43,7 @@ export const Sub = styled.Text`
   color: #80878e;
 `;
 
-export const Button = styled.View`
+export const Button = styled.TouchableOpacity`
   width: 100%;
   height: 36px;
   justify-content: center;
