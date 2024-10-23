@@ -1,6 +1,7 @@
 import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
 import { ApiError } from './ApiError';
+import useTokenStore from '../store/token/useTokenStore';
 
 const resolveHttpStatus = [400, 404];
 
@@ -43,6 +44,10 @@ customAxios.interceptors.response.use(
         if (refreshToken != null) {
           const { success, data } = await refresh(refreshToken);
           if (success) {
+            useTokenStore.setState({
+              accessToken: data.accessToken,
+              refreshToken: data.refreshToken,
+            });
             await Promise.all([
               SecureStore.setItemAsync('accessToken', data.accessToken),
               SecureStore.setItemAsync('refreshToken', data.refreshToken),
