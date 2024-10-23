@@ -15,7 +15,7 @@ const useTokenStore = create<TokenStoreType>((set, get) => ({
   initializeToken: async () => {
     if (get().accessToken) return;
     const accessToken = await SecureStore.getItemAsync('accessToken');
-    const refreshToken = await SecureStore.getItemAsync('accessToken');
+    const refreshToken = await SecureStore.getItemAsync('refreshToken');
     set({
       accessToken,
       refreshToken,

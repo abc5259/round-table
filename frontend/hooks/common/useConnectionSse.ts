@@ -31,6 +31,8 @@ const useConnectionSse = () => {
     initializeToken();
   }, [initializeToken]);
 
+  console.log('accessToken', accessToken);
+
   useFocusEffect(
     useCallback(() => {
       let eventSource: EventSource<CustomEvent> | null = null;

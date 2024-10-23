@@ -8,6 +8,7 @@ import { NavigationProp, RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../../../App';
 import { useQuery } from '@tanstack/react-query';
 import { getMe, GetMeResponse } from '../../../api/memberApi';
+import useTokenStore from '../../../store/token/useTokenStore';
 
 type LoginScreenRouteProp = RouteProp<RootStackParamList, 'Login'>;
 
@@ -27,6 +28,7 @@ const LoginScreen = ({ navigation }: LoginScreenProps) => {
     queryFn: getMe,
     enabled: false,
   });
+  const { setAccessToken, setRefreshToken } = useTokenStore();
 
   const {
     control,
@@ -48,6 +50,8 @@ const LoginScreen = ({ navigation }: LoginScreenProps) => {
       return;
     }
 
+    setAccessToken(data.accessToken);
+    setRefreshToken(data.refreshToken);
     await Promise.all([
       SecureStore.setItemAsync('accessToken', data.accessToken),
       SecureStore.setItemAsync('refreshToken', data.refreshToken),
@@ -75,6 +79,8 @@ const LoginScreen = ({ navigation }: LoginScreenProps) => {
       navigation.navigate('CreateHouse');
       return;
     }
+
+    navigation.navigate('BottomTabNavigator');
   };
 
   return (

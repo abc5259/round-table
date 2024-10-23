@@ -16,12 +16,14 @@ import CreateRepeatScheduleForm from '../../../components/template/CreateRepeatS
 import { useRepeatScheduleAppednerStore } from '../../../store/schedule/repeateScheduleAppenderStore';
 import { Day } from '../../../components/organisms/DaySelector/DaySelector';
 import { RepeateCategory } from '../../../type/Chore';
+import { useQueryClient } from '@tanstack/react-query';
 
 type ScheduleType = '일회성 일정' | '반복 일정';
 
 const scheduleTypeArr: ScheduleType[] = ['일회성 일정', '반복 일정'];
 
 const CreateScheduleScreen = () => {
+  const queryClient = useQueryClient();
   const { data: meData } = useMe();
   const { validateSubmit, name, date, time, allocators } =
     useOneTimeScheduleAppednerStore();
@@ -74,7 +76,12 @@ const CreateScheduleScreen = () => {
       alert(res.message);
       return;
     }
-
+    queryClient.invalidateQueries({
+      queryKey: ['my-schedules'],
+    });
+    queryClient.invalidateQueries({
+      queryKey: ['chores'],
+    });
     alert('스케줄 생성 완료');
   };
 
@@ -124,6 +131,9 @@ const CreateScheduleScreen = () => {
       return;
     }
 
+    await queryClient.invalidateQueries({
+      queryKey: ['my-schedules'],
+    });
     alert('스케줄 생성 완료');
   };
 
