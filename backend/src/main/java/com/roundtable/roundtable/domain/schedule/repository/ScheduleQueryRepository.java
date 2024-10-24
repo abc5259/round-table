@@ -1,11 +1,11 @@
 package com.roundtable.roundtable.domain.schedule.repository;
 
-import static com.querydsl.core.types.dsl.Expressions.*;
-import static com.roundtable.roundtable.domain.schedule.QExtraScheduleMember.*;
-import static com.roundtable.roundtable.domain.schedule.QSchedule.*;
-import static com.roundtable.roundtable.domain.schedule.QScheduleCompletion.*;
-import static com.roundtable.roundtable.domain.schedule.QScheduleDay.*;
-import static com.roundtable.roundtable.domain.schedule.QScheduleMember.*;
+import static com.querydsl.core.types.dsl.Expressions.stringTemplate;
+import static com.roundtable.roundtable.domain.schedule.QExtraScheduleMember.extraScheduleMember;
+import static com.roundtable.roundtable.domain.schedule.QSchedule.schedule;
+import static com.roundtable.roundtable.domain.schedule.QScheduleCompletion.scheduleCompletion;
+import static com.roundtable.roundtable.domain.schedule.QScheduleDay.scheduleDay;
+import static com.roundtable.roundtable.domain.schedule.QScheduleMember.scheduleMember;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.CaseBuilder;
@@ -14,6 +14,9 @@ import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.roundtable.roundtable.domain.common.CursorPagination;
 import com.roundtable.roundtable.domain.schedule.Day;
+import com.roundtable.roundtable.domain.schedule.ScheduleType;
+import com.roundtable.roundtable.domain.schedule.dto.DateScheduleCountDto;
+import com.roundtable.roundtable.domain.schedule.dto.QDateScheduleCountDto;
 import com.roundtable.roundtable.domain.schedule.dto.QScheduleDto;
 import com.roundtable.roundtable.domain.schedule.dto.QScheduleOfMemberDto;
 import com.roundtable.roundtable.domain.schedule.dto.ScheduleDto;
@@ -115,6 +118,22 @@ public class ScheduleQueryRepository {
                 .groupBy(schedule.id, scheduleCompletion.id)
                 .orderBy(schedule.id.asc())
                 .limit(cursorPagination.limit())
+                .fetch();
+    }
+
+    public List<DateScheduleCountDto> findOneTimeScheduleCountByDateAndHouseId(LocalDate startDate,
+                                                                               LocalDate endDate,
+                                                                               Long houseId) {
+        return queryFactory
+                .select(new QDateScheduleCountDto(schedule.startDate, schedule.count()))
+                .from(schedule)
+                .where(
+                        schedule.scheduleType.eq(ScheduleType.ONE_TIME),
+                        schedule.startDate.gt(startDate),
+                        schedule.startDate.loe(endDate),
+                        scheduleHouseIdEq(houseId)
+                )
+                .groupBy(schedule.startDate)
                 .fetch();
     }
 

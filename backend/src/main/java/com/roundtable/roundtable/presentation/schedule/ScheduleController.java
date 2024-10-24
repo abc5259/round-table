@@ -6,13 +6,12 @@ import com.roundtable.roundtable.business.schedule.ScheduleCompletionService;
 import com.roundtable.roundtable.business.schedule.ScheduleService;
 import com.roundtable.roundtable.business.schedule.dto.ScheduleOfMemberResponse;
 import com.roundtable.roundtable.business.schedule.dto.ScheduleResponse;
-import com.roundtable.roundtable.domain.schedule.ScheduleType;
+import com.roundtable.roundtable.global.response.ResponseDto;
+import com.roundtable.roundtable.global.response.SuccessResponse;
+import com.roundtable.roundtable.global.support.annotation.Login;
 import com.roundtable.roundtable.presentation.common.request.CursorBasedPaginationRequest;
 import com.roundtable.roundtable.presentation.schedule.request.CreateOneTimeScheduleRequest;
 import com.roundtable.roundtable.presentation.schedule.request.CreateScheduleRequest;
-import com.roundtable.roundtable.global.support.annotation.Login;
-import com.roundtable.roundtable.global.response.ResponseDto;
-import com.roundtable.roundtable.global.response.SuccessResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
@@ -48,7 +47,8 @@ public class ScheduleController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 SuccessResponse.from(
-                        scheduleService.create(createScheduleRequest.toCreateScheduleDto(), authMember.toHouseAuthMember(houseId))
+                        scheduleService.create(createScheduleRequest.toCreateScheduleDto(),
+                                authMember.toHouseAuthMember(houseId))
                 )
         );
     }
@@ -63,7 +63,8 @@ public class ScheduleController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 SuccessResponse.from(
-                        scheduleService.create(createOneTimeScheduleRequest.toCreateScheduleDto(), authMember.toHouseAuthMember(houseId))
+                        scheduleService.create(createOneTimeScheduleRequest.toCreateScheduleDto(),
+                                authMember.toHouseAuthMember(houseId))
                 )
         );
     }
@@ -77,10 +78,11 @@ public class ScheduleController {
             @RequestParam(required = false) LocalDate date,
             @ModelAttribute CursorBasedPaginationRequest cursorBasedPaginationRequest
     ) {
-        if(date == null) {
+        if (date == null) {
             date = LocalDate.now();
         }
-        var response = scheduleService.findMemberSchedulesByDate(authMember.toHouseAuthMember(houseId), date, cursorBasedPaginationRequest.toCursorBasedRequest());
+        var response = scheduleService.findMemberSchedulesByDate(authMember.toHouseAuthMember(houseId), date,
+                cursorBasedPaginationRequest.toCursorBasedRequest());
         return ResponseEntity.ok(SuccessResponse.from(response));
     }
 
@@ -93,14 +95,17 @@ public class ScheduleController {
             @RequestParam(required = false) LocalDate date,
             @ModelAttribute CursorBasedPaginationRequest cursorBasedPaginationRequest
     ) {
-        if(date == null) {
+        if (date == null) {
             date = LocalDate.now();
         }
-        var response = scheduleService.findSchedulesByDate(authMember.toHouseAuthMember(houseId), date, cursorBasedPaginationRequest.toCursorBasedRequest());
+        var response = scheduleService.findSchedulesByDate(authMember.toHouseAuthMember(houseId), date,
+                cursorBasedPaginationRequest.toCursorBasedRequest());
         return ResponseEntity.ok(SuccessResponse.from(response));
     }
 
-    @PostMapping("/{scheduleId}")
+    @Operation(summary = "스케줄 완료", description = "스케줄을 완료합니다.")
+    @ApiResponse(responseCode = "200", description = "성공")
+    @PostMapping("/{scheduleId}/complete")
     public ResponseEntity<ResponseDto<Void>> completeSchedule(
             @Login AuthMember authMember,
             @PathVariable("houseId") Long houseId,
