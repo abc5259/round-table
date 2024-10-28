@@ -115,4 +115,5 @@ public class ScheduleController {
 
         return ResponseEntity.ok(SuccessResponse.ok());
     }
+    
 }

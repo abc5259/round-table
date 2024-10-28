@@ -89,7 +89,7 @@ public class ScheduleService {
                 cursorBasedRequest);
     }
 
-    public List<DateScheduleCountResponse> findScheduleCountForCalendar(YearMonth yearMonth, Long houseId) {
+    public List<DateScheduleCountResponse> findOnetimeScheduleCountForCalendar(YearMonth yearMonth, Long houseId) {
         return scheduleReader.findOneTimeScheduleCountByMonthAndHouseId(yearMonth, houseId);
     }
 }

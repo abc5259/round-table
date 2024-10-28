@@ -41,11 +41,14 @@ public class ScheduleCompletionService {
         ScheduleCompletion scheduleCompletion = scheduleManagers.complete(Member.Id(member.memberId()), now);
 
         scheduleCompletionRepository.save(scheduleCompletion);
-        List<ScheduleCompletionMember> scheduleCompletionMembers = appendScheduleCompletionMember(scheduleManagers,
+        List<ScheduleCompletionMember> scheduleCompletionMembers = appendScheduleCompletionMember(
+                scheduleManagers,
                 scheduleCompletion);
 
-        applicationEventPublisher.publishEvent(new ScheduleCompletionEvent(member.houseId(), scheduleId,
-                scheduleCompletionMembers.stream().map(ScheduleCompletionMember::getMemberId).toList()));
+        applicationEventPublisher.publishEvent(new ScheduleCompletionEvent(
+                member.houseId(),
+                scheduleId,
+                toScheduleCompletionMemberIds(scheduleCompletionMembers)));
     }
 
     private void validateCompletionSchedule(Long scheduleId, LocalDate completionDate) {
@@ -63,5 +66,9 @@ public class ScheduleCompletionService {
         List<ScheduleCompletionMember> scheduleCompletionMembers = scheduleManagers.toScheduleCompletionMembers(
                 scheduleCompletion);
         return scheduleCompletionMemberRepository.saveAll(scheduleCompletionMembers);
+    }
+
+    private List<Long> toScheduleCompletionMemberIds(List<ScheduleCompletionMember> scheduleCompletionMembers) {
+        return scheduleCompletionMembers.stream().map(ScheduleCompletionMember::getMemberId).toList();
     }
 }
