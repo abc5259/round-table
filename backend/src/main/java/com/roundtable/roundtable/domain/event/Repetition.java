@@ -1,17 +1,10 @@
 package com.roundtable.roundtable.domain.event;
 
-import static com.roundtable.roundtable.domain.event.RepetitionType.DAILY;
-import static com.roundtable.roundtable.domain.event.RepetitionType.WEEKLY;
-
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotNull;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.temporal.TemporalAdjusters;
-import java.util.List;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -62,44 +55,5 @@ public class Repetition {
 
     public static Repetition of(RepetitionType repetitionType, Integer repeatCycle, LocalDate repeatedUntilDate) {
         return new Repetition(repetitionType, repeatCycle, repeatedUntilDate);
-    }
-
-    public LocalDateTime decideStartDateTime(LocalDateTime now,
-                                             LocalDateTime inputStartDateTime,
-                                             List<DayOfWeek> dayOfWeeks) {
-        if (repetitionType == DAILY) {
-            return getLaterDate(now, inputStartDateTime);
-        }
-
-        if (repetitionType == WEEKLY) {
-            LocalDateTime laterDate = getLaterDate(now, inputStartDateTime);
-            return nextOrSameClosest(laterDate, dayOfWeeks);
-        }
-
-        if (inputStartDateTime.isAfter(now)) {
-            return inputStartDateTime;
-        }
-
-        return inputStartDateTime.plusMonths(1);
-    }
-
-    private LocalDateTime getLaterDate(LocalDateTime dateTime1, LocalDateTime dateTime2) {
-        return dateTime1.isAfter(dateTime2) ? dateTime1 : dateTime2;
-    }
-
-    public LocalDateTime nextOrSameClosest(LocalDateTime date, List<DayOfWeek> daysOfWeek) {
-        LocalDateTime closestDate = null;
-
-        for (DayOfWeek day : daysOfWeek) {
-            // 주어진 날짜를 기준으로 지정된 요일로 이동
-            LocalDateTime adjustedDate = date.with(TemporalAdjusters.nextOrSame(day));
-
-            // 가장 가까운 날짜 찾기
-            if (closestDate == null || adjustedDate.isBefore(closestDate)) {
-                closestDate = adjustedDate;
-            }
-        }
-
-        return closestDate;
     }
 }

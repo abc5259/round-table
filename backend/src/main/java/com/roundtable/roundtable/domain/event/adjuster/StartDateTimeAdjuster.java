@@ -1,4 +1,4 @@
-package com.roundtable.roundtable.domain.event;
+package com.roundtable.roundtable.domain.event.adjuster;
 
 import java.time.LocalDateTime;
 
