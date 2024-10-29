@@ -9,6 +9,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -32,4 +33,20 @@ public class EventTimeSlot {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     private Event event;
+
+    @Builder
+    private EventTimeSlot(Long id, LocalDateTime startTime, boolean isCompleted, boolean isSkipped, Event event) {
+        this.id = id;
+        this.startTime = startTime;
+        this.isCompleted = isCompleted;
+        this.isSkipped = isSkipped;
+        this.event = event;
+    }
+
+    public static EventTimeSlot of(Event event, LocalDateTime startTime) {
+        return EventTimeSlot.builder()
+                .event(event)
+                .startTime(startTime)
+                .build();
+    }
 }

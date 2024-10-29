@@ -1,7 +1,8 @@
 package com.roundtable.roundtable.domain.event;
 
 import com.roundtable.roundtable.domain.house.House;
-import com.roundtable.roundtable.domain.schedule.Category;
+import com.roundtable.roundtable.domain.member.Member;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -11,9 +12,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -34,18 +35,72 @@ public class Event {
     private Category category;
 
     @NotNull
+    private LocalDateTime startDateTime;
+
+    @Embedded
+    private Repetition repetition;
+
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     private House house;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Member creator;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Event parentEvent;
 
-    @NotNull
-    private LocalDateTime startDateTime;
+    @Builder
+    private Event(Long id,
+                  String name,
+                  Category category,
+                  LocalDateTime startDateTime,
+                  Repetition repetition,
+                  House house,
+                  Event parentEvent,
+                  Member creator) {
+        this.id = id;
+        this.name = name;
+        this.category = category;
+        this.startDateTime = startDateTime;
+        this.repetition = repetition;
+        this.house = house;
+        this.parentEvent = parentEvent;
+        this.creator = creator;
+    }
 
-    private RepetitionType repetitionType;
+    public static Event oneTime(
+            String name,
+            Category category,
+            LocalDateTime startDateTime,
+            House house,
+            Member creator
+    ) {
+        return Event.builder()
+                .name(name)
+                .category(category)
+                .startDateTime(startDateTime)
+                .house(house)
+                .creator(creator)
+                .build();
+    }
 
-    private Integer repeatCycle;
-
-    private LocalDate repeatedUntilDate;
+    public static Event repetition(
+            String name,
+            Category category,
+            LocalDateTime startDateTime,
+            House house,
+            Member creator,
+            Repetition repetition
+    ) {
+        return Event.builder()
+                .name(name)
+                .category(category)
+                .startDateTime(startDateTime)
+                .house(house)
+                .creator(creator)
+                .repetition(repetition)
+                .build();
+    }
 }
