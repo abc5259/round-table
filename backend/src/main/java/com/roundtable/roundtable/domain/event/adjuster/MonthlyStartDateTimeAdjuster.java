@@ -1,23 +1,24 @@
 package com.roundtable.roundtable.domain.event.adjuster;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class MonthlyStartDateTimeAdjuster implements StartDateTimeAdjuster {
 
-    private final LocalDateTime now;
-    private final LocalDateTime inputStartDateTime;
+    private final LocalDate now;
+    private final LocalDateTime startDateTime;
 
-    public MonthlyStartDateTimeAdjuster(LocalDateTime now, LocalDateTime inputStartDateTime) {
+    public MonthlyStartDateTimeAdjuster(LocalDate now, LocalDateTime startDateTime) {
         this.now = now;
-        this.inputStartDateTime = inputStartDateTime;
+        this.startDateTime = startDateTime;
     }
 
     @Override
     public LocalDateTime adjustStartDateTime() {
-        if (inputStartDateTime.isAfter(now)) {
-            return inputStartDateTime;
+        if (startDateTime.toLocalDate().isAfter(now)) {
+            return startDateTime;
         }
 
-        return inputStartDateTime.plusMonths(1);
+        return startDateTime.plusMonths(1);
     }
 }

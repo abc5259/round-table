@@ -6,6 +6,7 @@ import com.roundtable.roundtable.business.member.MemberReader;
 import com.roundtable.roundtable.domain.event.Event;
 import com.roundtable.roundtable.domain.event.EventParticipant;
 import com.roundtable.roundtable.domain.event.EventTimeSlot;
+import com.roundtable.roundtable.domain.event.OneTimeEvent;
 import com.roundtable.roundtable.domain.event.repository.EventParticipantRepository;
 import com.roundtable.roundtable.domain.event.repository.EventRepository;
 import com.roundtable.roundtable.domain.event.repository.EventTimeSlotRepository;
@@ -19,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class EventService {
+public class OneTimeEventService {
 
     private final MemberReader memberReader;
     private final EventRepository eventRepository;
@@ -32,7 +33,7 @@ public class EventService {
         List<Member> members = memberReader.findAllByIdOrThrow(createEventDto.participantIds());
         House house = House.Id(authMember.houseId());
 
-        Event event = Event.oneTime(
+        Event event = OneTimeEvent.from(
                 createEventDto.eventName(),
                 createEventDto.category(),
                 createEventDto.startDateTime(),

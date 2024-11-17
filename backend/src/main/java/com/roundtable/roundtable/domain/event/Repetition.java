@@ -13,9 +13,6 @@ import lombok.NoArgsConstructor;
 public class Repetition {
 
     private static final int MIN_REPEAT_CYCLE = 1;
-    private static final int DAILY_MAX_CYCLE = 100;
-    private static final int WEEKLY_MAX_CYCLE = 10;
-    private static final int MONTHLY_MAX_CYCLE = 12;
     private static final int MAX_TIME_SLOT_SIZE = 30;
 
     @NotNull
@@ -30,21 +27,12 @@ public class Repetition {
 
     private Repetition(RepetitionType repetitionType, Integer repeatCycle, LocalDate repeatedUntilDate) {
         validateRepeatCycle(repeatCycle);
-        repeatCycle = getRepeatCycle(repetitionType, repeatCycle);
+        repeatCycle = repetitionType.calculateMinRepeatCycle(repeatCycle);
 
         this.repetitionType = repetitionType;
         this.repeatCycle = repeatCycle;
+        // TODO: 종료일정 어디까지 허용될지 생각
         this.repeatedUntilDate = repeatedUntilDate;
-    }
-
-    private Integer getRepeatCycle(RepetitionType repetitionType, Integer repeatCycle) {
-        return switch (repetitionType) {
-            case DAILY -> Math.max(repeatCycle, DAILY_MAX_CYCLE);
-            case WEEKLY -> Math.max(repeatCycle, WEEKLY_MAX_CYCLE);
-            case MONTHLY -> Math.max(repeatCycle, MONTHLY_MAX_CYCLE);
-            default -> throw new IllegalStateException("Unexpected value: " + repetitionType);
-        };
-
     }
 
     private void validateRepeatCycle(Integer repeatCycle) {

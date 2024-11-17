@@ -1,23 +1,25 @@
 package com.roundtable.roundtable.domain.event.adjuster;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class DailyStartDateTimeAdjuster implements StartDateTimeAdjuster {
 
-    private final LocalDateTime now;
-    private final LocalDateTime inputStartDateTime;
+    private final LocalDate now;
+    private final LocalDateTime startDateTime;
 
-    public DailyStartDateTimeAdjuster(LocalDateTime now, LocalDateTime inputStartDateTime) {
+    public DailyStartDateTimeAdjuster(LocalDate now, LocalDateTime startDateTime) {
         this.now = now;
-        this.inputStartDateTime = inputStartDateTime;
+        this.startDateTime = startDateTime;
     }
 
     @Override
     public LocalDateTime adjustStartDateTime() {
-        return getLaterDate(now, inputStartDateTime);
+        LocalDate laterDate = getLaterDate(now, startDateTime.toLocalDate());
+        return LocalDateTime.of(laterDate, startDateTime.toLocalTime());
     }
 
-    private LocalDateTime getLaterDate(LocalDateTime dateTime1, LocalDateTime dateTime2) {
-        return dateTime1.isAfter(dateTime2) ? dateTime1 : dateTime2;
+    private LocalDate getLaterDate(LocalDate date1, LocalDate date2) {
+        return date1.isAfter(date2) ? date1 : date2;
     }
 }

@@ -2,6 +2,7 @@ package com.roundtable.roundtable.domain.event;
 
 import com.roundtable.roundtable.domain.house.House;
 import com.roundtable.roundtable.domain.member.Member;
+import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -10,57 +11,57 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Entity
 @Getter
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Event {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    protected Long id;
 
     @NotNull
-    private String name;
+    protected String name;
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    private Category category;
+    protected Category category;
 
     @NotNull
-    private LocalDateTime startDateTime;
+    protected LocalDateTime startDateTime;
 
     @Embedded
-    private Repetition repetition;
+    protected Repetition repetition;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    private House house;
+    protected House house;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    private Member creator;
+    protected Member creator;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Event parentEvent;
+    protected Event parentEvent;
 
-    @Builder
-    private Event(Long id,
-                  String name,
-                  Category category,
-                  LocalDateTime startDateTime,
-                  Repetition repetition,
-                  House house,
-                  Event parentEvent,
-                  Member creator) {
-        this.id = id;
+    protected Event(String name,
+                    Category category,
+                    LocalDateTime startDateTime,
+                    Repetition repetition,
+                    House house,
+                    Event parentEvent,
+                    Member creator) {
         this.name = name;
         this.category = category;
         this.startDateTime = startDateTime;
@@ -70,37 +71,17 @@ public class Event {
         this.creator = creator;
     }
 
-    public static Event oneTime(
-            String name,
-            Category category,
-            LocalDateTime startDateTime,
-            House house,
-            Member creator
-    ) {
-        return Event.builder()
-                .name(name)
-                .category(category)
-                .startDateTime(startDateTime)
-                .house(house)
-                .creator(creator)
-                .build();
-    }
-
-    public static Event repetition(
-            String name,
-            Category category,
-            LocalDateTime startDateTime,
-            House house,
-            Member creator,
-            Repetition repetition
-    ) {
-        return Event.builder()
-                .name(name)
-                .category(category)
-                .startDateTime(startDateTime)
-                .house(house)
-                .creator(creator)
-                .repetition(repetition)
-                .build();
+    protected Event(String name,
+                    Category category,
+                    LocalDateTime startDateTime,
+                    Repetition repetition,
+                    House house,
+                    Member creator) {
+        this.name = name;
+        this.category = category;
+        this.startDateTime = startDateTime;
+        this.repetition = repetition;
+        this.house = house;
+        this.creator = creator;
     }
 }
