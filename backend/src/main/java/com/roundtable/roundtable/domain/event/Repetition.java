@@ -6,8 +6,10 @@ import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Embeddable
 public class Repetition {
@@ -17,13 +19,13 @@ public class Repetition {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    RepetitionType repetitionType;
+    private RepetitionType repetitionType;
 
     @NotNull
-    Integer repeatCycle;
+    private Integer repeatCycle;
 
     @NotNull
-    LocalDate repeatedUntilDate;
+    private LocalDate repeatedUntilDate;
 
     private Repetition(RepetitionType repetitionType, Integer repeatCycle, LocalDate repeatedUntilDate) {
         validateRepeatCycle(repeatCycle);

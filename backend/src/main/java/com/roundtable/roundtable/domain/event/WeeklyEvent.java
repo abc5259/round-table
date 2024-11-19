@@ -3,6 +3,7 @@ package com.roundtable.roundtable.domain.event;
 import com.roundtable.roundtable.domain.event.adjuster.WeeklyStartDateTimeAdjuster;
 import com.roundtable.roundtable.domain.house.House;
 import com.roundtable.roundtable.domain.member.Member;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -14,6 +15,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@DiscriminatorValue("weekly")
 @Getter
 public class WeeklyEvent extends Event {
 

@@ -3,6 +3,7 @@ package com.roundtable.roundtable.domain.event;
 import com.roundtable.roundtable.domain.event.adjuster.MonthlyStartDateTimeAdjuster;
 import com.roundtable.roundtable.domain.house.House;
 import com.roundtable.roundtable.domain.member.Member;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -12,6 +13,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@DiscriminatorValue("monthly")
 @Getter
 public class MonthlyEvent extends Event {
 
