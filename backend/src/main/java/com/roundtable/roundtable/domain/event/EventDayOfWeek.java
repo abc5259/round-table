@@ -26,4 +26,9 @@ public class EventDayOfWeek {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     private Event event;
+
+    public EventDayOfWeek(Event event, Day dayOfWeek) {
+        this.event = event;
+        this.dayOfWeek = dayOfWeek;
+    }
 }

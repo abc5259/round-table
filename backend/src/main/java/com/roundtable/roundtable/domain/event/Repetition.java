@@ -15,7 +15,6 @@ import lombok.NoArgsConstructor;
 public class Repetition {
 
     private static final int MIN_REPEAT_CYCLE = 1;
-    private static final int MAX_TIME_SLOT_SIZE = 30;
 
     @NotNull
     @Enumerated(EnumType.STRING)
