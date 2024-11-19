@@ -1,5 +1,6 @@
 package com.roundtable.roundtable.domain.event;
 
+import com.roundtable.roundtable.domain.common.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -16,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class EventTimeSlot {
+public class EventDateTimeSlot extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -35,7 +36,7 @@ public class EventTimeSlot {
     private Event event;
 
     @Builder
-    private EventTimeSlot(Long id, LocalDateTime startTime, boolean isCompleted, boolean isSkipped, Event event) {
+    private EventDateTimeSlot(Long id, LocalDateTime startTime, boolean isCompleted, boolean isSkipped, Event event) {
         this.id = id;
         this.startTime = startTime;
         this.isCompleted = isCompleted;
@@ -43,8 +44,8 @@ public class EventTimeSlot {
         this.event = event;
     }
 
-    public static EventTimeSlot of(Event event, LocalDateTime startTime) {
-        return EventTimeSlot.builder()
+    public static EventDateTimeSlot of(Event event, LocalDateTime startTime) {
+        return EventDateTimeSlot.builder()
                 .event(event)
                 .startTime(startTime)
                 .build();

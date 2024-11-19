@@ -1,5 +1,6 @@
 package com.roundtable.roundtable.domain.event;
 
+import com.roundtable.roundtable.domain.common.BaseEntity;
 import com.roundtable.roundtable.domain.house.House;
 import com.roundtable.roundtable.domain.member.Member;
 import jakarta.persistence.DiscriminatorColumn;
@@ -25,7 +26,7 @@ import lombok.NoArgsConstructor;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Event {
+public class Event extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

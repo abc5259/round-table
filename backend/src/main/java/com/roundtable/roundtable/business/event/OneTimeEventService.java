@@ -4,12 +4,12 @@ import com.roundtable.roundtable.business.common.AuthMember;
 import com.roundtable.roundtable.business.event.dto.CreateEventDto;
 import com.roundtable.roundtable.business.member.MemberReader;
 import com.roundtable.roundtable.domain.event.Event;
+import com.roundtable.roundtable.domain.event.EventDateTimeSlot;
 import com.roundtable.roundtable.domain.event.EventParticipant;
-import com.roundtable.roundtable.domain.event.EventTimeSlot;
 import com.roundtable.roundtable.domain.event.OneTimeEvent;
+import com.roundtable.roundtable.domain.event.repository.EventDateTimeSlotRepository;
 import com.roundtable.roundtable.domain.event.repository.EventParticipantRepository;
 import com.roundtable.roundtable.domain.event.repository.EventRepository;
-import com.roundtable.roundtable.domain.event.repository.EventTimeSlotRepository;
 import com.roundtable.roundtable.domain.house.House;
 import com.roundtable.roundtable.domain.member.Member;
 import java.util.List;
@@ -24,7 +24,7 @@ public class OneTimeEventService {
 
     private final MemberReader memberReader;
     private final EventRepository eventRepository;
-    private final EventTimeSlotRepository eventTimeSlotRepository;
+    private final EventDateTimeSlotRepository eventDateTimeSlotRepository;
     private final EventParticipantRepository eventParticipantRepository;
 
     @Transactional
@@ -40,11 +40,11 @@ public class OneTimeEventService {
                 house,
                 Member.Id(authMember.memberId())
         );
-        EventTimeSlot eventTimeSlot = EventTimeSlot.of(event, createEventDto.startDateTime());
+        EventDateTimeSlot eventTimeSlot = EventDateTimeSlot.of(event, createEventDto.startDateTime());
         List<EventParticipant> eventParticipants = EventParticipant.listOf(event, members, house);
 
         eventRepository.save(event);
-        eventTimeSlotRepository.save(eventTimeSlot);
+        eventDateTimeSlotRepository.save(eventTimeSlot);
         eventParticipantRepository.saveAll(eventParticipants);
     }
 }
