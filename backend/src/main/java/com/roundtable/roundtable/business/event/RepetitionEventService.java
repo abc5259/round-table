@@ -5,10 +5,13 @@ import static com.roundtable.roundtable.domain.event.RepetitionType.WEEKLY;
 import com.roundtable.roundtable.business.common.AuthMember;
 import com.roundtable.roundtable.business.event.dto.CreateRepetitionEventDto;
 import com.roundtable.roundtable.business.event.dto.CreateRepetitionEventDto.RepetitionDto;
+import com.roundtable.roundtable.business.member.MemberReader;
 import com.roundtable.roundtable.domain.event.Event;
 import com.roundtable.roundtable.domain.event.EventDayOfWeek;
+import com.roundtable.roundtable.domain.event.EventParticipant;
 import com.roundtable.roundtable.domain.event.Repetition;
 import com.roundtable.roundtable.domain.event.repository.EventDayOfWeekRepository;
+import com.roundtable.roundtable.domain.event.repository.EventParticipantRepository;
 import com.roundtable.roundtable.domain.event.repository.EventRepository;
 import com.roundtable.roundtable.domain.house.House;
 import com.roundtable.roundtable.domain.member.Member;
@@ -25,14 +28,18 @@ public class RepetitionEventService {
 
     private static final int MAX_TIME_SLOT_SIZE = 30;
 
+    private final MemberReader memberReader;
     private final EventRepository eventRepository;
     private final EventDateTimeSlotAppender eventDateTimeSlotAppender;
     private final EventDayOfWeekRepository eventDayOfWeekRepository;
+    private final EventParticipantRepository eventParticipantRepository;
 
     @Transactional
     public void createEvent(CreateRepetitionEventDto createRepetitionEventDto, AuthMember authMember, LocalDate now) {
+        List<Member> members = memberReader.findAllByIdOrThrow(createRepetitionEventDto.participantIds());
         RepetitionDto repetitionDto = createRepetitionEventDto.repetitionDto();
         Repetition repetition = repetitionDto.toRepetition();
+        House house = House.Id(authMember.houseId());
 
         Event event = Event.repetition(
                 now,
@@ -40,12 +47,14 @@ public class RepetitionEventService {
                 createRepetitionEventDto.category(),
                 createRepetitionEventDto.startDateTime(),
                 repetition,
-                House.Id(authMember.houseId()),
+                house,
                 Member.Id(authMember.memberId())
         );
-        eventRepository.save(event);
-        appendEventDateTimeSlots(repetitionDto, event);
+        List<EventParticipant> eventParticipants = EventParticipant.listOf(event, members, house);
 
+        eventRepository.save(event);
+        eventParticipantRepository.saveAll(eventParticipants);
+        appendEventDateTimeSlots(repetitionDto, event);
         if (repetitionDto.repetitionType() == WEEKLY) {
             appendEventDayOfWeeks(repetitionDto, event);
         }

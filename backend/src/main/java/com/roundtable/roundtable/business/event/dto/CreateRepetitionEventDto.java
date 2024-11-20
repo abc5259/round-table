@@ -14,7 +14,8 @@ public record CreateRepetitionEventDto(
         Category category,
         LocalDateTime startDateTime,
         List<Long> participantId,
-        RepetitionDto repetitionDto
+        RepetitionDto repetitionDto,
+        List<Long> participantIds
 ) {
     public record RepetitionDto(
             RepetitionType repetitionType,
