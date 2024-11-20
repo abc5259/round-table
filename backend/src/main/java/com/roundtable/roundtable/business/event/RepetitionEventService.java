@@ -54,22 +54,10 @@ public class RepetitionEventService {
 
         eventRepository.save(event);
         eventParticipantRepository.saveAll(eventParticipants);
-        appendEventDateTimeSlots(repetitionDto, event);
+        eventDateTimeSlotAppender.append(event, event.getStartDateTime(), repetitionDto.getDays(), MAX_TIME_SLOT_SIZE);
         if (repetitionDto.repetitionType() == WEEKLY) {
             appendEventDayOfWeeks(repetitionDto, event);
         }
-    }
-
-    private void appendEventDateTimeSlots(RepetitionDto repetitionDto, Event event) {
-        if (repetitionDto.repetitionType() == WEEKLY) {
-            eventDateTimeSlotAppender.append(
-                    event,
-                    event.getStartDateTime(),
-                    repetitionDto.getDays(),
-                    MAX_TIME_SLOT_SIZE);
-            return;
-        }
-        eventDateTimeSlotAppender.append(event, event.getStartDateTime(), MAX_TIME_SLOT_SIZE);
     }
 
     private void appendEventDayOfWeeks(RepetitionDto repetitionDto, Event event) {

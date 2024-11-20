@@ -20,14 +20,6 @@ public class EventDateTimeSlotAppender {
     private final RecurringEventDateTimeCalculator recurringEventDateTimeCalculator;
     private final EventDateTimeSlotBulkRepository eventDateTimeSlotBulkRepository;
 
-    public void append(Event event, LocalDateTime startDateTime, int count) {
-        Repetition repetition = event.getRepetition();
-        List<LocalDateTime> dateTimes = recurringEventDateTimeCalculator.calculateRepetitionDates(
-                startDateTime, repetition, count);
-        List<EventDateTimeSlot> eventDateTimeSlots = createEventDateTimeSlots(event, dateTimes);
-        eventDateTimeSlotBulkRepository.saveAll(eventDateTimeSlots);
-    }
-
     public void append(Event event, LocalDateTime startDateTime, Days days, int count) {
         Repetition repetition = event.getRepetition();
         List<LocalDateTime> dateTimes = recurringEventDateTimeCalculator.calculateRepetitionDates(
