@@ -6,7 +6,6 @@ import com.roundtable.roundtable.business.member.MemberReader;
 import com.roundtable.roundtable.domain.event.Event;
 import com.roundtable.roundtable.domain.event.EventDateTimeSlot;
 import com.roundtable.roundtable.domain.event.EventParticipant;
-import com.roundtable.roundtable.domain.event.OneTimeEvent;
 import com.roundtable.roundtable.domain.event.repository.EventDateTimeSlotRepository;
 import com.roundtable.roundtable.domain.event.repository.EventParticipantRepository;
 import com.roundtable.roundtable.domain.event.repository.EventRepository;
@@ -33,7 +32,7 @@ public class OneTimeEventService {
         List<Member> members = memberReader.findAllByIdOrThrow(createEventDto.participantIds());
         House house = House.Id(authMember.houseId());
 
-        Event event = OneTimeEvent.from(
+        Event event = Event.oneTime(
                 createEventDto.eventName(),
                 createEventDto.category(),
                 createEventDto.startDateTime(),

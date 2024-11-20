@@ -3,9 +3,13 @@ package com.roundtable.roundtable.domain.event;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotNull;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.List;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -26,7 +30,12 @@ public class Repetition {
     @NotNull
     private LocalDate repeatedUntilDate;
 
-    private Repetition(RepetitionType repetitionType, Integer repeatCycle, LocalDate repeatedUntilDate) {
+    @Transient
+    private List<DayOfWeek> daysOfWeeks;
+
+    @Builder
+    private Repetition(RepetitionType repetitionType, Integer repeatCycle, LocalDate repeatedUntilDate,
+                       List<DayOfWeek> daysOfWeeks) {
         validateRepeatCycle(repeatCycle);
         repeatCycle = repetitionType.calculateMinRepeatCycle(repeatCycle);
 
@@ -34,6 +43,7 @@ public class Repetition {
         this.repeatCycle = repeatCycle;
         // TODO: 종료일정 어디까지 허용될지 생각
         this.repeatedUntilDate = repeatedUntilDate;
+        this.daysOfWeeks = daysOfWeeks;
     }
 
     private void validateRepeatCycle(Integer repeatCycle) {
@@ -43,6 +53,20 @@ public class Repetition {
     }
 
     public static Repetition of(RepetitionType repetitionType, Integer repeatCycle, LocalDate repeatedUntilDate) {
-        return new Repetition(repetitionType, repeatCycle, repeatedUntilDate);
+        return Repetition.builder()
+                .repetitionType(repetitionType)
+                .repeatCycle(repeatCycle)
+                .repeatedUntilDate(repeatedUntilDate)
+                .build();
+    }
+
+    public static Repetition of(RepetitionType repetitionType, Integer repeatCycle, LocalDate repeatedUntilDate,
+                                List<DayOfWeek> dayOfWeeks) {
+        return Repetition.builder()
+                .repetitionType(repetitionType)
+                .repeatCycle(repeatCycle)
+                .repeatedUntilDate(repeatedUntilDate)
+                .daysOfWeeks(dayOfWeeks)
+                .build();
     }
 }

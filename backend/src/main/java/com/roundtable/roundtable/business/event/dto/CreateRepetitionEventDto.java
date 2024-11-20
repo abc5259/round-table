@@ -2,6 +2,8 @@ package com.roundtable.roundtable.business.event.dto;
 
 import com.roundtable.roundtable.domain.event.Category;
 import com.roundtable.roundtable.domain.event.Day;
+import com.roundtable.roundtable.domain.event.Days;
+import com.roundtable.roundtable.domain.event.Repetition;
 import com.roundtable.roundtable.domain.event.RepetitionType;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -20,5 +22,16 @@ public record CreateRepetitionEventDto(
             LocalDate repeatedUntilDate,
             List<Day> days
     ) {
+        public Days getDays() {
+            return new Days(days);
+        }
+
+        public Repetition toRepetition() {
+            return Repetition.of(
+                    repetitionType(),
+                    repeatCycle(),
+                    repeatedUntilDate(),
+                    getDays().toDayOfWeeks());
+        }
     }
 }
