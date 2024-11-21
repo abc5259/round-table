@@ -13,7 +13,6 @@ public record CreateRepetitionEventDto(
         String eventName,
         Category category,
         LocalDateTime startDateTime,
-        List<Long> participantId,
         RepetitionDto repetitionDto,
         List<Long> participantIds
 ) {

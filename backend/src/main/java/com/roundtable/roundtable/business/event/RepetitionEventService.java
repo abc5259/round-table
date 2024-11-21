@@ -26,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class RepetitionEventService {
 
-    private static final int MAX_TIME_SLOT_SIZE = 30;
+    private static final int DEFAULT_TIME_SLOT_SIZE = 30;
 
     private final MemberReader memberReader;
     private final EventRepository eventRepository;
@@ -35,7 +35,7 @@ public class RepetitionEventService {
     private final EventParticipantRepository eventParticipantRepository;
 
     @Transactional
-    public void createEvent(CreateRepetitionEventDto createRepetitionEventDto, AuthMember authMember, LocalDate now) {
+    public long createEvent(CreateRepetitionEventDto createRepetitionEventDto, AuthMember authMember, LocalDate now) {
         List<Member> members = memberReader.findAllByIdOrThrow(createRepetitionEventDto.participantIds());
         House house = House.Id(authMember.houseId());
 
@@ -54,10 +54,12 @@ public class RepetitionEventService {
 
         eventRepository.save(event);
         eventParticipantRepository.saveAll(eventParticipants.getEventParticipants());
-        eventDateTimeSlotAppender.append(event, event.getStartDateTime(), MAX_TIME_SLOT_SIZE);
+        eventDateTimeSlotAppender.append(event, event.getStartDateTime(), DEFAULT_TIME_SLOT_SIZE);
         if (repetitionDto.repetitionType() == WEEKLY) {
             appendEventDayOfWeeks(repetitionDto, event);
         }
+
+        return event.getId();
     }
 
     private void appendEventDayOfWeeks(RepetitionDto repetitionDto, Event event) {
