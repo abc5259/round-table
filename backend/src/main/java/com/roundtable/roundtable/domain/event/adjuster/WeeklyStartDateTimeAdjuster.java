@@ -34,10 +34,8 @@ public class WeeklyStartDateTimeAdjuster implements StartDateTimeAdjuster {
         LocalDate closestDate = null;
 
         for (DayOfWeek day : daysOfWeek) {
-            // 주어진 날짜를 기준으로 지정된 요일로 이동
             LocalDate adjustedDate = date.with(TemporalAdjusters.nextOrSame(day));
-
-            // 가장 가까운 날짜 찾기
+            
             if (closestDate == null || adjustedDate.isBefore(closestDate)) {
                 closestDate = adjustedDate;
             }
