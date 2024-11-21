@@ -54,7 +54,7 @@ public class RepetitionEventService {
 
         eventRepository.save(event);
         eventParticipantRepository.saveAll(eventParticipants);
-        eventDateTimeSlotAppender.append(event, event.getStartDateTime(), repetitionDto.getDays(), MAX_TIME_SLOT_SIZE);
+        eventDateTimeSlotAppender.append(event, event.getStartDateTime(), MAX_TIME_SLOT_SIZE);
         if (repetitionDto.repetitionType() == WEEKLY) {
             appendEventDayOfWeeks(repetitionDto, event);
         }

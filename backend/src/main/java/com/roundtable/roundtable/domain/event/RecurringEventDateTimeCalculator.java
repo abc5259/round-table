@@ -16,13 +16,11 @@ public class RecurringEventDateTimeCalculator {
 
     public List<LocalDateTime> calculateRepetitionDates(LocalDateTime startDateTime,
                                                         Repetition repetition,
-                                                        List<DayOfWeek> dayOfWeeks,
                                                         int count) {
         Recur<Temporal> recur = new Builder<>()
                 .frequency(getFrequency(repetition.getRepetitionType()))
                 .interval(repetition.getRepeatCycle())
-                .dayList(getWeekDays
-                        (dayOfWeeks))
+                .dayList(getWeekDays(repetition.getDaysOfWeeks()))
                 .count(count)
                 .build();
         List<Temporal> dates = recur.getDates(startDateTime, repetition.getRepeatedUntilDate());

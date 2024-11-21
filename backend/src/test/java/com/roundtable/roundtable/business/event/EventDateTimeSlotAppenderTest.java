@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.roundtable.roundtable.IntegrationTestSupport;
 import com.roundtable.roundtable.domain.event.Category;
-import com.roundtable.roundtable.domain.event.Days;
 import com.roundtable.roundtable.domain.event.Event;
 import com.roundtable.roundtable.domain.event.EventDateTimeSlot;
 import com.roundtable.roundtable.domain.event.Repetition;
@@ -18,7 +17,6 @@ import com.roundtable.roundtable.domain.member.Member;
 import com.roundtable.roundtable.domain.member.MemberRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.DisplayName;
@@ -56,7 +54,7 @@ class EventDateTimeSlotAppenderTest extends IntegrationTestSupport {
         Event event = appendEvent(repetition, startDateTime, member, house);
 
         //when
-        eventDateTimeSlotAppender.append(event, startDateTime, new Days(new ArrayList<>()), 3);
+        eventDateTimeSlotAppender.append(event, startDateTime, 3);
 
         //then
         List<EventDateTimeSlot> eventDateTimeSlots = eventDateTimeSlotRepository.findAll();
