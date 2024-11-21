@@ -8,7 +8,7 @@ import com.roundtable.roundtable.business.event.dto.CreateRepetitionEventDto.Rep
 import com.roundtable.roundtable.business.member.MemberReader;
 import com.roundtable.roundtable.domain.event.Event;
 import com.roundtable.roundtable.domain.event.EventDayOfWeek;
-import com.roundtable.roundtable.domain.event.EventParticipant;
+import com.roundtable.roundtable.domain.event.EventParticipants;
 import com.roundtable.roundtable.domain.event.Repetition;
 import com.roundtable.roundtable.domain.event.repository.EventDayOfWeekRepository;
 import com.roundtable.roundtable.domain.event.repository.EventParticipantRepository;
@@ -37,10 +37,10 @@ public class RepetitionEventService {
     @Transactional
     public void createEvent(CreateRepetitionEventDto createRepetitionEventDto, AuthMember authMember, LocalDate now) {
         List<Member> members = memberReader.findAllByIdOrThrow(createRepetitionEventDto.participantIds());
-        RepetitionDto repetitionDto = createRepetitionEventDto.repetitionDto();
-        Repetition repetition = repetitionDto.toRepetition();
         House house = House.Id(authMember.houseId());
 
+        RepetitionDto repetitionDto = createRepetitionEventDto.repetitionDto();
+        Repetition repetition = repetitionDto.toRepetition();
         Event event = Event.repetition(
                 now,
                 createRepetitionEventDto.eventName(),
@@ -50,10 +50,10 @@ public class RepetitionEventService {
                 house,
                 Member.Id(authMember.memberId())
         );
-        List<EventParticipant> eventParticipants = EventParticipant.listOf(event, members, house);
+        EventParticipants eventParticipants = new EventParticipants(event, members, house);
 
         eventRepository.save(event);
-        eventParticipantRepository.saveAll(eventParticipants);
+        eventParticipantRepository.saveAll(eventParticipants.getEventParticipants());
         eventDateTimeSlotAppender.append(event, event.getStartDateTime(), MAX_TIME_SLOT_SIZE);
         if (repetitionDto.repetitionType() == WEEKLY) {
             appendEventDayOfWeeks(repetitionDto, event);
