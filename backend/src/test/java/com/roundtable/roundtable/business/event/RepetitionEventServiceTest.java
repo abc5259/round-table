@@ -4,8 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.roundtable.roundtable.IntegrationTestSupport;
 import com.roundtable.roundtable.business.common.AuthMember;
-import com.roundtable.roundtable.business.event.dto.CreateRepetitionEventDto;
-import com.roundtable.roundtable.business.event.dto.CreateRepetitionEventDto.RepetitionDto;
+import com.roundtable.roundtable.business.event.dto.CreateEventDto;
+import com.roundtable.roundtable.business.event.dto.CreateEventDto.RepetitionDto;
 import com.roundtable.roundtable.domain.event.Category;
 import com.roundtable.roundtable.domain.event.Event;
 import com.roundtable.roundtable.domain.event.EventDateTimeSlot;
@@ -53,7 +53,7 @@ class RepetitionEventServiceTest extends IntegrationTestSupport {
         Member member1 = createMember(house, "email1");
         Member member2 = createMember(house, "email2");
         LocalDateTime startDateTime = LocalDateTime.of(2023, 6, 28, 3, 0);
-        CreateRepetitionEventDto createRepetitionEventDto = new CreateRepetitionEventDto(
+        CreateEventDto createEventDto = new CreateEventDto(
                 "testEvent",
                 Category.COOKING,
                 startDateTime,
@@ -68,7 +68,7 @@ class RepetitionEventServiceTest extends IntegrationTestSupport {
 
         //when
         long eventId = repetitionEventService.createEvent(
-                createRepetitionEventDto,
+                createEventDto,
                 new AuthMember(member1.getId(), house.getId()),
                 startDateTime.toLocalDate());
 
@@ -78,9 +78,9 @@ class RepetitionEventServiceTest extends IntegrationTestSupport {
                 .extracting("name", "category", "startDateTime", "repetition.repetitionType", "repetition.repeatCycle",
                         "house.id", "creator.id", "parentEvent")
                 .containsExactly(
-                        createRepetitionEventDto.eventName(),
-                        createRepetitionEventDto.category(),
-                        createRepetitionEventDto.startDateTime(),
+                        createEventDto.eventName(),
+                        createEventDto.category(),
+                        createEventDto.startDateTime(),
                         RepetitionType.DAILY,
                         3,
                         house.getId(),

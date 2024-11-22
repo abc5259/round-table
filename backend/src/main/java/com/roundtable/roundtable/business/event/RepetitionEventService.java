@@ -3,8 +3,8 @@ package com.roundtable.roundtable.business.event;
 import static com.roundtable.roundtable.domain.event.RepetitionType.WEEKLY;
 
 import com.roundtable.roundtable.business.common.AuthMember;
-import com.roundtable.roundtable.business.event.dto.CreateRepetitionEventDto;
-import com.roundtable.roundtable.business.event.dto.CreateRepetitionEventDto.RepetitionDto;
+import com.roundtable.roundtable.business.event.dto.CreateEventDto;
+import com.roundtable.roundtable.business.event.dto.CreateEventDto.RepetitionDto;
 import com.roundtable.roundtable.business.member.MemberReader;
 import com.roundtable.roundtable.domain.event.Event;
 import com.roundtable.roundtable.domain.event.EventDayOfWeek;
@@ -35,17 +35,17 @@ public class RepetitionEventService {
     private final EventParticipantRepository eventParticipantRepository;
 
     @Transactional
-    public long createEvent(CreateRepetitionEventDto createRepetitionEventDto, AuthMember authMember, LocalDate now) {
-        List<Member> members = memberReader.findAllByIdOrThrow(createRepetitionEventDto.participantIds());
+    public long createEvent(CreateEventDto createEventDto, AuthMember authMember, LocalDate now) {
+        List<Member> members = memberReader.findAllByIdOrThrow(createEventDto.participantIds());
         House house = House.Id(authMember.houseId());
 
-        RepetitionDto repetitionDto = createRepetitionEventDto.repetitionDto();
+        RepetitionDto repetitionDto = createEventDto.repetitionDto();
         Repetition repetition = repetitionDto.toRepetition();
         Event event = Event.repetition(
                 now,
-                createRepetitionEventDto.eventName(),
-                createRepetitionEventDto.category(),
-                createRepetitionEventDto.startDateTime(),
+                createEventDto.eventName(),
+                createEventDto.category(),
+                createEventDto.startDateTime(),
                 repetition,
                 house,
                 Member.Id(authMember.memberId())

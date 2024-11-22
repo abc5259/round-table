@@ -27,23 +27,25 @@ public class OneTimeEventService {
     private final EventParticipantRepository eventParticipantRepository;
 
     @Transactional
-    public void createEvent(CreateEventDto createEventDto, AuthMember authMember) {
+    public Long createEvent(CreateEventDto createOneTimeEventDto, AuthMember authMember) {
 
-        List<Member> members = memberReader.findAllByIdOrThrow(createEventDto.participantIds());
+        List<Member> members = memberReader.findAllByIdOrThrow(createOneTimeEventDto.participantIds());
         House house = House.Id(authMember.houseId());
 
         Event event = Event.oneTime(
-                createEventDto.eventName(),
-                createEventDto.category(),
-                createEventDto.startDateTime(),
+                createOneTimeEventDto.eventName(),
+                createOneTimeEventDto.category(),
+                createOneTimeEventDto.startDateTime(),
                 house,
                 Member.Id(authMember.memberId())
         );
-        EventDateTimeSlot eventTimeSlot = EventDateTimeSlot.of(event, createEventDto.startDateTime());
+        EventDateTimeSlot eventTimeSlot = EventDateTimeSlot.of(event, createOneTimeEventDto.startDateTime());
         EventParticipants eventParticipants = new EventParticipants(event, members, house);
 
         eventRepository.save(event);
         eventDateTimeSlotRepository.save(eventTimeSlot);
         eventParticipantRepository.saveAll(eventParticipants.getEventParticipants());
+
+        return event.getId();
     }
 }
