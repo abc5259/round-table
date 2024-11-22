@@ -18,6 +18,7 @@ import lombok.NoArgsConstructor;
 @Embeddable
 public class Repetition {
 
+    public static final LocalDate MAX_REPEATED_UNTIL_DATE = LocalDate.of(2050, 12, 31);
     private static final int MIN_REPEAT_CYCLE = 1;
 
     @NotNull
@@ -41,8 +42,8 @@ public class Repetition {
 
         this.repetitionType = repetitionType;
         this.repeatCycle = repeatCycle;
-        // TODO: 종료일정 어디까지 허용될지 생각
-        this.repeatedUntilDate = repeatedUntilDate;
+        this.repeatedUntilDate =
+                repeatedUntilDate.isAfter(MAX_REPEATED_UNTIL_DATE) ? MAX_REPEATED_UNTIL_DATE : repeatedUntilDate;
         this.daysOfWeeks = daysOfWeeks;
     }
 
@@ -50,23 +51,5 @@ public class Repetition {
         if (repeatCycle < MIN_REPEAT_CYCLE) {
             throw new IllegalArgumentException("반복 주기는 1보다 크거나 같아야 합니다.");
         }
-    }
-
-    public static Repetition of(RepetitionType repetitionType, Integer repeatCycle, LocalDate repeatedUntilDate) {
-        return Repetition.builder()
-                .repetitionType(repetitionType)
-                .repeatCycle(repeatCycle)
-                .repeatedUntilDate(repeatedUntilDate)
-                .build();
-    }
-
-    public static Repetition of(RepetitionType repetitionType, Integer repeatCycle, LocalDate repeatedUntilDate,
-                                List<DayOfWeek> dayOfWeeks) {
-        return Repetition.builder()
-                .repetitionType(repetitionType)
-                .repeatCycle(repeatCycle)
-                .repeatedUntilDate(repeatedUntilDate)
-                .daysOfWeeks(dayOfWeeks)
-                .build();
     }
 }

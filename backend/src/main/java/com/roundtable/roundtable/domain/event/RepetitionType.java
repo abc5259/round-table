@@ -1,5 +1,8 @@
 package com.roundtable.roundtable.domain.event;
 
+import lombok.Getter;
+
+@Getter
 public enum RepetitionType {
     DAILY(100),
     WEEKLY(10),

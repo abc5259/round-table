@@ -27,11 +27,12 @@ public record CreateRepetitionEventDto(
         }
 
         public Repetition toRepetition() {
-            return Repetition.of(
-                    repetitionType(),
-                    repeatCycle(),
-                    repeatedUntilDate(),
-                    getDays().toDayOfWeeks());
+            return Repetition.builder()
+                    .repetitionType(repetitionType)
+                    .repeatCycle(repeatCycle)
+                    .repeatedUntilDate(repeatedUntilDate)
+                    .daysOfWeeks(getDays().toDayOfWeeks())
+                    .build();
         }
     }
 }
