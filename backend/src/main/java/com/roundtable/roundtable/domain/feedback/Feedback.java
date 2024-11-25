@@ -53,7 +53,7 @@ public class Feedback extends BaseEntity {
 
 
     public static Feedback create(Emoji emoji, String message, EventDateTimeSlot eventDateTimeSlot, Member sender) {
-        //TODO sender와 Event가 같은 하우스인지 확인, 미완료 이벤트인지 확인
+        eventDateTimeSlot.validateCreateFeedback(sender);
         return Feedback.builder()
                 .emoji(emoji)
                 .message(message)

@@ -11,7 +11,6 @@ import com.roundtable.roundtable.global.exception.CoreException;
 import com.roundtable.roundtable.global.exception.errorcode.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,10 +40,10 @@ public class NotificationEventListener {
                             houseCreatedEvent.invitedEmails()
                     )
             );
-        }catch (CoreException e) {
+        } catch (CoreException e) {
             ErrorCode errorCode = e.getErrorCode();
             log.error("[createInviteNotification 에러] - {} {}", errorCode.getMessage(), errorCode.getCode(), e);
-        }catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             log.error("[createInviteNotification 에러] - {}", e.getMessage(), e);
         }
     }
@@ -59,10 +58,10 @@ public class NotificationEventListener {
                     choreCompleteEvent.completedChoreId(),
                     choreCompleteEvent.completedMemberId()
             );
-        }catch (CoreException e) {
+        } catch (CoreException e) {
             ErrorCode errorCode = e.getErrorCode();
             log.error("[createChoreCompleteNotification 에러] - {} {}", errorCode.getMessage(), errorCode.getCode(), e);
-        }catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             log.error("[createChoreCompleteNotification 에러] - {}", e.getMessage(), e);
         }
     }
@@ -77,10 +76,11 @@ public class NotificationEventListener {
                     scheduleCompletionEvent.scheduleId(),
                     scheduleCompletionEvent.managerIds()
             );
-        }catch (CoreException e) {
+        } catch (CoreException e) {
             ErrorCode errorCode = e.getErrorCode();
-            log.error("[createScheduleCompletionNotification 에러] - {} {}", errorCode.getMessage(), errorCode.getCode(), e);
-        }catch (RuntimeException e) {
+            log.error("[createScheduleCompletionNotification 에러] - {} {}", errorCode.getMessage(), errorCode.getCode(),
+                    e);
+        } catch (RuntimeException e) {
             log.error("[createScheduleCompletionNotification 에러] - {}", e.getMessage(), e);
         }
     }
@@ -93,13 +93,13 @@ public class NotificationEventListener {
             feedbackNotificationAppender.append(
                     createFeedbackEvent.feedbackId(),
                     createFeedbackEvent.houseId(),
-                    createFeedbackEvent.scheduleCompletionId(),
+                    createFeedbackEvent.eventId(),
                     createFeedbackEvent.senderId()
             );
-        }catch (CoreException e) {
+        } catch (CoreException e) {
             ErrorCode errorCode = e.getErrorCode();
             log.error("[createFeedbackNotification 에러] - {} {}", errorCode.getMessage(), errorCode.getCode(), e);
-        }catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             log.error("[createFeedbackNotification 에러] - {}", e.getMessage(), e);
         }
     }
@@ -116,10 +116,10 @@ public class NotificationEventListener {
                     createDelegationEvent.scheduleId(),
                     createDelegationEvent.delegation()
             );
-        }catch (CoreException e) {
+        } catch (CoreException e) {
             ErrorCode errorCode = e.getErrorCode();
             log.error("[createDelegationNotification 에러] - {} {}", errorCode.getMessage(), errorCode.getCode(), e);
-        }catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             log.error("[createDelegationNotification 에러] - {}", e.getMessage(), e);
         }
     }
@@ -133,10 +133,10 @@ public class NotificationEventListener {
                     updateDelegationEvent.houseId(),
                     updateDelegationEvent.delegation()
             );
-        }catch (CoreException e) {
+        } catch (CoreException e) {
             ErrorCode errorCode = e.getErrorCode();
             log.error("[updateDelegationNotification 에러] - {} {}", errorCode.getMessage(), errorCode.getCode(), e);
-        }catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             log.error("[updateDelegationNotification 에러] - {}", e.getMessage(), e);
         }
     }

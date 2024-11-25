@@ -1,12 +1,16 @@
 package com.roundtable.roundtable.business.feedback;
 
-import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.roundtable.roundtable.IntegrationTestSupport;
 import com.roundtable.roundtable.business.feedback.dto.CreateFeedbackServiceDto;
 import com.roundtable.roundtable.business.feedback.event.CreateFeedbackEvent;
+import com.roundtable.roundtable.domain.event.Event;
+import com.roundtable.roundtable.domain.event.EventDateTimeSlot;
+import com.roundtable.roundtable.domain.event.repository.EventDateTimeSlotRepository;
+import com.roundtable.roundtable.domain.event.repository.EventRepository;
 import com.roundtable.roundtable.domain.feedback.Emoji;
 import com.roundtable.roundtable.domain.feedback.Feedback;
 import com.roundtable.roundtable.domain.feedback.FeedbackRepository;
@@ -19,19 +23,7 @@ import com.roundtable.roundtable.domain.house.HouseRepository;
 import com.roundtable.roundtable.domain.house.InviteCode;
 import com.roundtable.roundtable.domain.member.Member;
 import com.roundtable.roundtable.domain.member.MemberRepository;
-import com.roundtable.roundtable.domain.schedule.Category;
-import com.roundtable.roundtable.domain.schedule.DivisionType;
-import com.roundtable.roundtable.domain.schedule.Schedule;
-import com.roundtable.roundtable.domain.schedule.ScheduleCompletion;
-import com.roundtable.roundtable.domain.schedule.ScheduleCompletionMember;
-import com.roundtable.roundtable.domain.schedule.repository.ScheduleCompletionMemberRepository;
-import com.roundtable.roundtable.domain.schedule.repository.ScheduleCompletionRepository;
-import com.roundtable.roundtable.domain.schedule.repository.ScheduleRepository;
-import com.roundtable.roundtable.domain.schedule.ScheduleType;
-import com.roundtable.roundtable.global.exception.FeedbackException;
-import com.roundtable.roundtable.global.exception.errorcode.FeedbackErrorCode;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -61,19 +53,16 @@ class FeedbackServiceTest extends IntegrationTestSupport {
     private PredefinedFeedbackRepository predefinedFeedbackRepository;
 
     @Autowired
-    private ScheduleRepository scheduleRepository;
-
-    @Autowired
     private MemberRepository memberRepository;
 
     @Autowired
     private HouseRepository houseRepository;
 
     @Autowired
-    private ScheduleCompletionRepository scheduleCompletionRepository;
+    private EventRepository eventRepository;
 
     @Autowired
-    private ScheduleCompletionMemberRepository scheduleCompletionMemberRepository;
+    private EventDateTimeSlotRepository eventDateTimeSlotRepository;
 
     @BeforeEach
     public void setUp() {
@@ -92,12 +81,11 @@ class FeedbackServiceTest extends IntegrationTestSupport {
         //given
         House house = createHouse("code");
         Member sender = createMember("email1", house);
-        Member scheduleCompletionMember = createMember("email2", house);
-        Schedule schedule = createSchedule(house);
-        ScheduleCompletion scheduleCompletion = createScheduleCompletion(schedule);
-        createScheduleCompletionMember(scheduleCompletion, scheduleCompletionMember);
+        Event event = createEvent(sender, house);
+        EventDateTimeSlot eventDateTimeSlot = createEventDateTimeSlot(event, true);
 
-        CreateFeedbackServiceDto createFeedbackServiceDto = new CreateFeedbackServiceDto(Emoji.FIRE, "좋아요", sender.getId(), schedule.getId(), scheduleCompletion.getId(), List.of(1, 2));
+        CreateFeedbackServiceDto createFeedbackServiceDto = new CreateFeedbackServiceDto(Emoji.FIRE, "좋아요",
+                sender.getId(), event.getId(), eventDateTimeSlot.getId(), List.of(1, 2));
 
         //when
         Long feedbackId = sut.createFeedback(createFeedbackServiceDto, house.getId());
@@ -107,23 +95,23 @@ class FeedbackServiceTest extends IntegrationTestSupport {
         List<FeedbackSelection> feedbackSelections = feedbackSelectionRepository.findAll();
 
         assertThat(feedback)
-                .extracting("emoji", "message", "sender", "scheduleCompletion")
+                .extracting("emoji", "message", "sender", "eventDateTimeSlot")
                 .contains(
                         Emoji.FIRE,
                         "좋아요",
                         sender,
-                        scheduleCompletion
+                        eventDateTimeSlot
                 );
         assertThat(feedbackSelections).hasSize(2)
                 .extracting("feedback")
                 .contains(feedback, feedback);
         assertThat(events.stream(CreateFeedbackEvent.class)).hasSize(1)
-                .anySatisfy(event -> {
+                .anySatisfy(e -> {
                     assertAll(
-                            () -> assertThat(event.houseId()).isEqualTo(house.getId()),
-                            () -> assertThat(event.feedbackId()).isEqualTo(feedback.getId()),
-                            () -> assertThat(event.senderId()).isEqualTo(sender.getId()),
-                            () -> assertThat(event.scheduleCompletionId()).isEqualTo(scheduleCompletion.getId())
+                            () -> assertThat(e.houseId()).isEqualTo(house.getId()),
+                            () -> assertThat(e.feedbackId()).isEqualTo(feedback.getId()),
+                            () -> assertThat(e.senderId()).isEqualTo(sender.getId()),
+                            () -> assertThat(e.eventId()).isEqualTo(event.getId())
                     );
                 });
     }
@@ -134,14 +122,16 @@ class FeedbackServiceTest extends IntegrationTestSupport {
         //given
         House house = createHouse("code");
         Member sender = createMember("email1", house);
-        Schedule schedule = createSchedule(house);
+        Event event = createEvent(sender, house);
+        EventDateTimeSlot eventDateTimeSlot = createEventDateTimeSlot(event, false);
 
-        CreateFeedbackServiceDto createFeedbackServiceDto = new CreateFeedbackServiceDto(Emoji.FIRE, "좋아요", sender.getId(), schedule.getId(), 1L, List.of(1, 2));
+        CreateFeedbackServiceDto createFeedbackServiceDto = new CreateFeedbackServiceDto(Emoji.FIRE, "좋아요",
+                sender.getId(), event.getId(), eventDateTimeSlot.getId(), List.of(1, 2));
 
         //when //then
         assertThatThrownBy(() -> sut.createFeedback(createFeedbackServiceDto, house.getId()))
-                .isInstanceOf(FeedbackException.class)
-                .hasMessageContaining(FeedbackErrorCode.NOT_COMPLETION_SCHEDULE.getMessage());
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("완료되지 않은 스케줄에는 피드백을 보낼 수 없습니다.");
     }
 
     public House createHouse(String code) {
@@ -154,41 +144,34 @@ class FeedbackServiceTest extends IntegrationTestSupport {
         return memberRepository.save(member);
     }
 
-    private Schedule createSchedule(House house) {
-        Schedule schedule = Schedule.builder()
-                .name("name")
-                .startTime(LocalTime.of(1, 0))
-                .category(Category.COOKING)
+    private Event createEvent(Member member, House house) {
+        Event event = Event.builder()
+                .creator(member)
                 .house(house)
-                .sequence(1)
-                .sequenceSize(1)
-                .startDate(LocalDate.now())
-                .divisionType(DivisionType.FIX)
-                .scheduleType(ScheduleType.REPEAT)
+                .startDateTime(LocalDateTime.now())
+                .name("test event")
+                .category(com.roundtable.roundtable.domain.event.Category.COOKING)
                 .build();
-        return scheduleRepository.save(schedule);
+        return eventRepository.save(event);
     }
 
-    private ScheduleCompletion createScheduleCompletion(Schedule schedule) {
-        ScheduleCompletion scheduleCompletion = ScheduleCompletion.builder().schedule(schedule)
-                .completionDate(LocalDate.now()).sequence(1).build();
-        return scheduleCompletionRepository.save(scheduleCompletion);
-    }
-
-    private ScheduleCompletionMember createScheduleCompletionMember(ScheduleCompletion scheduleCompletion, Member member) {
-        ScheduleCompletionMember scheduleCompletionMember = ScheduleCompletionMember.builder()
-                .scheduleCompletion(scheduleCompletion)
-                .member(member)
+    private EventDateTimeSlot createEventDateTimeSlot(Event event, boolean isCompleted) {
+        EventDateTimeSlot eventDateTimeSlot = EventDateTimeSlot.builder()
+                .event(event)
+                .startTime(LocalDateTime.now())
+                .isCompleted(isCompleted)
+                .isSkipped(false)
                 .build();
-        return scheduleCompletionMemberRepository.save(scheduleCompletionMember);
+        return eventDateTimeSlotRepository.save(eventDateTimeSlot);
     }
 
     public void createPredefinedFeedbacks() {
         String[] feedbackTexts = {"good", "god", "so good"};
 
-        for (int i=0; i<3; i++) {
+        for (int i = 0; i < 3; i++) {
 
-            predefinedFeedbackRepository.save(PredefinedFeedback.builder().id(i+1).feedbackText(feedbackTexts[i]).build());
+            predefinedFeedbackRepository.save(
+                    PredefinedFeedback.builder().id(i + 1).feedbackText(feedbackTexts[i]).build());
         }
     }
 }

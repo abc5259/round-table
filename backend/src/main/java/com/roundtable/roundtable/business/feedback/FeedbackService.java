@@ -18,11 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class FeedbackService {
 
     private final FeedbackAppender feedbackAppender;
-
     private final MemberReader memberReader;
-
     private final EventDateTimeSlotRepository eventDateTimeSlotRepository;
-
     private final ApplicationEventPublisher applicationEventPublisher;
 
     @Transactional

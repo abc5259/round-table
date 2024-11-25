@@ -1,6 +1,7 @@
 package com.roundtable.roundtable.domain.event;
 
 import com.roundtable.roundtable.domain.common.BaseEntity;
+import com.roundtable.roundtable.domain.member.Member;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -49,5 +50,15 @@ public class EventDateTimeSlot extends BaseEntity {
                 .event(event)
                 .startTime(startTime)
                 .build();
+    }
+
+    public void validateCreateFeedback(Member feedbackCreator) {
+        if (!event.isSameHouse(feedbackCreator)) {
+            throw new IllegalArgumentException("같은 하우스에 있는 이벤트에만 피드백을 할 수 있습니다.");
+        }
+
+        if (!isCompleted) {
+            throw new IllegalStateException("완료되지 않은 스케줄에는 피드백을 보낼 수 없습니다.");
+        }
     }
 }

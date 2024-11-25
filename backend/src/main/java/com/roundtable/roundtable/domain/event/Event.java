@@ -116,4 +116,8 @@ public class Event extends BaseEntity {
 
         throw new IllegalArgumentException("반복 타입에 맞는 StartDateTimeAdjuster 가 존재하지 않습니다.");
     }
+
+    public boolean isSameHouse(Member member) {
+        return member.isSameHouse(this.house);
+    }
 }
