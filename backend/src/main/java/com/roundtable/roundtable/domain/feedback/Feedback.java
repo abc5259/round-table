@@ -1,8 +1,8 @@
 package com.roundtable.roundtable.domain.feedback;
 
 import com.roundtable.roundtable.domain.common.BaseEntity;
+import com.roundtable.roundtable.domain.event.EventDateTimeSlot;
 import com.roundtable.roundtable.domain.member.Member;
-import com.roundtable.roundtable.domain.schedule.ScheduleCompletion;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -36,27 +36,28 @@ public class Feedback extends BaseEntity {
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    private ScheduleCompletion scheduleCompletion;
+    private EventDateTimeSlot eventDateTimeSlot;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     private Member sender;
 
     @Builder
-    private Feedback(Long id, Emoji emoji, String message, ScheduleCompletion scheduleCompletion, Member sender) {
+    private Feedback(Long id, Emoji emoji, String message, EventDateTimeSlot eventDateTimeSlot, Member sender) {
         this.id = id;
         this.emoji = emoji;
         this.message = message;
-        this.scheduleCompletion = scheduleCompletion;
+        this.eventDateTimeSlot = eventDateTimeSlot;
         this.sender = sender;
     }
 
-    public static Feedback create(Emoji emoji, String message,  ScheduleCompletion scheduleCompletion, Member sender) {
-        scheduleCompletion.validateCreateFeedback(sender);
+
+    public static Feedback create(Emoji emoji, String message, EventDateTimeSlot eventDateTimeSlot, Member sender) {
+        //TODO sender와 Event가 같은 하우스인지 확인, 미완료 이벤트인지 확인
         return Feedback.builder()
                 .emoji(emoji)
                 .message(message)
-                .scheduleCompletion(scheduleCompletion)
+                .eventDateTimeSlot(eventDateTimeSlot)
                 .sender(sender)
                 .build();
     }

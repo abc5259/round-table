@@ -1,18 +1,15 @@
 package com.roundtable.roundtable.business.feedback;
 
-import static com.roundtable.roundtable.global.exception.errorcode.FeedbackErrorCode.*;
+import static com.roundtable.roundtable.global.exception.errorcode.FeedbackErrorCode.NOT_FOUND_PREDEFINED_FEEDBACK;
 
 import com.roundtable.roundtable.business.feedback.dto.CreateFeedback;
-import com.roundtable.roundtable.domain.chore.Chore;
 import com.roundtable.roundtable.domain.feedback.Feedback;
 import com.roundtable.roundtable.domain.feedback.FeedbackRepository;
 import com.roundtable.roundtable.domain.feedback.FeedbackSelection;
 import com.roundtable.roundtable.domain.feedback.FeedbackSelectionRepository;
 import com.roundtable.roundtable.domain.feedback.PredefinedFeedback;
 import com.roundtable.roundtable.domain.feedback.PredefinedFeedbackRepository;
-import com.roundtable.roundtable.global.exception.ChoreException.NotCompletedException;
 import com.roundtable.roundtable.global.exception.CoreException.NotFoundEntityException;
-import com.roundtable.roundtable.global.exception.MemberException.MemberNotSameHouseException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -28,19 +25,22 @@ public class FeedbackAppender {
     private final PredefinedFeedbackRepository predefinedFeedbackRepository;
 
     public Feedback append(CreateFeedback createFeedback) {
-        List<PredefinedFeedback> predefinedFeedbacks = predefinedFeedbackRepository.findByIdIn(createFeedback.predefinedFeedbackIds());
+        List<PredefinedFeedback> predefinedFeedbacks = predefinedFeedbackRepository.findByIdIn(
+                createFeedback.predefinedFeedbackIds());
         validateAllPredefinedFeedbacksExist(createFeedback, predefinedFeedbacks);
 
         Feedback feedback = feedbackRepository.save(
-                Feedback.create(createFeedback.emoji(), createFeedback.message(), createFeedback.scheduleCompletion(), createFeedback.sender())
+                Feedback.create(createFeedback.emoji(), createFeedback.message(), createFeedback.eventDateTimeSlot(),
+                        createFeedback.sender())
         );
         appendFeedbackSelections(predefinedFeedbacks, feedback);
 
         return feedback;
     }
 
-    private void validateAllPredefinedFeedbacksExist(CreateFeedback createFeedback, List<PredefinedFeedback> predefinedFeedbacks) {
-        if(createFeedback.predefinedFeedbackIds().size() != predefinedFeedbacks.size()) {
+    private void validateAllPredefinedFeedbacksExist(CreateFeedback createFeedback,
+                                                     List<PredefinedFeedback> predefinedFeedbacks) {
+        if (createFeedback.predefinedFeedbackIds().size() != predefinedFeedbacks.size()) {
             throw new NotFoundEntityException(NOT_FOUND_PREDEFINED_FEEDBACK);
         }
     }

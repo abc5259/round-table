@@ -3,14 +3,11 @@ package com.roundtable.roundtable.business.feedback;
 import com.roundtable.roundtable.business.feedback.dto.CreateFeedbackServiceDto;
 import com.roundtable.roundtable.business.feedback.event.CreateFeedbackEvent;
 import com.roundtable.roundtable.business.member.MemberReader;
-import com.roundtable.roundtable.business.schedule.ScheduleReader;
+import com.roundtable.roundtable.domain.event.EventDateTimeSlot;
+import com.roundtable.roundtable.domain.event.repository.EventDateTimeSlotRepository;
 import com.roundtable.roundtable.domain.feedback.Feedback;
 import com.roundtable.roundtable.domain.member.Member;
-import com.roundtable.roundtable.domain.schedule.ScheduleCompletion;
-import com.roundtable.roundtable.domain.schedule.repository.ScheduleCompletionMemberRepository;
-import com.roundtable.roundtable.domain.schedule.repository.ScheduleCompletionRepository;
-import com.roundtable.roundtable.global.exception.FeedbackException;
-import com.roundtable.roundtable.global.exception.errorcode.FeedbackErrorCode;
+import com.roundtable.roundtable.global.exception.CoreException.NotFoundEntityException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -24,27 +21,25 @@ public class FeedbackService {
 
     private final MemberReader memberReader;
 
-    private final ScheduleReader scheduleReader;
-
-    private final ScheduleCompletionRepository scheduleCompletionRepository;
-
-    private final ScheduleCompletionMemberRepository scheduleCompletionMemberRepository;
+    private final EventDateTimeSlotRepository eventDateTimeSlotRepository;
 
     private final ApplicationEventPublisher applicationEventPublisher;
 
     @Transactional
     public Long createFeedback(CreateFeedbackServiceDto createFeedbackServiceDto, Long houseId) {
         Member sender = memberReader.findById(createFeedbackServiceDto.senderId());
-        ScheduleCompletion scheduleCompletion = scheduleCompletionRepository.findById(createFeedbackServiceDto.scheduleCompletionId())
-                .orElseThrow(() -> new FeedbackException(FeedbackErrorCode.NOT_COMPLETION_SCHEDULE));
+        EventDateTimeSlot eventDateTimeSlot = eventDateTimeSlotRepository.findById(
+                createFeedbackServiceDto.eventDateTimeSlotId()).orElseThrow(
+                NotFoundEntityException::new);
 
-        Feedback feedback = feedbackAppender.append(createFeedbackServiceDto.toCreateFeedback(sender, scheduleCompletion));
+        Feedback feedback = feedbackAppender.append(
+                createFeedbackServiceDto.toCreateFeedback(sender, eventDateTimeSlot));
 
         applicationEventPublisher.publishEvent(
                 new CreateFeedbackEvent(
                         feedback.getId(),
                         createFeedbackServiceDto.senderId(),
-                        createFeedbackServiceDto.scheduleCompletionId(),
+                        createFeedbackServiceDto.eventId(),
                         houseId
                 )
         );
