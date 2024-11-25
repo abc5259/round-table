@@ -6,6 +6,8 @@ import com.roundtable.roundtable.global.response.SuccessResponse;
 import com.roundtable.roundtable.global.support.annotation.Login;
 import com.roundtable.roundtable.presentation.event.request.CreateEventRequest;
 import com.roundtable.roundtable.presentation.event.response.CreateEventResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,6 +25,8 @@ public class EventController {
 
     private final EventService eventService;
 
+    @Operation(summary = "이벤트 생성", description = "이벤트를 생성합니다.")
+    @ApiResponse(responseCode = "201", description = "성공")
     @PostMapping
     public ResponseEntity<SuccessResponse<CreateEventResponse>> createEvent(
             @Login AuthMember authMember,
