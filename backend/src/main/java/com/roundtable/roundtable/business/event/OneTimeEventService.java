@@ -45,7 +45,6 @@ public class OneTimeEventService {
         eventRepository.save(event);
         eventDateTimeSlotRepository.save(eventTimeSlot);
         eventParticipantRepository.saveAll(eventParticipants.getEventParticipants());
-
         return event.getId();
     }
 }

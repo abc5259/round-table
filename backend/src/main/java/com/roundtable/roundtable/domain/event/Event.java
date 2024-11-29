@@ -91,7 +91,7 @@ public class Event extends BaseEntity {
                                    Repetition repetition,
                                    House house,
                                    Member creator) {
-        StartDateTimeAdjuster startDateTimeAdjuster = getStartDateTimeAdjuster(now, startDateTime, repetition);
+        StartDateTimeAdjuster startDateTimeAdjuster = createStartDateTimeAdjuster(now, startDateTime, repetition);
         return Event.builder()
                 .name(name)
                 .category(category)
@@ -102,8 +102,8 @@ public class Event extends BaseEntity {
                 .build();
     }
 
-    private static StartDateTimeAdjuster getStartDateTimeAdjuster(LocalDate now, LocalDateTime startDateTime,
-                                                                  Repetition repetition) {
+    private static StartDateTimeAdjuster createStartDateTimeAdjuster(LocalDate now, LocalDateTime startDateTime,
+                                                                     Repetition repetition) {
         if (repetition.getRepetitionType() == DAILY) {
             return new DailyStartDateTimeAdjuster(now, startDateTime);
         }

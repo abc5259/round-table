@@ -31,7 +31,7 @@ public class FeedbackAppender {
 
         Feedback feedback = feedbackRepository.save(
                 Feedback.create(createFeedback.emoji(), createFeedback.message(), createFeedback.eventDateTimeSlot(),
-                        createFeedback.sender())
+                        createFeedback.sender(), createFeedback.eventParticipants())
         );
         appendFeedbackSelections(predefinedFeedbacks, feedback);
 

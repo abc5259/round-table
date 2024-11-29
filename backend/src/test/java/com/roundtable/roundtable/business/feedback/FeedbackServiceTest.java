@@ -9,7 +9,9 @@ import com.roundtable.roundtable.business.feedback.dto.CreateFeedbackServiceDto;
 import com.roundtable.roundtable.business.feedback.event.CreateFeedbackEvent;
 import com.roundtable.roundtable.domain.event.Event;
 import com.roundtable.roundtable.domain.event.EventDateTimeSlot;
+import com.roundtable.roundtable.domain.event.EventParticipant;
 import com.roundtable.roundtable.domain.event.repository.EventDateTimeSlotRepository;
+import com.roundtable.roundtable.domain.event.repository.EventParticipantRepository;
 import com.roundtable.roundtable.domain.event.repository.EventRepository;
 import com.roundtable.roundtable.domain.feedback.Emoji;
 import com.roundtable.roundtable.domain.feedback.Feedback;
@@ -62,6 +64,9 @@ class FeedbackServiceTest extends IntegrationTestSupport {
     private EventRepository eventRepository;
 
     @Autowired
+    private EventParticipantRepository eventParticipantRepository;
+
+    @Autowired
     private EventDateTimeSlotRepository eventDateTimeSlotRepository;
 
     @BeforeEach
@@ -81,7 +86,9 @@ class FeedbackServiceTest extends IntegrationTestSupport {
         //given
         House house = createHouse("code");
         Member sender = createMember("email1", house);
+        Member member = createMember("email2", house);
         Event event = createEvent(sender, house);
+        createEventParticipant(event, member);
         EventDateTimeSlot eventDateTimeSlot = createEventDateTimeSlot(event, true);
 
         CreateFeedbackServiceDto createFeedbackServiceDto = new CreateFeedbackServiceDto(Emoji.FIRE, "좋아요",
@@ -163,6 +170,11 @@ class FeedbackServiceTest extends IntegrationTestSupport {
                 .isSkipped(false)
                 .build();
         return eventDateTimeSlotRepository.save(eventDateTimeSlot);
+    }
+
+    private EventParticipant createEventParticipant(Event event, Member member) {
+        EventParticipant eventParticipant = EventParticipant.builder().event(event).participant(member).build();
+        return eventParticipantRepository.save(eventParticipant);
     }
 
     public void createPredefinedFeedbacks() {

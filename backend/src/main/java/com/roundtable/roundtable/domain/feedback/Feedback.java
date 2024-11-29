@@ -2,6 +2,7 @@ package com.roundtable.roundtable.domain.feedback;
 
 import com.roundtable.roundtable.domain.common.BaseEntity;
 import com.roundtable.roundtable.domain.event.EventDateTimeSlot;
+import com.roundtable.roundtable.domain.event.EventParticipants;
 import com.roundtable.roundtable.domain.member.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -52,7 +53,9 @@ public class Feedback extends BaseEntity {
     }
 
 
-    public static Feedback create(Emoji emoji, String message, EventDateTimeSlot eventDateTimeSlot, Member sender) {
+    public static Feedback create(Emoji emoji, String message, EventDateTimeSlot eventDateTimeSlot, Member sender,
+                                  EventParticipants eventParticipants) {
+        eventParticipants.validateCreateFeedback(sender);
         eventDateTimeSlot.validateCreateFeedback(sender);
         return Feedback.builder()
                 .emoji(emoji)

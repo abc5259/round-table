@@ -25,7 +25,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member extends BaseEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
@@ -86,7 +87,7 @@ public class Member extends BaseEntity {
     }
 
     public void enterHouse(House house) {
-        if(this.house != null) {
+        if (this.house != null) {
             throw new MemberAlreadyHasHouseException();
         }
         this.house = house;
