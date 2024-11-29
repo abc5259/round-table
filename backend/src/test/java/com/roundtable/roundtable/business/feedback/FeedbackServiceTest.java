@@ -129,7 +129,9 @@ class FeedbackServiceTest extends IntegrationTestSupport {
         //given
         House house = createHouse("code");
         Member sender = createMember("email1", house);
+        Member member = createMember("email2", house);
         Event event = createEvent(sender, house);
+        createEventParticipant(event, member);
         EventDateTimeSlot eventDateTimeSlot = createEventDateTimeSlot(event, false);
 
         CreateFeedbackServiceDto createFeedbackServiceDto = new CreateFeedbackServiceDto(Emoji.FIRE, "좋아요",
