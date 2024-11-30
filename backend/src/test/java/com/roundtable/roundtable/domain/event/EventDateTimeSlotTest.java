@@ -31,6 +31,5 @@ class EventDateTimeSlotTest {
         assertThatThrownBy(eventDateTimeSlot::complete)
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("이미 완료된 이벤트입니다.");
-
     }
 }

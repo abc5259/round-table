@@ -50,6 +50,17 @@ public class EventParticipants {
                 });
     }
 
+    public boolean containMemberId(Member member) {
+        return participants.stream()
+                .anyMatch(participant -> participant.isEqualId(member));
+    }
+
+    public List<Long> toParticipantIds() {
+        return participants.stream()
+                .map(Member::getId)
+                .toList();
+    }
+
     private List<Member> getSameHouseMembers(List<Member> members, House house) {
         return members.stream()
                 .filter(participant -> participant.isSameHouse(house))

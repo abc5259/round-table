@@ -69,4 +69,19 @@ public class EventDateTimeSlot extends BaseEntity {
 
         this.isCompleted = true;
     }
+
+    public void complete(Member completeMember, EventParticipants eventParticipants) {
+        validateCompleteEvent(completeMember, eventParticipants);
+        this.isCompleted = true;
+    }
+
+    private void validateCompleteEvent(Member completeMember, EventParticipants eventParticipants) {
+        if (!eventParticipants.containMemberId(completeMember)) {
+            throw new IllegalArgumentException("이벤트 참가자만 완료가능합니다.");
+        }
+
+        if (isCompleted) {
+            throw new IllegalStateException("이미 완료된 이벤트입니다.");
+        }
+    }
 }
