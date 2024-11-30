@@ -5,6 +5,7 @@ import com.roundtable.roundtable.business.delegation.event.CreateDelegationEvent
 import com.roundtable.roundtable.business.delegation.event.UpdateDelegationEvent;
 import com.roundtable.roundtable.business.feedback.event.CreateFeedbackEvent;
 import com.roundtable.roundtable.business.house.event.HouseCreatedEvent;
+import com.roundtable.roundtable.business.notification.dto.CreateFeedbackNotification;
 import com.roundtable.roundtable.business.notification.dto.CreateInviteNotification;
 import com.roundtable.roundtable.business.schedule.dto.ScheduleCompletionEvent;
 import com.roundtable.roundtable.global.exception.CoreException;
@@ -91,10 +92,12 @@ public class NotificationEventListener {
     public void createFeedbackNotification(CreateFeedbackEvent createFeedbackEvent) {
         try {
             feedbackNotificationAppender.append(
-                    createFeedbackEvent.feedbackId(),
-                    createFeedbackEvent.houseId(),
-                    createFeedbackEvent.eventId(),
-                    createFeedbackEvent.senderId()
+                    new CreateFeedbackNotification(
+                            createFeedbackEvent.feedbackId(),
+                            createFeedbackEvent.senderId(),
+                            createFeedbackEvent.eventId(),
+                            createFeedbackEvent.houseId()
+                    )
             );
         } catch (CoreException e) {
             ErrorCode errorCode = e.getErrorCode();

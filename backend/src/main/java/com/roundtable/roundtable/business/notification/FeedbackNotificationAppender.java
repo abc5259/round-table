@@ -1,14 +1,15 @@
 package com.roundtable.roundtable.business.notification;
 
 import com.roundtable.roundtable.business.member.MemberReader;
+import com.roundtable.roundtable.business.notification.dto.CreateFeedbackNotification;
 import com.roundtable.roundtable.business.sse.HouseSsePublisher;
-import com.roundtable.roundtable.domain.house.House;
+import com.roundtable.roundtable.domain.event.Event;
+import com.roundtable.roundtable.domain.event.EventParticipant;
+import com.roundtable.roundtable.domain.event.repository.EventParticipantRepository;
+import com.roundtable.roundtable.domain.event.repository.EventRepository;
 import com.roundtable.roundtable.domain.member.Member;
 import com.roundtable.roundtable.domain.notification.FeedbackNotification;
 import com.roundtable.roundtable.domain.notification.NotificationRepository;
-import com.roundtable.roundtable.domain.schedule.ScheduleCompletion;
-import com.roundtable.roundtable.domain.schedule.repository.ScheduleCompletionMemberRepository;
-import com.roundtable.roundtable.domain.schedule.repository.ScheduleCompletionRepository;
 import com.roundtable.roundtable.global.exception.CoreException.NotFoundEntityException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -22,27 +23,27 @@ public class FeedbackNotificationAppender {
 
     private final MemberReader memberReader;
     private final NotificationRepository notificationRepository;
-    private final ScheduleCompletionRepository scheduleCompletionRepository;
-    private final ScheduleCompletionMemberRepository scheduleCompletionMemberRepository;
+    private final EventRepository eventRepository;
+    private final EventParticipantRepository eventParticipantRepository;
     private final HouseSsePublisher houseSsePublisher;
 
-    public void append(Long feedbackId, Long houseId, Long scheduleCompletionId, Long senderId) {
-        Member sender = memberReader.findById(senderId);
-        ScheduleCompletion scheduleCompletion = scheduleCompletionRepository.findWithScheduleById(scheduleCompletionId)
+    public void append(CreateFeedbackNotification createFeedbackNotification) {
+        Member sender = memberReader.findById(createFeedbackNotification.senderId());
+        Event event = eventRepository.findById(createFeedbackNotification.eventId())
                 .orElseThrow(NotFoundEntityException::new);
-        List<Member> receivers = scheduleCompletionMemberRepository.findMembersByScheduleCompletionId(scheduleCompletionId);
+        List<EventParticipant> eventParticipants = eventParticipantRepository.findAllByEventId(
+                createFeedbackNotification.eventId());
 
-        List<FeedbackNotification> feedbackNotifications = FeedbackNotification.create(
-                sender,
-                receivers,
-                House.Id(houseId),
-                feedbackId,
-                scheduleCompletion
-        );
+        List<FeedbackNotification> feedbackNotifications = FeedbackNotification.create(sender, eventParticipants, event,
+                sender.getHouse(),
+                createFeedbackNotification.feedbackId());
+
         notificationRepository.saveAll(feedbackNotifications);
 
-        if(!feedbackNotifications.isEmpty()) {
-            houseSsePublisher.send(houseId, receivers.stream().map(Member::getId).toList(), feedbackNotifications.get(0).toSseEvent());
+        if (!feedbackNotifications.isEmpty()) {
+            houseSsePublisher.send(createFeedbackNotification.houseId(), eventParticipants.stream().map(
+                            EventParticipant::getParticipantId).toList(),
+                    feedbackNotifications.get(0).toSseEvent());
         }
     }
 }

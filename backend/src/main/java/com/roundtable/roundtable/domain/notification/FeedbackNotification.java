@@ -1,11 +1,12 @@
 package com.roundtable.roundtable.domain.notification;
 
+import com.roundtable.roundtable.domain.event.Event;
+import com.roundtable.roundtable.domain.event.EventParticipant;
 import com.roundtable.roundtable.domain.house.House;
 import com.roundtable.roundtable.domain.member.Member;
 import com.roundtable.roundtable.domain.notification.NotificationType.Values;
 import com.roundtable.roundtable.domain.schedule.ScheduleCompletion;
 import com.roundtable.roundtable.domain.sse.event.FeedbackSseEvent;
-import com.roundtable.roundtable.domain.sse.event.FeedbackSseEvent.FeedbackSseData;
 import com.roundtable.roundtable.domain.sse.event.SseEvent;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
@@ -25,8 +26,8 @@ public class FeedbackNotification extends Notification {
 
     @Builder
     private FeedbackNotification(Member sender,
-                                Member receiver,
-                                House house, Long feedbackId, String scheduleName) {
+                                 Member receiver,
+                                 House house, Long feedbackId, String scheduleName) {
         super(sender, receiver, house);
         this.feedbackId = feedbackId;
         this.scheduleName = scheduleName;
@@ -61,6 +62,22 @@ public class FeedbackNotification extends Notification {
                 .house(house)
                 .feedbackId(feedbackId)
                 .scheduleName(scheduleCompletion.getScheduleName())
+                .build()).toList();
+    }
+
+    public static List<FeedbackNotification> create(
+            Member sender,
+            List<EventParticipant> eventParticipants,
+            Event event,
+            House house,
+            Long feedbackId
+    ) {
+        return eventParticipants.stream().map(eventParticipant -> FeedbackNotification.builder()
+                .sender(sender)
+                .receiver(eventParticipant.getParticipant())
+                .house(house)
+                .feedbackId(feedbackId)
+                .scheduleName(event.getName())
                 .build()).toList();
     }
 

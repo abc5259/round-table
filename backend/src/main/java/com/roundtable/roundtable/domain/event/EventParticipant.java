@@ -43,4 +43,8 @@ public class EventParticipant {
                 .participant(participant)
                 .build();
     }
+
+    public Long getParticipantId() {
+        return participant.getId();
+    }
 }
