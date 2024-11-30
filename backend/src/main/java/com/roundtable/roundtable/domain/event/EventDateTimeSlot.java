@@ -61,4 +61,12 @@ public class EventDateTimeSlot extends BaseEntity {
             throw new IllegalStateException("완료되지 않은 스케줄에는 피드백을 보낼 수 없습니다.");
         }
     }
+
+    public void complete() {
+        if (isCompleted) {
+            throw new IllegalStateException("이미 완료된 이벤트입니다.");
+        }
+
+        this.isCompleted = true;
+    }
 }
