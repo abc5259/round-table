@@ -3,11 +3,11 @@ package com.roundtable.roundtable.business.notification;
 import com.roundtable.roundtable.business.chore.event.ChoreCompleteEvent;
 import com.roundtable.roundtable.business.delegation.event.CreateDelegationEvent;
 import com.roundtable.roundtable.business.delegation.event.UpdateDelegationEvent;
+import com.roundtable.roundtable.business.event.event.EventCompletionEvent;
 import com.roundtable.roundtable.business.feedback.event.CreateFeedbackEvent;
 import com.roundtable.roundtable.business.house.event.HouseCreatedEvent;
 import com.roundtable.roundtable.business.notification.dto.CreateFeedbackNotification;
 import com.roundtable.roundtable.business.notification.dto.CreateInviteNotification;
-import com.roundtable.roundtable.business.schedule.dto.ScheduleCompletionEvent;
 import com.roundtable.roundtable.global.exception.CoreException;
 import com.roundtable.roundtable.global.exception.errorcode.ErrorCode;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,7 @@ public class NotificationEventListener {
     private final InviteNotificationAppender inviteNotificationAppender;
     private final ChoreCompleteNotificationAppender choreCompleteNotificationAppender;
     private final FeedbackNotificationAppender feedbackNotificationAppender;
-    private final ScheduleCompletionNotificationAppender scheduleCompletionNotificationAppender;
+    private final EventCompletionNotificationAppender eventCompletionNotificationAppender;
     private final DelegationNotificationAppender delegationNotificationAppender;
 
     @Transactional
@@ -70,19 +70,19 @@ public class NotificationEventListener {
     @Transactional
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     @Async
-    public void createScheduleCompletionNotification(ScheduleCompletionEvent scheduleCompletionEvent) {
+    public void createEventCompletionNotification(EventCompletionEvent eventCompletionEvent) {
         try {
-            scheduleCompletionNotificationAppender.append(
-                    scheduleCompletionEvent.houseId(),
-                    scheduleCompletionEvent.scheduleId(),
-                    scheduleCompletionEvent.managerIds()
+            eventCompletionNotificationAppender.append(
+                    eventCompletionEvent.houseId(),
+                    eventCompletionEvent.eventDateTimeSlotId(),
+                    eventCompletionEvent.eventParticipantIds()
             );
         } catch (CoreException e) {
             ErrorCode errorCode = e.getErrorCode();
-            log.error("[createScheduleCompletionNotification 에러] - {} {}", errorCode.getMessage(), errorCode.getCode(),
+            log.error("[createEventCompletionNotification 에러] - {} {}", errorCode.getMessage(), errorCode.getCode(),
                     e);
         } catch (RuntimeException e) {
-            log.error("[createScheduleCompletionNotification 에러] - {}", e.getMessage(), e);
+            log.error("[createEventCompletionNotification 에러] - {}", e.getMessage(), e);
         }
     }
 
