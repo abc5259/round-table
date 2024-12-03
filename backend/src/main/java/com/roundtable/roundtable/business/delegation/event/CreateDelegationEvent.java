@@ -7,7 +7,7 @@ public record CreateDelegationEvent(
         Long houseId,
         Member sender,
         Member receiver,
-        Long scheduleId,
+        Long eventDateTimeSlotId,
         Delegation delegation
 ) {
 }

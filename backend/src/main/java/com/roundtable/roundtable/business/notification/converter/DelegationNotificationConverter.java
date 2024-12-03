@@ -22,7 +22,7 @@ public class DelegationNotificationConverter implements NotificationResponseConv
                 delegationNotification.getSender().getName(),
                 delegationNotification.getDelegationId(),
                 delegationNotification.getStatus(),
-                delegationNotification.getScheduleName()
+                delegationNotification.getEventName()
         );
     }
 

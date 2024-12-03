@@ -84,4 +84,8 @@ public class EventDateTimeSlot extends BaseEntity {
             throw new IllegalStateException("이미 완료된 이벤트입니다.");
         }
     }
+
+    public String getEventName() {
+        return this.event.getName();
+    }
 }

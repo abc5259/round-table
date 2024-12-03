@@ -115,7 +115,7 @@ public class NotificationEventListener {
                     createDelegationEvent.houseId(),
                     createDelegationEvent.sender(),
                     createDelegationEvent.receiver(),
-                    createDelegationEvent.scheduleId(),
+                    createDelegationEvent.eventDateTimeSlotId(),
                     createDelegationEvent.delegation()
             );
         } catch (CoreException e) {

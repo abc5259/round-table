@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 public class DelegationNotification extends Notification {
     private Long delegationId;
     private DelegationStatus status;
-    private String scheduleName;
+    private String eventName;
 
     @Builder
     private DelegationNotification(
@@ -29,12 +29,12 @@ public class DelegationNotification extends Notification {
             House house,
             Long delegationId,
             DelegationStatus status,
-            String scheduleName
+            String eventName
     ) {
         super(sender, receiver, house);
         this.delegationId = delegationId;
         this.status = status;
-        this.scheduleName = scheduleName;
+        this.eventName = eventName;
     }
 
     public static DelegationNotification create(
@@ -42,7 +42,7 @@ public class DelegationNotification extends Notification {
             Member sender,
             Member receiver,
             Delegation delegation,
-            String scheduleName
+            String eventName
     ) {
         return DelegationNotification.builder()
                 .sender(sender)
@@ -50,7 +50,7 @@ public class DelegationNotification extends Notification {
                 .house(house)
                 .delegationId(delegation.getId())
                 .status(delegation.getStatus())
-                .scheduleName(scheduleName)
+                .eventName(eventName)
                 .build();
     }
 
@@ -64,11 +64,11 @@ public class DelegationNotification extends Notification {
 //                .house(house)
 //                .delegationId(delegation.getId())
 //                .status(delegation.getStatus())
-//                .scheduleName(delegation.getScheduleName())
+//                .eventName(delegation.getScheduleName())
 //                .build();
 //    }
 
     public DelegationSseEvent toSseEvent() {
-        return DelegationSseEvent.of(getSender().getName(), delegationId, status, scheduleName);
+        return DelegationSseEvent.of(getSender().getName(), delegationId, status, eventName);
     }
 }
