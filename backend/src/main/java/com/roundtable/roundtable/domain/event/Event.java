@@ -120,4 +120,21 @@ public class Event extends BaseEntity {
     public boolean isSameHouse(Member member) {
         return member.isSameHouse(this.house);
     }
+
+    public Event createChild() {
+        return Event.builder()
+                .name(name)
+                .category(category)
+                .startDateTime(startDateTime)
+                .house(house)
+                .creator(creator)
+                .startDateTime(startDateTime)
+                .repetition(repetition)
+                .parentEvent(this)
+                .build();
+    }
+
+    public boolean isWeeklyEvent() {
+        return repetition != null && repetition.isWeekly();
+    }
 }

@@ -5,6 +5,7 @@ import static com.roundtable.roundtable.domain.delegation.DelegationStatus.PENDI
 import static com.roundtable.roundtable.domain.delegation.DelegationStatus.REJECTED;
 
 import com.roundtable.roundtable.domain.common.BaseEntity;
+import com.roundtable.roundtable.domain.event.Event;
 import com.roundtable.roundtable.domain.event.EventDateTimeSlot;
 import com.roundtable.roundtable.domain.event.EventParticipant;
 import com.roundtable.roundtable.domain.member.Member;
@@ -124,11 +125,16 @@ public class Delegation extends BaseEntity {
         }
     }
 
-    public void approve(Long memberId, LocalDate now) {
+    public void approve(Event event, Long memberId, LocalDate now) {
         validateUpdateStatus(memberId);
         if (this.delegationDate.isAfter(now)) {
             throw new IllegalArgumentException("승인 가능한 날짜가 지났습니다.");
         }
+        if (eventDateTimeSlot.isCompleted()) {
+            throw new IllegalArgumentException("이미 완료된 이벤트입니다.");
+        }
+
+        this.eventDateTimeSlot.changeEvent(event);
         this.status = APPROVED;
     }
 

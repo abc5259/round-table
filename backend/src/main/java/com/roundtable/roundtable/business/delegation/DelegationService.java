@@ -1,18 +1,25 @@
 package com.roundtable.roundtable.business.delegation;
 
+import com.roundtable.roundtable.business.common.AuthMember;
 import com.roundtable.roundtable.business.delegation.dto.CreateDelegationDto;
 import com.roundtable.roundtable.business.delegation.event.CreateDelegationEvent;
 import com.roundtable.roundtable.business.member.MemberReader;
 import com.roundtable.roundtable.domain.delegation.Delegation;
 import com.roundtable.roundtable.domain.delegation.DelegationRepository;
+import com.roundtable.roundtable.domain.event.Event;
 import com.roundtable.roundtable.domain.event.EventDateTimeSlot;
+import com.roundtable.roundtable.domain.event.EventDayOfWeek;
 import com.roundtable.roundtable.domain.event.EventParticipant;
+import com.roundtable.roundtable.domain.event.EventParticipants;
 import com.roundtable.roundtable.domain.event.repository.EventDateTimeSlotRepository;
+import com.roundtable.roundtable.domain.event.repository.EventDayOfWeekRepository;
 import com.roundtable.roundtable.domain.event.repository.EventParticipantRepository;
+import com.roundtable.roundtable.domain.event.repository.EventRepository;
 import com.roundtable.roundtable.domain.member.Member;
 import com.roundtable.roundtable.global.exception.CoreException.NotFoundEntityException;
 import com.roundtable.roundtable.global.exception.DelegationException;
 import com.roundtable.roundtable.global.exception.errorcode.DelegationErrorCode;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
@@ -25,8 +32,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class DelegationService {
     private final MemberReader memberReader;
     private final DelegationRepository delegationRepository;
+    private final EventRepository eventRepository;
     private final EventDateTimeSlotRepository eventDateTimeSlotRepository;
     private final EventParticipantRepository eventParticipantRepository;
+    private final EventDayOfWeekRepository eventDayOfWeekRepository;
     private final ApplicationEventPublisher publisher;
 
     @Transactional
@@ -60,6 +69,29 @@ public class DelegationService {
                 ));
 
         return delegation.getId();
+    }
+
+    @Transactional
+    public void approve(Long delegationId, Long eventId, AuthMember authMember) {
+        Delegation delegation = delegationRepository.findById(delegationId).orElseThrow(NotFoundEntityException::new);
+        Event event = eventRepository.findById(eventId).orElseThrow(NotFoundEntityException::new);
+        EventParticipants eventParticipants = new EventParticipants(eventParticipantRepository.findAllByEvent(event));
+        List<EventDayOfWeek> eventDayOfWeeks = eventDayOfWeekRepository.findByEvent(event);
+
+        Event newEvent = event.createChild();
+        delegation.approve(newEvent, authMember.memberId(), LocalDate.now());
+        List<EventParticipant> newEventParticipants = eventParticipants.createChangedParticipants(
+                newEvent, delegation.getSender(), delegation.getReceiver());
+        List<EventDayOfWeek> newDayOfWeeks = createNewEventDayOfWeeks(eventDayOfWeeks, newEvent);
+
+        eventRepository.save(event);
+        eventParticipantRepository.saveAll(newEventParticipants);
+        eventDayOfWeekRepository.saveAll(newDayOfWeeks);
+    }
+
+    private static List<EventDayOfWeek> createNewEventDayOfWeeks(List<EventDayOfWeek> eventDayOfWeeks, Event newEvent) {
+        return eventDayOfWeeks.stream()
+                .map(eventDayOfWeek -> new EventDayOfWeek(newEvent, eventDayOfWeek.getDayOfWeek())).toList();
     }
 
 

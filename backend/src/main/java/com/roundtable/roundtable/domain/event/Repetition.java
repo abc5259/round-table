@@ -1,5 +1,7 @@
 package com.roundtable.roundtable.domain.event;
 
+import static com.roundtable.roundtable.domain.event.RepetitionType.WEEKLY;
+
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -45,6 +47,10 @@ public class Repetition {
         this.repeatedUntilDate =
                 repeatedUntilDate.isAfter(MAX_REPEATED_UNTIL_DATE) ? MAX_REPEATED_UNTIL_DATE : repeatedUntilDate;
         this.daysOfWeeks = daysOfWeeks;
+    }
+
+    public boolean isWeekly() {
+        return this.repetitionType == WEEKLY;
     }
 
     private void validateRepeatCycle(Integer repeatCycle) {

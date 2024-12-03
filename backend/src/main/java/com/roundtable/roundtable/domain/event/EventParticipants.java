@@ -2,6 +2,7 @@ package com.roundtable.roundtable.domain.event;
 
 import com.roundtable.roundtable.domain.house.House;
 import com.roundtable.roundtable.domain.member.Member;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -64,6 +65,20 @@ public class EventParticipants {
     private List<Member> getSameHouseMembers(List<Member> members, House house) {
         return members.stream()
                 .filter(participant -> participant.isSameHouse(house))
+                .toList();
+    }
+
+    public List<EventParticipant> createChangedParticipants(Event newEvent,
+                                                            Member oldParticipant,
+                                                            Member newParticipant) {
+        List<Member> newParticipants = participants.stream()
+                .filter(participant -> participant.isEqualId(oldParticipant))
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        newParticipants.add(newParticipant);
+
+        return newParticipants.stream()
+                .map(participant -> EventParticipant.of(newEvent, participant))
                 .toList();
     }
 }

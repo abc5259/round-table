@@ -88,4 +88,8 @@ public class EventDateTimeSlot extends BaseEntity {
     public String getEventName() {
         return this.event.getName();
     }
+
+    public void changeEvent(Event event) {
+        this.event = event;
+    }
 }
