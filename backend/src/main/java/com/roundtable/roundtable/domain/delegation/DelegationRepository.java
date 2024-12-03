@@ -4,5 +4,6 @@ import java.time.LocalDate;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface DelegationRepository extends JpaRepository<Delegation, Long> {
-    boolean existsByScheduleIdAndSenderIdAndDelegationDate(Long scheduleId, Long senderId, LocalDate delegationDate);
+    boolean existsByEventDateTimeSlotIdAndSenderIdAndDelegationDate(Long eventDateTimeSlotId, Long senderId,
+                                                                    LocalDate delegationDate);
 }

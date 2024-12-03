@@ -47,4 +47,8 @@ public class EventParticipant {
     public Long getParticipantId() {
         return participant.getId();
     }
+
+    public boolean isSameMember(Member sender) {
+        return sender.isEqualId(participant);
+    }
 }

@@ -24,14 +24,15 @@ public class DelegationNotificationAppender {
 
     public void append(Long houseId, Member sender, Member receiver, Long scheduleId, Delegation delegation) {
         Schedule schedule = scheduleReader.findById(scheduleId);
-        DelegationNotification delegationNotification = DelegationNotification.create(House.Id(houseId), sender, receiver, delegation, schedule.getName());
+        DelegationNotification delegationNotification = DelegationNotification.create(House.Id(houseId), sender,
+                receiver, delegation, schedule.getName());
         notificationRepository.save(delegationNotification);
 
         houseSsePublisher.send(houseId, List.of(receiver.getId()), delegationNotification.toSseEvent());
     }
-
-    public void append(Long houseId, Delegation delegation) {
-        DelegationNotification delegationNotification = DelegationNotification.create(House.Id(houseId), delegation);
-        notificationRepository.save(delegationNotification);
-    }
+//
+//    public void append(Long houseId, Delegation delegation) {
+//        DelegationNotification delegationNotification = DelegationNotification.create(House.Id(houseId), delegation);
+//        notificationRepository.save(delegationNotification);
+//    }
 }
