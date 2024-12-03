@@ -67,12 +67,12 @@ class EventDateTimeSlotAppenderTest extends IntegrationTestSupport {
                 );
     }
 
-    public House createHouse(String code) {
+    private House createHouse(String code) {
         House house = House.builder().name("name").inviteCode(InviteCode.builder().code(code).build()).build();
         return houseRepository.save(house);
     }
 
-    public Member createMember(House house, String email) {
+    private Member createMember(House house, String email) {
         Member member = Member.builder().house(house).email(email).password("password").build();
         return memberRepository.save(member);
     }

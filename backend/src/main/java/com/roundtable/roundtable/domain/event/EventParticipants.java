@@ -72,7 +72,7 @@ public class EventParticipants {
                                                             Member oldParticipant,
                                                             Member newParticipant) {
         List<Member> newParticipants = participants.stream()
-                .filter(participant -> participant.isEqualId(oldParticipant))
+                .filter(participant -> !participant.isEqualId(oldParticipant))
                 .collect(Collectors.toCollection(ArrayList::new));
 
         newParticipants.add(newParticipant);

@@ -44,8 +44,8 @@ public class Repetition {
 
         this.repetitionType = repetitionType;
         this.repeatCycle = repeatCycle;
-        this.repeatedUntilDate =
-                repeatedUntilDate.isAfter(MAX_REPEATED_UNTIL_DATE) ? MAX_REPEATED_UNTIL_DATE : repeatedUntilDate;
+        this.repeatedUntilDate = repeatedUntilDate == null || repeatedUntilDate.isAfter(MAX_REPEATED_UNTIL_DATE)
+                ? MAX_REPEATED_UNTIL_DATE : repeatedUntilDate;
         this.daysOfWeeks = daysOfWeeks;
     }
 

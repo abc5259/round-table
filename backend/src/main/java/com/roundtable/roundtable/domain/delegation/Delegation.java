@@ -127,7 +127,7 @@ public class Delegation extends BaseEntity {
 
     public void approve(Event event, Long memberId, LocalDate now) {
         validateUpdateStatus(memberId);
-        if (this.delegationDate.isAfter(now)) {
+        if (this.delegationDate.isBefore(now)) {
             throw new IllegalArgumentException("승인 가능한 날짜가 지났습니다.");
         }
         if (eventDateTimeSlot.isCompleted()) {
@@ -140,7 +140,7 @@ public class Delegation extends BaseEntity {
 
     public void reject(Long memberId, LocalDate now) {
         validateUpdateStatus(memberId);
-        if (this.delegationDate.isAfter(now)) {
+        if (this.delegationDate.isBefore(now)) {
             throw new IllegalArgumentException("거절 가능한 날짜가 지났습니다.");
         }
         this.status = REJECTED;

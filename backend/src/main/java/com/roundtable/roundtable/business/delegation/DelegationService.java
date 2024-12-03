@@ -84,7 +84,7 @@ public class DelegationService {
                 newEvent, delegation.getSender(), delegation.getReceiver());
         List<EventDayOfWeek> newDayOfWeeks = createNewEventDayOfWeeks(eventDayOfWeeks, newEvent);
 
-        eventRepository.save(event);
+        eventRepository.save(newEvent);
         eventParticipantRepository.saveAll(newEventParticipants);
         eventDayOfWeekRepository.saveAll(newDayOfWeeks);
     }
