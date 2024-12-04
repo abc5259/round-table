@@ -6,6 +6,7 @@ import com.roundtable.roundtable.business.event.event.EventCompletionEvent;
 import com.roundtable.roundtable.domain.event.EventDateTimeSlot;
 import com.roundtable.roundtable.domain.event.EventParticipants;
 import com.roundtable.roundtable.domain.event.dto.EventDateTimeSlotDetailDto;
+import com.roundtable.roundtable.domain.event.dto.EventDateTimeSlotDetailOfMemberDto;
 import com.roundtable.roundtable.domain.event.repository.EventParticipantRepository;
 import com.roundtable.roundtable.domain.member.Member;
 import java.time.LocalDate;
@@ -42,10 +43,19 @@ public class EventDateTimeSlotService {
         ));
     }
 
-    public List<EventDateTimeSlotDetailDto> findEventDateTimeSlotDetails(AuthMember authMember,
-                                                                         LocalDate date) {
-        return eventDateTimeSlotReader.readEventDateTimeSlotDetails(
+    public List<EventDateTimeSlotDetailDto> findEventDateTimeSlotDetailsByDate(AuthMember authMember,
+                                                                               LocalDate date) {
+        return eventDateTimeSlotReader.readEventDateTimeSlotDetailsByDate(
                 authMember.houseId(),
+                date.atStartOfDay(),
+                date.atTime(LocalTime.MAX));
+    }
+
+    public List<EventDateTimeSlotDetailOfMemberDto> findEventDateTimeSlotDetailsOfMemberIdByDate(AuthMember authMember,
+                                                                                                 LocalDate date) {
+        return eventDateTimeSlotReader.readEventDateTimeSlotDetailsOfMemberByDate(
+                authMember.houseId(),
+                authMember.memberId(),
                 date.atStartOfDay(),
                 date.atTime(LocalTime.MAX));
     }

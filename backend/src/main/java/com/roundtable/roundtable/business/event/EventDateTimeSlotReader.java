@@ -2,6 +2,7 @@ package com.roundtable.roundtable.business.event;
 
 import com.roundtable.roundtable.domain.event.EventDateTimeSlot;
 import com.roundtable.roundtable.domain.event.dto.EventDateTimeSlotDetailDto;
+import com.roundtable.roundtable.domain.event.dto.EventDateTimeSlotDetailOfMemberDto;
 import com.roundtable.roundtable.domain.event.repository.EventDateTimeSlotQueryRepository;
 import com.roundtable.roundtable.domain.event.repository.EventDateTimeSlotRepository;
 import com.roundtable.roundtable.global.exception.CoreException.NotFoundEntityException;
@@ -25,8 +26,20 @@ public class EventDateTimeSlotReader {
                 .orElseThrow(NotFoundEntityException::new);
     }
 
-    public List<EventDateTimeSlotDetailDto> readEventDateTimeSlotDetails(Long houseId, LocalDateTime startDateTime,
-                                                                         LocalDateTime endDateTime) {
+    public List<EventDateTimeSlotDetailDto> readEventDateTimeSlotDetailsByDate(Long houseId,
+                                                                               LocalDateTime startDateTime,
+                                                                               LocalDateTime endDateTime) {
         return eventDateTimeSlotQueryRepository.findEventDateTimeSlotsByDate(houseId, startDateTime, endDateTime);
+    }
+
+    public List<EventDateTimeSlotDetailOfMemberDto> readEventDateTimeSlotDetailsOfMemberByDate(Long houseId,
+                                                                                               Long memberId,
+                                                                                               LocalDateTime startDateTime,
+                                                                                               LocalDateTime endDateTime) {
+        return eventDateTimeSlotQueryRepository.findEventDateTimeSlotsOfMemberByDate(
+                houseId,
+                memberId,
+                startDateTime,
+                endDateTime);
     }
 }

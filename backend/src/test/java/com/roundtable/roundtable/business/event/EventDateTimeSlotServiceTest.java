@@ -1,5 +1,7 @@
 package com.roundtable.roundtable.business.event;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.roundtable.roundtable.IntegrationTestSupport;
 import com.roundtable.roundtable.business.common.AuthMember;
 import com.roundtable.roundtable.domain.event.Category;
@@ -8,6 +10,7 @@ import com.roundtable.roundtable.domain.event.EventDateTimeSlot;
 import com.roundtable.roundtable.domain.event.EventParticipant;
 import com.roundtable.roundtable.domain.event.Repetition;
 import com.roundtable.roundtable.domain.event.dto.EventDateTimeSlotDetailDto;
+import com.roundtable.roundtable.domain.event.dto.EventDateTimeSlotDetailOfMemberDto;
 import com.roundtable.roundtable.domain.event.repository.EventDateTimeSlotRepository;
 import com.roundtable.roundtable.domain.event.repository.EventParticipantRepository;
 import com.roundtable.roundtable.domain.event.repository.EventRepository;
@@ -19,7 +22,6 @@ import com.roundtable.roundtable.domain.member.MemberRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,11 +67,11 @@ class EventDateTimeSlotServiceTest extends IntegrationTestSupport {
         appendEventParticipant(event2, member2);
 
         //when
-        List<EventDateTimeSlotDetailDto> result = sut.findEventDateTimeSlotDetails(
+        List<EventDateTimeSlotDetailDto> result = sut.findEventDateTimeSlotDetailsByDate(
                 new AuthMember(member1.getId(), house.getId()), LocalDate.of(2024, 12, 2));
 
         //then
-        Assertions.assertThat(result).hasSize(2)
+        assertThat(result).hasSize(2)
                 .containsExactly(
                         new EventDateTimeSlotDetailDto(
                                 event.getId(),
@@ -88,6 +90,42 @@ class EventDateTimeSlotServiceTest extends IntegrationTestSupport {
                                 eventDateTimeSlot2.isCompleted(),
                                 eventDateTimeSlot2.getStartTime(),
                                 "name1,name2"
+                        )
+                );
+    }
+
+    @DisplayName("날짜와 유저에 따른 이벤트 세부 정보 조회")
+    @Test
+    void findEventDateTimeSlotDetailsOfMemberIdByDate() {
+        //given
+        House house = appendHouse("code");
+        Member member1 = appendMember(house, "email1", "name1");
+        Member member2 = appendMember(house, "email2", "name2");
+        Event event = appendEvent(null, LocalDateTime.now(), member1, house, "event1");
+        EventDateTimeSlot eventDateTimeSlot = appendEventDateTimeSlot(event, LocalDateTime.of(2024, 12, 2, 0, 0),
+                false);
+        appendEventParticipant(event, member1);
+
+        Event event2 = appendEvent(null, LocalDateTime.now(), member1, house, "event2");
+        EventDateTimeSlot eventDateTimeSlot2 = appendEventDateTimeSlot(event2, LocalDateTime.of(2024, 12, 2, 10, 0),
+                true);
+        appendEventParticipant(event2, member1);
+        appendEventParticipant(event2, member2);
+
+        //when
+        List<EventDateTimeSlotDetailOfMemberDto> result = sut.findEventDateTimeSlotDetailsOfMemberIdByDate(
+                new AuthMember(member2.getId(), house.getId()), LocalDate.of(2024, 12, 2));
+
+        //then
+        assertThat(result).hasSize(1)
+                .containsExactly(
+                        new EventDateTimeSlotDetailOfMemberDto(
+                                event2.getId(),
+                                eventDateTimeSlot2.getId(),
+                                event2.getName(),
+                                event2.getCategory(),
+                                eventDateTimeSlot2.isCompleted(),
+                                eventDateTimeSlot2.getStartTime()
                         )
                 );
     }

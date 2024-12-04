@@ -7,7 +7,9 @@ import static com.roundtable.roundtable.domain.event.QEventParticipant.eventPart
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.roundtable.roundtable.domain.event.dto.EventDateTimeSlotDetailDto;
+import com.roundtable.roundtable.domain.event.dto.EventDateTimeSlotDetailOfMemberDto;
 import com.roundtable.roundtable.domain.event.dto.QEventDateTimeSlotDetailDto;
+import com.roundtable.roundtable.domain.event.dto.QEventDateTimeSlotDetailOfMemberDto;
 import jakarta.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -45,6 +47,34 @@ public class EventDateTimeSlotQueryRepository {
                 .join(eventParticipant.participant)
                 .where(
                         event.house.id.eq(houseId),
+                        eventDateTimeSlot.startTime.goe(startDateTime),
+                        eventDateTimeSlot.startTime.loe(endDateTime)
+                )
+                .groupBy(event.id, eventDateTimeSlot.id)
+                .fetch();
+    }
+
+    public List<EventDateTimeSlotDetailOfMemberDto> findEventDateTimeSlotsOfMemberByDate(
+            Long houseId,
+            Long memberId,
+            LocalDateTime startDateTime,
+            LocalDateTime endDateTime
+    ) {
+        return queryFactory
+                .select(new QEventDateTimeSlotDetailOfMemberDto(
+                        event.id,
+                        eventDateTimeSlot.id,
+                        event.name,
+                        event.category,
+                        eventDateTimeSlot.isCompleted,
+                        eventDateTimeSlot.startTime
+                ))
+                .from(eventDateTimeSlot)
+                .join(eventDateTimeSlot.event, event)
+                .join(eventParticipant).on(eventParticipant.event.eq(event))
+                .where(
+                        event.house.id.eq(houseId),
+                        eventParticipant.participant.id.eq(memberId),
                         eventDateTimeSlot.startTime.goe(startDateTime),
                         eventDateTimeSlot.startTime.loe(endDateTime)
                 )
