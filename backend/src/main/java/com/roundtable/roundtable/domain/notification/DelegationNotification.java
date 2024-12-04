@@ -54,19 +54,20 @@ public class DelegationNotification extends Notification {
                 .build();
     }
 
-//    public static DelegationNotification create(
-//            House house,
-//            Delegation delegation
-//    ) {
-//        return DelegationNotification.builder()
-//                .sender(delegation.getReceiver())
-//                .receiver(delegation.getSender())
-//                .house(house)
-//                .delegationId(delegation.getId())
-//                .status(delegation.getStatus())
-//                .eventName(delegation.getScheduleName())
-//                .build();
-//    }
+    public static DelegationNotification create(
+            House house,
+            Delegation delegation,
+            String eventName
+    ) {
+        return DelegationNotification.builder()
+                .sender(delegation.getReceiver())
+                .receiver(delegation.getSender())
+                .house(house)
+                .delegationId(delegation.getId())
+                .status(delegation.getStatus())
+                .eventName(eventName)
+                .build();
+    }
 
     public DelegationSseEvent toSseEvent() {
         return DelegationSseEvent.of(getSender().getName(), delegationId, status, eventName);

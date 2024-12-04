@@ -4,6 +4,7 @@ import com.roundtable.roundtable.domain.delegation.Delegation;
 
 public record UpdateDelegationEvent(
         Long houseId,
-        Delegation delegation
+        Delegation delegation,
+        String eventName
 ) {
 }

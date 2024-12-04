@@ -36,9 +36,10 @@ public class DelegationNotificationAppender {
 
         houseSsePublisher.send(houseId, List.of(receiver.getId()), delegationNotification.toSseEvent());
     }
-//
-//    public void append(Long houseId, Delegation delegation) {
-//        DelegationNotification delegationNotification = DelegationNotification.create(House.Id(houseId), delegation);
-//        notificationRepository.save(delegationNotification);
-//    }
+
+    public void append(Long houseId, Delegation delegation, String eventName) {
+        DelegationNotification delegationNotification = DelegationNotification.create(House.Id(houseId), delegation,
+                eventName);
+        notificationRepository.save(delegationNotification);
+    }
 }

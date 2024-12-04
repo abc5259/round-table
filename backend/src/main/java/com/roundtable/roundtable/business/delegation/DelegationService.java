@@ -3,6 +3,7 @@ package com.roundtable.roundtable.business.delegation;
 import com.roundtable.roundtable.business.common.AuthMember;
 import com.roundtable.roundtable.business.delegation.dto.CreateDelegationDto;
 import com.roundtable.roundtable.business.delegation.event.CreateDelegationEvent;
+import com.roundtable.roundtable.business.delegation.event.UpdateDelegationEvent;
 import com.roundtable.roundtable.business.member.MemberReader;
 import com.roundtable.roundtable.domain.delegation.Delegation;
 import com.roundtable.roundtable.domain.delegation.DelegationRepository;
@@ -87,13 +88,18 @@ public class DelegationService {
         eventRepository.save(newEvent);
         eventParticipantRepository.saveAll(newEventParticipants);
         eventDayOfWeekRepository.saveAll(newDayOfWeeks);
+
+        publisher.publishEvent(new UpdateDelegationEvent(authMember.houseId(), delegation, event.getName()));
     }
 
     @Transactional
-    public void reject(Long delegationId, AuthMember authMember, LocalDate now) {
+    public void reject(Long delegationId, Long eventId, AuthMember authMember, LocalDate now) {
         Delegation delegation = delegationRepository.findById(delegationId).orElseThrow(NotFoundEntityException::new);
+        Event event = eventRepository.findById(eventId).orElseThrow(NotFoundEntityException::new);
 
         delegation.reject(authMember.memberId(), now);
+
+        publisher.publishEvent(new UpdateDelegationEvent(authMember.houseId(), delegation, event.getName()));
     }
 
     private static List<EventDayOfWeek> createNewEventDayOfWeeks(List<EventDayOfWeek> eventDayOfWeeks, Event newEvent) {

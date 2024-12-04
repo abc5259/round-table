@@ -63,9 +63,10 @@ public class DelegationController {
     public ResponseEntity<ResponseDto<Void>> rejectDelegation(
             @PathVariable Long houseId,
             @PathVariable Long delegationId,
+            @PathVariable Long eventId,
             @Login AuthMember authMember
     ) {
-        delegationService.reject(delegationId, authMember.toHouseAuthMember(houseId), LocalDate.now());
+        delegationService.reject(delegationId, eventId, authMember.toHouseAuthMember(houseId), LocalDate.now());
         return ResponseEntity.ok(SuccessResponse.ok());
     }
 }
