@@ -25,7 +25,8 @@ public class EventDateTimeSlotReader {
                 .orElseThrow(NotFoundEntityException::new);
     }
 
-    public List<EventDateTimeSlotDetailDto> readEventDateTimeSlotDetails(Long houseId, LocalDateTime dateTime) {
-        return eventDateTimeSlotQueryRepository.findEventDateTimeSlotsByDate(houseId, dateTime);
+    public List<EventDateTimeSlotDetailDto> readEventDateTimeSlotDetails(Long houseId, LocalDateTime startDateTime,
+                                                                         LocalDateTime endDateTime) {
+        return eventDateTimeSlotQueryRepository.findEventDateTimeSlotsByDate(houseId, startDateTime, endDateTime);
     }
 }

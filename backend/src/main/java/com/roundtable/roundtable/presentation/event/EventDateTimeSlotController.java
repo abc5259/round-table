@@ -9,7 +9,7 @@ import com.roundtable.roundtable.global.support.annotation.Login;
 import com.roundtable.roundtable.presentation.event.response.CompletedEventResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -48,7 +48,7 @@ public class EventDateTimeSlotController {
     public ResponseEntity<SuccessResponse<List<EventDateTimeSlotDetailDto>>> createEvent(
             @Login AuthMember authMember,
             @PathVariable Long houseId,
-            @RequestParam("datetime") LocalDateTime dateTime
+            @RequestParam("datetime") LocalDate dateTime
     ) {
 
         List<EventDateTimeSlotDetailDto> eventDateTimeSlotDetailDtos = eventDateTimeSlotService.findEventDateTimeSlotDetails(

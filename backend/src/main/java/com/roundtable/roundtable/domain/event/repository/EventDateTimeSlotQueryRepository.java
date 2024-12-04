@@ -26,7 +26,8 @@ public class EventDateTimeSlotQueryRepository {
 
     public List<EventDateTimeSlotDetailDto> findEventDateTimeSlotsByDate(
             Long houseId,
-            LocalDateTime dateTime
+            LocalDateTime startDateTime,
+            LocalDateTime endDateTime
     ) {
         return queryFactory
                 .select(new QEventDateTimeSlotDetailDto(
@@ -44,7 +45,8 @@ public class EventDateTimeSlotQueryRepository {
                 .join(eventParticipant.participant)
                 .where(
                         event.house.id.eq(houseId),
-                        eventDateTimeSlot.startTime.eq(dateTime)
+                        eventDateTimeSlot.startTime.goe(startDateTime),
+                        eventDateTimeSlot.startTime.loe(endDateTime)
                 )
                 .groupBy(event.id, eventDateTimeSlot.id)
                 .fetch();

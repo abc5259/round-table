@@ -8,7 +8,8 @@ import com.roundtable.roundtable.domain.event.EventParticipants;
 import com.roundtable.roundtable.domain.event.dto.EventDateTimeSlotDetailDto;
 import com.roundtable.roundtable.domain.event.repository.EventParticipantRepository;
 import com.roundtable.roundtable.domain.member.Member;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
@@ -42,7 +43,10 @@ public class EventDateTimeSlotService {
     }
 
     public List<EventDateTimeSlotDetailDto> findEventDateTimeSlotDetails(AuthMember authMember,
-                                                                         LocalDateTime dateTime) {
-        return eventDateTimeSlotReader.readEventDateTimeSlotDetails(authMember.houseId(), dateTime);
+                                                                         LocalDate date) {
+        return eventDateTimeSlotReader.readEventDateTimeSlotDetails(
+                authMember.houseId(),
+                date.atStartOfDay(),
+                date.atTime(LocalTime.MAX));
     }
 }
