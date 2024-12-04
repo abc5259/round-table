@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,27 +44,28 @@ public class DelegationController {
                 .body(SuccessResponse.from(new CreateDelegationResponse(delegationId)));
     }
 
-//    @Operation(summary = "집안일 부탁 수락", description = "집안일 부탁을 수락합니다.")
-//    @ApiResponse(responseCode = "200", description = "성공")
-//    @PatchMapping("/{delegationId}/approve")
-//    public ResponseEntity<ResponseDto<Void>> approveDelegation(
-//            @PathVariable Long houseId,
-//            @PathVariable Long delegationId,
-//            @Login AuthMember authMember
-//            ) {
-//        delegationService.approveDelegation(houseId, authMember.memberId(), delegationId, LocalDate.now());
-//        return ResponseEntity.ok(SuccessResponse.ok());
-//    }
-//
-//    @Operation(summary = "집안일 부탁 거절", description = "집안일 부탁을 거절합니다.")
-//    @ApiResponse(responseCode = "200", description = "성공")
-//    @PatchMapping("/{delegationId}/reject")
-//    public ResponseEntity<ResponseDto<Void>> rejectDelegation(
-//            @PathVariable Long houseId,
-//            @PathVariable Long delegationId,
-//            @Login AuthMember authMember
-//    ) {
-//        delegationService.rejectDelegation(houseId, authMember.memberId(), delegationId, LocalDate.now());
-//        return ResponseEntity.ok(SuccessResponse.ok());
-//    }
+    @Operation(summary = "집안일 부탁 수락", description = "집안일 부탁을 수락합니다.")
+    @ApiResponse(responseCode = "200", description = "성공")
+    @PatchMapping("{delegationId}//event/{eventId}/approve")
+    public ResponseEntity<ResponseDto<Void>> approveDelegation(
+            @PathVariable Long houseId,
+            @PathVariable Long delegationId,
+            @PathVariable Long eventId,
+            @Login AuthMember authMember
+    ) {
+        delegationService.approve(delegationId, eventId, authMember.toHouseAuthMember(houseId), LocalDate.now());
+        return ResponseEntity.ok(SuccessResponse.ok());
+    }
+
+    @Operation(summary = "집안일 부탁 거절", description = "집안일 부탁을 거절합니다.")
+    @ApiResponse(responseCode = "200", description = "성공")
+    @PatchMapping("/{delegationId}/reject")
+    public ResponseEntity<ResponseDto<Void>> rejectDelegation(
+            @PathVariable Long houseId,
+            @PathVariable Long delegationId,
+            @Login AuthMember authMember
+    ) {
+        delegationService.reject(delegationId, authMember.toHouseAuthMember(houseId), LocalDate.now());
+        return ResponseEntity.ok(SuccessResponse.ok());
+    }
 }
