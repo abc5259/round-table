@@ -73,9 +73,9 @@ public class DelegationService {
     }
 
     @Transactional
-    public void approve(Long delegationId, Long eventId, AuthMember authMember, LocalDate now) {
+    public void approve(Long delegationId, AuthMember authMember, LocalDate now) {
         Delegation delegation = delegationRepository.findById(delegationId).orElseThrow(NotFoundEntityException::new);
-        Event event = eventRepository.findById(eventId).orElseThrow(NotFoundEntityException::new);
+        Event event = delegation.getEvent();
         EventParticipants eventParticipants = new EventParticipants(eventParticipantRepository.findAllByEvent(event));
         List<EventDayOfWeek> eventDayOfWeeks = eventDayOfWeekRepository.findByEvent(event);
 
@@ -93,9 +93,9 @@ public class DelegationService {
     }
 
     @Transactional
-    public void reject(Long delegationId, Long eventId, AuthMember authMember, LocalDate now) {
+    public void reject(Long delegationId, AuthMember authMember, LocalDate now) {
         Delegation delegation = delegationRepository.findById(delegationId).orElseThrow(NotFoundEntityException::new);
-        Event event = eventRepository.findById(eventId).orElseThrow(NotFoundEntityException::new);
+        Event event = delegation.getEvent();
 
         delegation.reject(authMember.memberId(), now);
 

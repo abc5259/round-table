@@ -146,6 +146,10 @@ public class Delegation extends BaseEntity {
         this.status = REJECTED;
     }
 
+    public Event getEvent() {
+        return eventDateTimeSlot.getEvent();
+    }
+
     private void validateUpdateStatus(Long memberId) {
         if (!receiver.getId().equals(memberId)) {
             throw new IllegalArgumentException("상태 업데이트는 부탁을 받은 사용자만 가능합니다.");

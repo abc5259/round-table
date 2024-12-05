@@ -46,14 +46,13 @@ public class DelegationController {
 
     @Operation(summary = "집안일 부탁 수락", description = "집안일 부탁을 수락합니다.")
     @ApiResponse(responseCode = "200", description = "성공")
-    @PatchMapping("{delegationId}//event/{eventId}/approve")
+    @PatchMapping("{delegationId}/approve")
     public ResponseEntity<ResponseDto<Void>> approveDelegation(
             @PathVariable Long houseId,
             @PathVariable Long delegationId,
-            @PathVariable Long eventId,
             @Login AuthMember authMember
     ) {
-        delegationService.approve(delegationId, eventId, authMember.toHouseAuthMember(houseId), LocalDate.now());
+        delegationService.approve(delegationId, authMember.toHouseAuthMember(houseId), LocalDate.now());
         return ResponseEntity.ok(SuccessResponse.ok());
     }
 
@@ -63,10 +62,9 @@ public class DelegationController {
     public ResponseEntity<ResponseDto<Void>> rejectDelegation(
             @PathVariable Long houseId,
             @PathVariable Long delegationId,
-            @PathVariable Long eventId,
             @Login AuthMember authMember
     ) {
-        delegationService.reject(delegationId, eventId, authMember.toHouseAuthMember(houseId), LocalDate.now());
+        delegationService.reject(delegationId, authMember.toHouseAuthMember(houseId), LocalDate.now());
         return ResponseEntity.ok(SuccessResponse.ok());
     }
 }

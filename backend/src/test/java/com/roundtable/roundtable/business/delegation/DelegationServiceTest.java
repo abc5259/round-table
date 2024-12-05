@@ -79,7 +79,7 @@ class DelegationServiceTest extends IntegrationTestSupport {
         Delegation delegation = appendDelegation(eventDateTimeSlot, sender, receiver, DelegationStatus.PENDING);
 
         //when
-        sut.approve(delegation.getId(), event.getId(), new AuthMember(receiver.getId(), house.getId()),
+        sut.approve(delegation.getId(), new AuthMember(receiver.getId(), house.getId()),
                 LocalDate.now());
 
         //then
