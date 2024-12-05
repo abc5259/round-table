@@ -46,7 +46,7 @@ public class DelegationController {
 
     @Operation(summary = "집안일 부탁 수락", description = "집안일 부탁을 수락합니다.")
     @ApiResponse(responseCode = "200", description = "성공")
-    @PatchMapping("{delegationId}/approve")
+    @PatchMapping("/{delegationId}/approve")
     public ResponseEntity<ResponseDto<Void>> approveDelegation(
             @PathVariable Long houseId,
             @PathVariable Long delegationId,
