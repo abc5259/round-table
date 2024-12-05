@@ -22,7 +22,6 @@ public class Completion extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     @NotNull
     @Column
     private Category category;
@@ -34,7 +33,7 @@ public class Completion extends BaseEntity {
     @NotNull
     @Column
     private LocalDate completedDate;
-    
+
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
