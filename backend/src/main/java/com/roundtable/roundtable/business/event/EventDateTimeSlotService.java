@@ -7,6 +7,7 @@ import com.roundtable.roundtable.domain.event.EventDateTimeSlot;
 import com.roundtable.roundtable.domain.event.EventParticipants;
 import com.roundtable.roundtable.domain.event.dto.EventDateTimeSlotDetailDto;
 import com.roundtable.roundtable.domain.event.dto.EventDateTimeSlotDetailOfMemberDto;
+import com.roundtable.roundtable.domain.event.dto.EventDateTimeSlotDto;
 import com.roundtable.roundtable.domain.event.repository.EventParticipantRepository;
 import com.roundtable.roundtable.domain.member.Member;
 import java.time.LocalDate;
@@ -58,5 +59,14 @@ public class EventDateTimeSlotService {
                 authMember.memberId(),
                 date.atStartOfDay(),
                 date.atTime(LocalTime.MAX));
+    }
+
+    public List<EventDateTimeSlotDto> findEventDateTimeSlotsBetweenDate(AuthMember authMember,
+                                                                        LocalDate startDate,
+                                                                        LocalDate endDate) {
+        return eventDateTimeSlotReader.readEventDateTimeSlotsBetweenDate(
+                authMember.memberId(),
+                startDate,
+                endDate);
     }
 }

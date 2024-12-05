@@ -8,8 +8,10 @@ import static com.roundtable.roundtable.domain.event.QEventParticipant.eventPart
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.roundtable.roundtable.domain.event.dto.EventDateTimeSlotDetailDto;
 import com.roundtable.roundtable.domain.event.dto.EventDateTimeSlotDetailOfMemberDto;
+import com.roundtable.roundtable.domain.event.dto.EventDateTimeSlotDto;
 import com.roundtable.roundtable.domain.event.dto.QEventDateTimeSlotDetailDto;
 import com.roundtable.roundtable.domain.event.dto.QEventDateTimeSlotDetailOfMemberDto;
+import com.roundtable.roundtable.domain.event.dto.QEventDateTimeSlotDto;
 import jakarta.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,6 +26,27 @@ public class EventDateTimeSlotQueryRepository {
 
     public EventDateTimeSlotQueryRepository(EntityManager em) {
         this.queryFactory = new JPAQueryFactory(em);
+    }
+
+    public List<EventDateTimeSlotDto> findEventDateTimeSlotBetweenDate(Long houseId,
+                                                                       LocalDateTime startDateTime,
+                                                                       LocalDateTime endDateTime) {
+        return queryFactory
+                .select(new QEventDateTimeSlotDto(
+                        event.id,
+                        eventDateTimeSlot.id,
+                        event.name,
+                        eventDateTimeSlot.isCompleted,
+                        eventDateTimeSlot.startTime
+                ))
+                .from(eventDateTimeSlot)
+                .join(eventDateTimeSlot.event, event)
+                .where(
+                        event.house.id.eq(houseId),
+                        eventDateTimeSlot.startTime.goe(startDateTime),
+                        eventDateTimeSlot.startTime.loe(endDateTime)
+                )
+                .fetch();
     }
 
     public List<EventDateTimeSlotDetailDto> findEventDateTimeSlotsByDate(

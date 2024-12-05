@@ -5,6 +5,7 @@ import com.roundtable.roundtable.business.event.EventDateTimeSlotService;
 import com.roundtable.roundtable.business.event.dto.CompleteEventDto;
 import com.roundtable.roundtable.domain.event.dto.EventDateTimeSlotDetailDto;
 import com.roundtable.roundtable.domain.event.dto.EventDateTimeSlotDetailOfMemberDto;
+import com.roundtable.roundtable.domain.event.dto.EventDateTimeSlotDto;
 import com.roundtable.roundtable.global.response.SuccessResponse;
 import com.roundtable.roundtable.global.support.annotation.Login;
 import com.roundtable.roundtable.presentation.event.response.CompletedEventResponse;
@@ -22,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/house/{houseId}/event-date-time-slot")
+@RequestMapping("/house/{houseId}/event-date-time-slots")
 @RequiredArgsConstructor
 public class EventDateTimeSlotController {
 
@@ -43,18 +44,17 @@ public class EventDateTimeSlotController {
                 .body(SuccessResponse.from(new CompletedEventResponse(eventDateTimeSlotId)));
     }
 
-    @Operation(summary = "날짜에 해당하는 이벤트 조회", description = "날짜에 해당하는 하우스에서 해야할 이벤트 조회")
+    @Operation(summary = "오늘 날짜에 해당하는 이벤트 조회", description = "오늘 날짜에 해당하는 하우스에서 해야할 이벤트 조회")
     @ApiResponse(responseCode = "200", description = "성공")
-    @GetMapping
+    @GetMapping("today")
     public ResponseEntity<SuccessResponse<List<EventDateTimeSlotDetailDto>>> findEventDateTimeSlotDetailsByDate(
             @Login AuthMember authMember,
-            @PathVariable Long houseId,
-            @RequestParam("datetime") LocalDate dateTime
+            @PathVariable Long houseId
     ) {
 
         List<EventDateTimeSlotDetailDto> eventDateTimeSlotDetailDtos = eventDateTimeSlotService.findEventDateTimeSlotDetailsByDate(
                 authMember.toHouseAuthMember(houseId),
-                dateTime);
+                LocalDate.now());
         return ResponseEntity.ok()
                 .body(SuccessResponse.from(eventDateTimeSlotDetailDtos));
     }
@@ -71,6 +71,24 @@ public class EventDateTimeSlotController {
         List<EventDateTimeSlotDetailOfMemberDto> eventDateTimeSlotDetailDtos = eventDateTimeSlotService.findEventDateTimeSlotDetailsOfMemberIdByDate(
                 authMember.toHouseAuthMember(houseId),
                 dateTime);
+        return ResponseEntity.ok()
+                .body(SuccessResponse.from(eventDateTimeSlotDetailDtos));
+    }
+
+    @Operation(summary = "해야할 이벤트 조회", description = "특정 기간에 해야할 이벤트 조회")
+    @ApiResponse(responseCode = "200", description = "성공")
+    @GetMapping
+    public ResponseEntity<SuccessResponse<List<EventDateTimeSlotDto>>> findEventDateTimeSlotsBetweenDate(
+            @Login AuthMember authMember,
+            @PathVariable Long houseId,
+            @RequestParam("startDate") LocalDate startDate,
+            @RequestParam("endDate") LocalDate endDate
+    ) {
+
+        List<EventDateTimeSlotDto> eventDateTimeSlotDetailDtos = eventDateTimeSlotService.findEventDateTimeSlotsBetweenDate(
+                authMember.toHouseAuthMember(houseId),
+                startDate, endDate);
+
         return ResponseEntity.ok()
                 .body(SuccessResponse.from(eventDateTimeSlotDetailDtos));
     }
